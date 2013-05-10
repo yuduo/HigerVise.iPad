@@ -1,0 +1,50 @@
+#import "client_intent_order.h"
+
+@implementation client_intent_order
+
+@synthesize intent_order_id;
+@synthesize customer_id;
+@synthesize dealer_id;
+@synthesize intent_order_code;
+@synthesize customer_code;
+@synthesize dealer_code;
+@synthesize vehicle_configurator_id;
+@synthesize vehicle_code;
+@synthesize vehicle_item_code;
+@synthesize vehicle_item_model;
+@synthesize vehicle_series;
+@synthesize vehicle_pca_version;
+@synthesize vehicle_edition_id;
+@synthesize vehicle_edition_editionid;
+@synthesize vehicle_edition_type;
+@synthesize big_region_code;
+@synthesize market_code;
+@synthesize area_region_code;
+@synthesize city_region_code;
+@synthesize city_region_name;
+@synthesize sale_empid;
+@synthesize sale_empname;
+@synthesize region_sale_empid;
+@synthesize region_sale_empname;
+@synthesize intent_from;
+@synthesize intent_use;
+@synthesize intent_qty;
+@synthesize intent_mode;
+@synthesize intent_delivery_date;
+@synthesize intent_last_date;
+@synthesize intent_publish_date;
+@synthesize intent_buy_channel;
+@synthesize intent_class;
+@synthesize intent_is_sign;
+@synthesize intent_remark;
+@synthesize intent_status;
+@synthesize is_send;
+@synthesize is_used;
+@synthesize create_time;
+@synthesize create_userid;
+@synthesize update_time;
+@synthesize update_userid;
+@synthesize data_version;
+@synthesize data_status;
+
+@end

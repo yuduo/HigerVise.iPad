@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+<string>
+CREATE TABLE client_dialogue_attach(
+    dialogue_attach_id    varchar(32)      NOT NULL PRIMARY KEY,
+    dialogue_master_id    varchar(32)      NOT NULL,
+    dialogue_detail_id    varchar(32)      NOT NULL,
+    attach_title          varchar(200)     NULL,
+    attach_desc           varchar(4000)    NULL,
+    attach_url            varchar(200)     NOT NULL,
+    attach_thum_url       varchar(200)     NULL,
+    is_used               int              NOT NULL,
+    create_userid         varchar(200)     NOT NULL,
+    create_time           varchar(200)     NOT NULL,
+    update_userid         varchar(200)     NULL,
+    update_time           varchar(200)     NULL,
+    data_version          int              NOT NULL
+)
+</string>
+<string>
+CREATE TABLE client_dialogue_class(
+    dialogue_class_id      int              NOT NULL PRIMARY KEY,
+    dialogue_class_type    int              NOT NULL,
+    dialogue_class_name    varchar(200)     NOT NULL,
+    dialogue_class_desc    varchar(4000)    NULL,
+    data_version           int              NOT NULL,
+    dialogue_class_group   varchar(200)     NULL
+)
+</string>
+<string>
+CREATE TABLE client_dialogue_detail(
+    dialogue_detail_id         varchar(32)      NOT NULL PRIMARY KEY,
+    dialogue_master_id         varchar(32)      NOT NULL,
+    dialogue_detail_type       int              NOT NULL,
+    dialogue_detail_message    varchar(4000)    NOT NULL,
+    is_send                    int              NOT NULL,
+    is_used                    int              NOT NULL,
+    create_userid              varchar(200)     NOT NULL,
+    create_time                varchar(200)     NOT NULL,
+    update_userid              varchar(200)     NULL,
+    update_time                varchar(200)     NULL,
+    data_version               int              NOT NULL
+)
+</string>
+<string>
+CREATE TABLE client_dialogue_master(
+    dialogue_master_id            varchar(32)      NOT NULL PRIMARY KEY,
+    dialogue_class_id             int              NOT NULL,
+    dialogue_master_type          int              NOT NULL,
+    dialogue_master_limit_time    int              NOT NULL,
+    dialogue_master_title         varchar(200)     NOT NULL,
+    dialogue_master_desc          varchar(4000)    NOT NULL,
+    dialogue_master_remark        varchar(4000)    NULL,
+    dialogue_master_status        int              NOT NULL,
+    dialogue_master_result        int              NOT NULL,
+    dialogue_master_index         int              NOT NULL,
+    is_read                       int              NOT NULL,
+    is_attention                  int              NOT NULL,
+    is_share                      int              NOT NULL,
+    is_used                       int              NOT NULL,
+    create_userid                 varchar(200)     NOT NULL,
+    create_time                   varchar(200)     NOT NULL,
+    update_userid                 varchar(200)     NULL,
+    update_time                   varchar(200)     NULL,
+    data_version                  int              NOT NULL
+)
+</string>
+<string>
+CREATE TABLE client_ipad_skin(
+    ipad_skin_id      int              NOT NULL PRIMARY KEY,
+    ipad_skin_name    varchar(200)     NOT NULL,
+    ipad_skin_desc    varchar(4000)    NULL,
+    ipad_skin_url     varchar(200)     NOT NULL,
+    data_version      int              NOT NULL
+)
+</string>
+<string>
+CREATE TABLE client_organization(
+    organization_id             int             NOT NULL PRIMARY KEY,
+    organization_code           varchar(200)    NOT NULL,
+    organization_name           varchar(200)    NOT NULL,
+    organization_type           int             NOT NULL,
+    organization_parent_id      int             NOT NULL,
+    organization_parent_code    varchar(200)    NOT NULL,
+    organization_parent_type    int             NOT NULL,
+    data_version                int             NOT NULL
+)
+</string>
+<string>
+CREATE TABLE client_user(
+    user_id             int              NOT NULL PRIMARY KEY,
+    user_name           varchar(200)     NOT NULL,
+    user_real_name      varchar(200)     NOT NULL,
+    user_level          varchar(4000)    NOT NULL,
+    user_area           varchar(4000)    NOT NULL,
+    user_area_type      int              NULL,
+    user_type           int              DEFAULT 1002 NOT NULL,
+    user_email          varchar(200)     NULL,
+    user_phone          varchar(200)     NULL,
+    user_mobile         varchar(200)     NULL,
+    user_picture_url    varchar(200)     NULL,
+    data_version        int              NOT NULL
+)
+</string>
+<string>
+CREATE TABLE client_user_module(
+    user_module_id    int              NOT NULL PRIMARY KEY,
+    module_code       varchar(200)     NOT NULL,
+    module_name       varchar(200)     NOT NULL,
+    module_desc       varchar(4000)    NULL,
+    data_version      int              NOT NULL
+)
+</string>
+</array>
+</plist>
