@@ -13,7 +13,8 @@
 #import "REPhotoCollectionController.h"
 #import "Photo.h"
 #import "ThumbnailView.h"
-#import "MyBookView.h"
+#import "ASIHTTPRequest.h"
+#import "DownloadFileManage.h"
 #define GRID_VIEW_WIDTH 768
 #define GRID_VIEW_HEIGHT 1024-200
 #define BOOK_WIDTH 130
@@ -52,7 +53,7 @@
     self.navigationController.navigationBarHidden = NO;
 
     self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Title_01.png"]];
-    self.navigationItem.hidesBackButton = YES;
+//    self.navigationItem.hidesBackButton = YES;
     _data = [[NSMutableArray alloc] initWithObjects:@"乌克兰拖拉机简史",
             @"下面，我该干些什么",
             @"贩卖机故事",
@@ -63,7 +64,7 @@
             @"酒吧问君三语",
             @"如何创作绘本小说",
             @"一天",nil];
-    
+    bookViewArray = [[NSMutableArray alloc]init];
 //    GMGridView *gmGridView = [[GMGridView alloc] initWithFrame:self.view.bounds];
 //    GMGridView *gmGridView = [[GMGridView alloc] initWithFrame:CGRectMake(0, 0, 768, 1024-60)];
 //    gmGridView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
@@ -502,9 +503,12 @@
         }
         
         // 展示图片
-        UIImageView *bookView = [[UIImageView alloc] initWithFrame:CGRectMake(x, y, kCell_Items_Width, kCell_Items_Height)];
-        NSString *bookName = [[NSString alloc] initWithFormat:@"Book_Cover.png",row];
-        bookView.image = [UIImage imageNamed:bookName];
+//        UIImageView *bookView = [[UIImageView alloc] initWithFrame:CGRectMake(x, y, kCell_Items_Width, kCell_Items_Height)];
+//        NSString *bookName = [[NSString alloc] initWithFormat:@"Book_Cover.png",row];
+//        bookView.image = [UIImage imageNamed:bookName];
+        MyBookView *bookView = [[MyBookView alloc]initWithFrame:CGRectMake(x, y, kCell_Items_Width, kCell_Items_Height)];
+        bookView.picturePath = @"Book_Cover.png";
+        [bookViewArray addObject:bookView];
         [cell.contentView addSubview:bookView];
         
         // 添加按钮
@@ -587,4 +591,99 @@
     tbView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
     [tbView reloadData];
 }
+
+#pragma mark -
+#pragma mark MyBookDelegate method
+
+
+- (void)downBtnOfBookWasClicked:(MyBookView *)book {//下载,将要下载的书添加到ASINetworkQueue
+	
+	//初始化Documents路径
+	NSString *path = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+	//初始化临时文件路径
+	NSString *folderPath = [path stringByAppendingPathComponent:@"temp"];
+	//创建文件管理器
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	//判断temp文件夹是否存在
+	BOOL fileExists = [fileManager fileExistsAtPath:folderPath];
+	
+	if (!fileExists) {//如果不存在说创建,因为下载时,不会自动创建文件夹
+		[fileManager createDirectoryAtPath:folderPath withIntermediateDirectories:YES attributes:nil error:nil];
+	}
+	//初始下载路径
+	NSURL *url = [NSURL URLWithString:book.bookPath];
+	//设置下载路径
+	ASIHTTPRequest *request = [[ASIHTTPRequest alloc] initWithURL:url];
+	//设置ASIHTTPRequest代理
+	request.delegate = self;
+	//初始化保存ZIP文件路径
+	NSString *savePath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"book_%d.zip",book.bookID]];
+	//初始化临时文件路径
+	NSString *tempPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"temp/book_%d.zip.temp",book.bookID]];
+	//设置文件保存路径
+	[request setDownloadDestinationPath:savePath];
+	//设置临时文件路径
+	[request setTemporaryFileDownloadPath:tempPath];
+	//设置进度条的代理,
+	[request setDownloadProgressDelegate:book];
+	//设置是是否支持断点下载
+	[request setAllowResumeForFileDownloads:YES];
+	//设置基本信息
+	[request setUserInfo:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:book.bookID],@"bookID",nil]];
+	//添加到ASINetworkQueue队列去下载
+	[netWorkQueue addOperation:request];
+	
+}
+
+
+#pragma mark -
+#pragma mark ASIHTTPRequestDelegate method
+
+//ASIHTTPRequestDelegate,下载之前获取信息的方法,主要获取下载内容的大小
+- (void)request:(ASIHTTPRequest *)request didReceiveResponseHeaders:(NSDictionary *)responseHeaders {
+    
+	//NSLog(@"didReceiveResponseHeaders-%@",[responseHeaders valueForKey:@"Content-Length"]);
+	for (MyBookView *temp in bookViewArray) {//循环出具体对象
+		
+		if (temp.bookID == [[request.userInfo objectForKey:@"bookID"] intValue]) {
+			//查找以前是否保存过 具体对象 内容的大小
+			NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+			float tempConLen = [[userDefaults objectForKey:[NSString stringWithFormat:@"book_%d_contentLength",temp.bookID]] floatValue];
+			
+			if (tempConLen == 0 ) {//如果没有保存,则持久化他的内容大小
+				
+				[userDefaults setObject:[NSNumber numberWithFloat:request.contentLength/1024.0/1024.0] forKey:[NSString stringWithFormat:@"book_%d_contentLength",temp.bookID]];
+			}
+		}
+	}
+}
+//ASIHTTPRequestDelegate,下载完成时,执行的方法
+- (void)requestFinished:(ASIHTTPRequest *)request {
+    
+	for (MyBookView *temp in [self.view subviews]) {//循环出具体对象
+		
+		if ([temp respondsToSelector:@selector(bookID)]) {
+			
+			if (temp.bookID == [[request.userInfo objectForKey:@"bookID"] intValue]) {//判断是否与下载完成的对象匹配
+				
+				temp.downloadCompleteStatus = YES;//如果匹配,则设置他的下载状态为YES
+				
+				//重绘
+				[temp setNeedsDisplay];
+			}
+            //save to local
+            [DownloadFileManage addToDownloadedList:temp.bookID path:nil];
+		}
+	}
+}
+//ASIHTTPRequestDelegate,下载失败
+- (void)requestFailed:(ASIHTTPRequest *)request {
+    
+	NSLog(@"down fail.....");
+	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(300, 220, 200, 100)];
+	label.text = @"down fail,请检查网络是否连接!";
+	[self.view addSubview:label];
+}
+
+
 @end

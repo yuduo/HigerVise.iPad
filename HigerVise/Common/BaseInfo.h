@@ -49,7 +49,7 @@ static NSString *kHigerUrlBaseThree       = @"http://mobileservice.ehiger.com:81
 
 //static NSString *kHigerNetworkTest      = @"http://172.27.56.103:8080/HigerViseWebService.asmx";
 //static NSString *kHigerUrlBase          = @"http://172.27.56.103:8080/HigerViseWebService.asmx/";
-
+#define DOWNLOAD_SOURCE_LIST @"download_source_list"
 typedef enum
 {
     SqlTypeSettingChanged               = 1000,
@@ -141,5 +141,6 @@ typedef enum
 
 //获取对应操作的SQL语句更新操作
 //+ (NSString *)getVehicleEditionSettingHisSql:(SqlType)sqlType;
-
++ (NSString*)getLocalDocmentPath;
++ (NSString*)getDownloadManageFile;
 @end

@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "ReaderViewController.h"
 #import "FGalleryViewController.h"
-
-@interface GVTFirstViewController : UIViewController<ReaderViewControllerDelegate,FGalleryViewControllerDelegate,UITableViewDelegate,UITableViewDataSource>
+#import "MyBookView.h"
+#import "ASINetworkQueue.h"
+@interface GVTFirstViewController : UIViewController<ReaderViewControllerDelegate,FGalleryViewControllerDelegate,UITableViewDelegate,UITableViewDataSource,MyBookDelegate,ASIHTTPRequestDelegate>
 {
     NSArray *localCaptions;
     NSArray *localImages;
@@ -18,11 +19,12 @@
     NSArray *networkImages;
     FGalleryViewController *localGallery;
     FGalleryViewController *networkGallery;
-    
+    ASINetworkQueue *netWorkQueue;//创建一个队列
     // 状态
 	BOOL bLandScape;
     NSMutableArray *_data;
      UITableView *tbView;
+    NSMutableArray *bookViewArray;
 }
 
 @end

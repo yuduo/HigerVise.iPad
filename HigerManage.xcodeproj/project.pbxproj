@@ -399,6 +399,11 @@
 		CA26F7B116F964BA00B1E94C /* platform_text.png in Resources */ = {isa = PBXBuildFile; fileRef = CA26F7B016F964A400B1E94C /* platform_text.png */; };
 		CA35C1CF173CFD5900E1B14A /* UINavigationController+Rotation.m in Sources */ = {isa = PBXBuildFile; fileRef = CA35C1CE173CFD5900E1B14A /* UINavigationController+Rotation.m */; };
 		CA3630531651E152006E1E04 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA3630521651E152006E1E04 /* ImageIO.framework */; };
+		CA3AB16B173D2B1E009ED438 /* DataCache.m in Sources */ = {isa = PBXBuildFile; fileRef = CA3AB168173D2B1E009ED438 /* DataCache.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CA3AB16C173D2B1E009ED438 /* FlowCoverView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA3AB16A173D2B1E009ED438 /* FlowCoverView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CA3AB16F173D2B2F009ED438 /* FlowCoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA3AB16E173D2B2F009ED438 /* FlowCoverViewController.m */; };
+		CA3AB171173D2D29009ED438 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CA3AB170173D2D29009ED438 /* OpenGLES.framework */; };
+		CA3AB173173D2E5D009ED438 /* TestFC.xib in Resources */ = {isa = PBXBuildFile; fileRef = CA3AB172173D2E5D009ED438 /* TestFC.xib */; };
 		CA7B992217373D0D000A13A4 /* VideoPlayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA7B992117373D0D000A13A4 /* VideoPlayViewController.m */; };
 		CA7B9925173753C9000A13A4 /* GVTFirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA7B9924173753C9000A13A4 /* GVTFirstViewController.m */; };
 		CA7B99331737546C000A13A4 /* GMGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA7B99291737546C000A13A4 /* GMGridView.m */; };
@@ -465,6 +470,8 @@
 		CA7F31CE1739F2FD00D250EA /* ThumbsMainToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = CA7F31A51739F2FD00D250EA /* ThumbsMainToolbar.m */; };
 		CA7F31CF1739F2FD00D250EA /* ThumbsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA7F31A71739F2FD00D250EA /* ThumbsViewController.m */; };
 		CA7F31D01739F2FD00D250EA /* UIXToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA7F31A91739F2FD00D250EA /* UIXToolbarView.m */; };
+		CA8293FE17407C330097222A /* DownloadFileManage.m in Sources */ = {isa = PBXBuildFile; fileRef = CA8293FD17407C330097222A /* DownloadFileManage.m */; };
+		CA8294011740D5E50097222A /* DownloadFileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA8294001740D5E50097222A /* DownloadFileViewController.m */; };
 		CA8C914C16FC23870023BCA9 /* delete_button.png in Resources */ = {isa = PBXBuildFile; fileRef = CA8C914B16FC23870023BCA9 /* delete_button.png */; };
 		CA8DBC361702F66E00D40B43 /* blackArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = CA8DBC2C1702F66E00D40B43 /* blackArrow.png */; };
 		CA8DBC371702F66E00D40B43 /* blackArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = CA8DBC2D1702F66E00D40B43 /* blackArrow@2x.png */; };
@@ -1013,6 +1020,14 @@
 		CA35C1CD173CFD5900E1B14A /* UINavigationController+Rotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+Rotation.h"; sourceTree = "<group>"; };
 		CA35C1CE173CFD5900E1B14A /* UINavigationController+Rotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+Rotation.m"; sourceTree = "<group>"; };
 		CA3630521651E152006E1E04 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		CA3AB167173D2B1E009ED438 /* DataCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DataCache.h; path = FlowCover/DataCache.h; sourceTree = "<group>"; };
+		CA3AB168173D2B1E009ED438 /* DataCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DataCache.m; path = FlowCover/DataCache.m; sourceTree = "<group>"; };
+		CA3AB169173D2B1E009ED438 /* FlowCoverView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FlowCoverView.h; path = FlowCover/FlowCoverView.h; sourceTree = "<group>"; };
+		CA3AB16A173D2B1E009ED438 /* FlowCoverView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FlowCoverView.m; path = FlowCover/FlowCoverView.m; sourceTree = "<group>"; };
+		CA3AB16D173D2B2F009ED438 /* FlowCoverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FlowCoverViewController.h; path = Class/FlowCoverViewController.h; sourceTree = "<group>"; };
+		CA3AB16E173D2B2F009ED438 /* FlowCoverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FlowCoverViewController.m; path = Class/FlowCoverViewController.m; sourceTree = "<group>"; };
+		CA3AB170173D2D29009ED438 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		CA3AB172173D2E5D009ED438 /* TestFC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TestFC.xib; path = Class/TestFC.xib; sourceTree = "<group>"; };
 		CA7B992017373D0C000A13A4 /* VideoPlayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VideoPlayViewController.h; path = Video/VideoPlayViewController.h; sourceTree = "<group>"; };
 		CA7B992117373D0D000A13A4 /* VideoPlayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = VideoPlayViewController.m; path = Video/VideoPlayViewController.m; sourceTree = "<group>"; };
 		CA7B9923173753C9000A13A4 /* GVTFirstViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GVTFirstViewController.h; path = Class/GVTFirstViewController.h; sourceTree = "<group>"; };
@@ -1123,6 +1138,10 @@
 		CA7F31A71739F2FD00D250EA /* ThumbsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThumbsViewController.m; sourceTree = "<group>"; };
 		CA7F31A81739F2FD00D250EA /* UIXToolbarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIXToolbarView.h; sourceTree = "<group>"; };
 		CA7F31A91739F2FD00D250EA /* UIXToolbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIXToolbarView.m; sourceTree = "<group>"; };
+		CA8293FC17407C330097222A /* DownloadFileManage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DownloadFileManage.h; path = Class/DownloadFileManage.h; sourceTree = "<group>"; };
+		CA8293FD17407C330097222A /* DownloadFileManage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DownloadFileManage.m; path = Class/DownloadFileManage.m; sourceTree = "<group>"; };
+		CA8293FF1740D5E40097222A /* DownloadFileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DownloadFileViewController.h; path = Class/DownloadFileViewController.h; sourceTree = "<group>"; };
+		CA8294001740D5E50097222A /* DownloadFileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DownloadFileViewController.m; path = Class/DownloadFileViewController.m; sourceTree = "<group>"; };
 		CA8C914B16FC23870023BCA9 /* delete_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = delete_button.png; sourceTree = "<group>"; };
 		CA8DBC2C1702F66E00D40B43 /* blackArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blackArrow.png; sourceTree = "<group>"; };
 		CA8DBC2D1702F66E00D40B43 /* blackArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blackArrow@2x.png"; sourceTree = "<group>"; };
@@ -1145,6 +1164,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA3AB171173D2D29009ED438 /* OpenGLES.framework in Frameworks */,
 				CA7B993917376B62000A13A4 /* MediaPlayer.framework in Frameworks */,
 				AFD49BDB1650ACD9000CB6BF /* MessageUI.framework in Frameworks */,
 				AFD003B61627C7A700D5D604 /* SystemConfiguration.framework in Frameworks */,
@@ -1411,6 +1431,7 @@
 		AFD0024F1626DD7200D5D604 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CA3AB170173D2D29009ED438 /* OpenGLES.framework */,
 				CA7B993817376B62000A13A4 /* MediaPlayer.framework */,
 				AFD003A91627C78200D5D604 /* libz.dylib */,
 				AFD003AB1627C78800D5D604 /* libxml2.dylib */,
@@ -1431,6 +1452,7 @@
 		AFD002561626DD7200D5D604 /* HigerVise */ = {
 			isa = PBXGroup;
 			children = (
+				CA3AB166173D2A07009ED438 /* FlowCover */,
 				CA7B991A173733EF000A13A4 /* Photos */,
 				CA7B9919173733E6000A13A4 /* Video */,
 				CA7B9918173733E0000A13A4 /* PDF */,
@@ -2130,9 +2152,23 @@
 			path = Feedback;
 			sourceTree = "<group>";
 		};
+		CA3AB166173D2A07009ED438 /* FlowCover */ = {
+			isa = PBXGroup;
+			children = (
+				CA3AB167173D2B1E009ED438 /* DataCache.h */,
+				CA3AB168173D2B1E009ED438 /* DataCache.m */,
+				CA3AB169173D2B1E009ED438 /* FlowCoverView.h */,
+				CA3AB16A173D2B1E009ED438 /* FlowCoverView.m */,
+			);
+			name = FlowCover;
+			sourceTree = "<group>";
+		};
 		CA7B99171737339C000A13A4 /* Class */ = {
 			isa = PBXGroup;
 			children = (
+				CA3AB172173D2E5D009ED438 /* TestFC.xib */,
+				CA3AB16D173D2B2F009ED438 /* FlowCoverViewController.h */,
+				CA3AB16E173D2B2F009ED438 /* FlowCoverViewController.m */,
 				CA1E34CB173B9A9200A64310 /* MyBookView.h */,
 				CA1E34CC173B9A9200A64310 /* MyBookView.m */,
 				CA1E34CD173B9A9200A64310 /* MyWebView.h */,
@@ -2145,6 +2181,10 @@
 				CA7BFA3E1738C08900A44159 /* REPhotoCollectionController */,
 				CA7B9923173753C9000A13A4 /* GVTFirstViewController.h */,
 				CA7B9924173753C9000A13A4 /* GVTFirstViewController.m */,
+				CA8293FC17407C330097222A /* DownloadFileManage.h */,
+				CA8293FD17407C330097222A /* DownloadFileManage.m */,
+				CA8293FF1740D5E40097222A /* DownloadFileViewController.h */,
+				CA8294001740D5E50097222A /* DownloadFileViewController.m */,
 			);
 			name = Class;
 			sourceTree = "<group>";
@@ -2749,6 +2789,7 @@
 				CA7C3C8D173B2BEE00ACFFD3 /* book.png in Resources */,
 				CA7C3C90173B2DE600ACFFD3 /* Book_Cover.png in Resources */,
 				CA7C3C91173B2DE600ACFFD3 /* Title_01.png in Resources */,
+				CA3AB173173D2E5D009ED438 /* TestFC.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2932,6 +2973,11 @@
 				CA1E34CF173B9A9200A64310 /* MyBookView.m in Sources */,
 				CA1E34D0173B9A9200A64310 /* MyWebView.m in Sources */,
 				CA35C1CF173CFD5900E1B14A /* UINavigationController+Rotation.m in Sources */,
+				CA3AB16B173D2B1E009ED438 /* DataCache.m in Sources */,
+				CA3AB16C173D2B1E009ED438 /* FlowCoverView.m in Sources */,
+				CA3AB16F173D2B2F009ED438 /* FlowCoverViewController.m in Sources */,
+				CA8293FE17407C330097222A /* DownloadFileManage.m in Sources */,
+				CA8294011740D5E50097222A /* DownloadFileViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

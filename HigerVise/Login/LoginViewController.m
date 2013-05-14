@@ -8,6 +8,7 @@
 
 #import "LoginViewController.h"
 #import "GVTFirstViewController.h"
+#import "FlowCoverViewController.h"
 @interface LoginViewController ()
 
 @end
@@ -439,9 +440,17 @@
     [animation setSubtype:kCATransitionFromLeft];
     [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
    
-    GVTFirstViewController *fvc = [[GVTFirstViewController alloc] initWithNibName:nil bundle:nil];
-    [self.navigationController pushViewController:fvc animated:NO];
-    [self.navigationController.view.layer addAnimation:animation forKey:nil];
+//    GVTFirstViewController *fvc = [[GVTFirstViewController alloc] initWithNibName:nil bundle:nil];
+    
+    FlowCoverViewController *c;
+	
+	NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"TestFC" owner:self options:nil];
+	c = [array objectAtIndex:0];
+	
+//	[self presentModalViewController:c animated:YES];
+    
+    [self.navigationController pushViewController:c animated:NO];
+//    [self.navigationController.view.layer addAnimation:animation forKey:nil];
 }
 
 - (IBAction)btnLogin_TouchUpInside:(id)sender 

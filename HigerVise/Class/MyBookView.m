@@ -34,22 +34,29 @@
 		self.backgroundColor = [UIColor grayColor];
 		
         //picture
+        // 展示图片
+        UIImageView *bookView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 130, 175)];
+        NSString *bookName = @"Book_Cover.png";
+        bookView.image = [UIImage imageNamed:bookName];
+        [self addSubview:bookView];
         
 		//系统进度条的设置
-		zztjProView = [[UIProgressView alloc] initWithFrame:CGRectMake(75, 100, 150, 20)];
+		zztjProView = [[UIProgressView alloc] initWithFrame:CGRectMake(0, 100, 150, 20)];
 		//自己的进度条设置,默认宽度为0
-		imageProView = [[UIImageView alloc] initWithFrame:CGRectMake(75, 121, 0, 4)];
+		imageProView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 121, 0, 4)];
 		[imageProView setImage:[UIImage imageNamed:@"proImage.png"]];
 		//自己进度条的背景
-		imageProBgView = [[UIImageView alloc] initWithFrame:CGRectMake(75, 120, 150, 6)];
+		imageProBgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 120, 150, 6)];
 		//[imageProBgView setImage:[UIImage imageNamed:@"proImage_bg.png"]];
 		imageProBgView.backgroundColor = [UIColor blackColor];
+        
 		//初始化显示书名的Lable
-		downText = [[UILabel alloc] initWithFrame:CGRectMake(100, 130, 100, 30)];
-		
+		downText = [[UILabel alloc] initWithFrame:CGRectMake(0, 150, 100, 30)];
+		downText.text = @"book";
+        
 		//初始化下载按键
 		self.downButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-		downButton.frame = CGRectMake(0, 0, 100, 50);
+		downButton.frame = CGRectMake(100, 150, 100, 30);
 		[downButton setTitle:@"down" forState:UIControlStateNormal];
 		[downButton setTitle:@"waiting..." forState:UIControlStateDisabled];
 		[downButton addTarget:self action:@selector(downButtonClick) forControlEvents:UIControlEventTouchDown];

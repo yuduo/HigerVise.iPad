@@ -854,5 +854,14 @@
 //        
 //    }
 //}
++ (NSString*)getLocalDocmentPath
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 
+    return [paths objectAtIndex:0];
+}
++ (NSString*)getDownloadManageFile
+{
+    return [[self getLocalDocmentPath] stringByAppendingPathComponent:DOWNLOAD_SOURCE_LIST];
+}
 @end
