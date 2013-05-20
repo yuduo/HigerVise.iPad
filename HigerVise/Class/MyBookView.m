@@ -13,8 +13,8 @@
 @implementation MyBookView
 
 @synthesize delegate;
-@synthesize bookID;
-@synthesize bookName;
+@synthesize bookID,downState,resourceType;
+@synthesize bookName,bookType;
 @synthesize contentLength;
 @synthesize bookPath,picturePath;
 
@@ -31,11 +31,11 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code.
-		self.backgroundColor = [UIColor grayColor];
+		self.backgroundColor = [UIColor clearColor];
 		
         //picture
         // 展示图片
-        UIImageView *bookView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 130, 175)];
+        UIImageView *bookView = [[UIImageView alloc] initWithFrame:CGRectMake(0, -20, 130, 175)];
         NSString *bookName = @"Book_Cover.png";
         bookView.image = [UIImage imageNamed:bookName];
         [self addSubview:bookView];
@@ -51,24 +51,25 @@
 		imageProBgView.backgroundColor = [UIColor blackColor];
         
 		//初始化显示书名的Lable
-		downText = [[UILabel alloc] initWithFrame:CGRectMake(0, 150, 100, 30)];
+		downText = [[UILabel alloc] initWithFrame:CGRectMake(0, 180-15, 50, 30)];
+        downText.backgroundColor = [UIColor clearColor];
 		downText.text = @"book";
         
 		//初始化下载按键
 		self.downButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-		downButton.frame = CGRectMake(100, 150, 100, 30);
+		downButton.frame = CGRectMake(50, 180-15, 100, 30);
 		[downButton setTitle:@"down" forState:UIControlStateNormal];
 		[downButton setTitle:@"waiting..." forState:UIControlStateDisabled];
 		[downButton addTarget:self action:@selector(downButtonClick) forControlEvents:UIControlEventTouchDown];
 		
-		[self addSubview:downButton];
-
-		[self addSubview:zztjProView];
+        [self addSubview:zztjProView];
 		[self addSubview:imageProBgView];
 		[self addSubview:imageProView];
 		[self addSubview:downText];
 
-		
+		[self addSubview:downButton];
+        
+
     }
     return self;
 }
@@ -80,10 +81,12 @@
 	//判断是否下载成功
 	if (downloadCompleteStatus) {//下载状态(已经下载成功)
 		
-		//下载按键启用
+//		//下载按键启用
 		downButton.enabled = YES;
-		//下载按键隐藏
-		downButton.hidden = YES;
+//		//下载按键隐藏
+//		downButton.hidden = YES;
+		self.downState = 2;
+        [downButton setTitle:@"read" forState:UIControlStateNormal];
 		
 		//系统进度条隐藏
 		zztjProView.hidden = YES;
@@ -96,15 +99,24 @@
 	}else {
 		
 		//下载按键显示
-		downButton.hidden =	NO;
-		
+//		downButton.hidden =	NO;
+//		//下载按键启用
+//		downButton.enabled = YES;
 	}
 }
 
 #pragma mark -
 #pragma mark click method
 - (void)downButtonClick {//下载按键事件
-	
+	if (downState) {
+        //read
+        if ([delegate respondsToSelector:@selector(readBtnOfBookWasClicked:)]) {
+            
+            //调用 DownAndASIRequestViewController 的 readBtnOfBookWasClicked 方法
+            [delegate readBtnOfBookWasClicked:self];
+        }
+        return;
+    }
 	if ([delegate respondsToSelector:@selector(downBtnOfBookWasClicked:)]) {
 		//下载按键禁用
 		downButton.enabled = NO;

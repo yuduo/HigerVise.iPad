@@ -46,8 +46,8 @@ woody@chaosinmotion.com. Chaos In Motion is at http://www.chaosinmotion.com
 /*																		*/
 /************************************************************************/
 
-#define TEXTURESIZE			256		// width and height of texture; power of 2, 256 max
-#define MAXTILES			48		// maximum allocated 256x256 tiles in cache
+#define TEXTURESIZE			256*2		// width and height of texture; power of 2, 256 max
+#define MAXTILES			48*4		// maximum allocated 256x256 tiles in cache
 #define VISTILES			2		// # tiles left and right of center tile visible on screen
 
 /*
@@ -285,11 +285,15 @@ static void *GData = NULL;
 	
 	if (GData == NULL) GData = malloc(4 * TEXTURESIZE * TEXTURESIZE);
 //	void *data = malloc(TEXTURESIZE * TEXTURESIZE * 4);
+    float scaleFactor = 1;//[[UIScreen mainScreen] scale];
+    
 	CGColorSpaceRef cref = CGColorSpaceCreateDeviceRGB();
 	CGContextRef gc = CGBitmapContextCreate(GData,
-			TEXTURESIZE,TEXTURESIZE,
-			8,TEXTURESIZE*4,
+			TEXTURESIZE* scaleFactor,
+            TEXTURESIZE* scaleFactor,
+			8,TEXTURESIZE*4* scaleFactor,
 			cref,kCGImageAlphaPremultipliedLast);
+//    CGContextScaleCTM(gc, scaleFactor, scaleFactor);
 	CGColorSpaceRelease(cref);
 	UIGraphicsPushContext(gc);
 	
@@ -308,15 +312,15 @@ static void *GData = NULL;
 	CGSize size = image.size;
 	
 	if (size.width > size.height) {
-		size.height = 256 * (size.height / size.width);
-		size.width = 256;
+		size.height = TEXTURESIZE * (size.height / size.width);
+		size.width = TEXTURESIZE;
 	} else {
-		size.width = 256 * (size.width / size.height);
-		size.height = 256;
+		size.width = TEXTURESIZE * (size.width / size.height);
+		size.height = TEXTURESIZE;
 	}
 	
-	r.origin.x = (256 - size.width)/2;
-	r.origin.y = (256 - size.height)/2;
+	r.origin.x = (TEXTURESIZE - size.width)/2;
+	r.origin.y = (TEXTURESIZE - size.height)/2;
 	r.size = size;
 	[image drawInRect:r];
 	
@@ -622,10 +626,10 @@ static void *GData = NULL;
 	
 	if (touchFlag == YES) {
 		// Touched location; only accept on touching inner 256x256 area
-		r.origin.x += (r.size.width - 256)/2;
-		r.origin.y += (r.size.height - 256)/2;
-		r.size.width = 256;
-		r.size.height = 256;
+		r.origin.x += (r.size.width - TEXTURESIZE)/2;
+		r.origin.y += (r.size.height - TEXTURESIZE)/2;
+		r.size.width = TEXTURESIZE;
+		r.size.height = TEXTURESIZE;
 		
 		if (CGRectContainsPoint(r, where)) {
 			[self touchAtIndex:(int)floor(offset + 0.01)];	// make sure .99 is 1

@@ -23,6 +23,7 @@
 	id delegate;
 	int bookID;//ID
 	NSString *bookName;//book名字
+    NSString *bookType;
 	float contentLength;//书的大小(BIT)
 	NSString *bookPath;//书的路径
     NSString *picturePath;
@@ -39,7 +40,10 @@
 @property (nonatomic,assign)id<MyBookDelegate> delegate;
 
 @property (nonatomic,assign)int bookID;
+@property (nonatomic,assign)int downState;
+@property (nonatomic,assign)int resourceType;
 @property(nonatomic ,retain)NSString *bookName;
+@property(nonatomic ,retain)NSString *bookType;
 @property (nonatomic,assign)float contentLength;
 @property(nonatomic ,retain)NSString *bookPath;
 @property(nonatomic ,retain)NSString *picturePath;

@@ -92,6 +92,11 @@
         tbView.backgroundColor = [UIColor clearColor];
     }
     [self.view addSubview:tbView];
+    
+    netWorkQueue  = [[ASINetworkQueue alloc] init];
+	[netWorkQueue reset];
+	[netWorkQueue setShowAccurateProgress:YES];
+	[netWorkQueue go];
 }
 
 - (void)viewDidUnload
@@ -478,7 +483,8 @@
         }
     }
     UIImageView *shelfView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"shelf.png"]];
-    [cell.contentView addSubview: shelfView];
+//    [cell.contentView addSubview: shelfView];
+    cell.backgroundView = shelfView;
     // 定义图书大小
 #define kCell_Items_Width 130
 #define kCell_Items_Height 175
@@ -508,17 +514,21 @@
 //        bookView.image = [UIImage imageNamed:bookName];
         MyBookView *bookView = [[MyBookView alloc]initWithFrame:CGRectMake(x, y, kCell_Items_Width, kCell_Items_Height)];
         bookView.picturePath = @"Book_Cover.png";
+        bookView.bookID = row;
+        bookView.bookName = @"name";
+        bookView.bookPath = @"http://www.cocoachina.com/bbs/job.php?action=download&aid=36747";
+        bookView.delegate = self;
         [bookViewArray addObject:bookView];
         [cell.contentView addSubview:bookView];
         
         // 添加按钮
-        UIButton *bookButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        bookButton.frame = CGRectMake(x, y, kCell_Items_Width, kCell_Items_Height);
-        // 这里采用一个技巧，使用button的tag，记录tabledata中的序号
-        bookButton.tag = row;
-        [bookButton addTarget:self action:@selector(testButton:) forControlEvents:UIControlEventTouchUpInside];
-        
-        [cell.contentView addSubview:bookButton];
+//        UIButton *bookButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//        bookButton.frame = CGRectMake(x, y, kCell_Items_Width, kCell_Items_Height);
+//        // 这里采用一个技巧，使用button的tag，记录tabledata中的序号
+//        bookButton.tag = row;
+//        [bookButton addTarget:self action:@selector(testButton:) forControlEvents:UIControlEventTouchUpInside];
+//        
+//        [cell.contentView addSubview:bookButton];
         
         x += (80+kCell_Items_Width);
         // row+1
@@ -595,7 +605,35 @@
 #pragma mark -
 #pragma mark MyBookDelegate method
 
-
+- (void)readBtnOfBookWasClicked:(MyBookView *)book {
+    NSString *path = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+    NSString *savePath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"book_%d.zip",book.bookID]];
+    //创建文件管理器
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+    //判断temp文件夹是否存在
+	BOOL fileExists = [fileManager fileExistsAtPath:savePath];
+	
+	if (!fileExists) {//如果不存在,下载
+		return;
+	}
+    
+    NSInteger type = book.resourceType;
+    switch (type) {
+        case 0:
+            //video
+            
+            break;
+        case 1:
+            //photo
+            break;
+        case 2:
+            //pdf
+            
+            break;
+        default:
+            break;
+    }
+}
 - (void)downBtnOfBookWasClicked:(MyBookView *)book {//下载,将要下载的书添加到ASINetworkQueue
 	
 	//初始化Documents路径
@@ -660,7 +698,7 @@
 //ASIHTTPRequestDelegate,下载完成时,执行的方法
 - (void)requestFinished:(ASIHTTPRequest *)request {
     
-	for (MyBookView *temp in [self.view subviews]) {//循环出具体对象
+	for (MyBookView *temp in bookViewArray) {//循环出具体对象
 		
 		if ([temp respondsToSelector:@selector(bookID)]) {
 			
@@ -671,8 +709,12 @@
 				//重绘
 				[temp setNeedsDisplay];
 			}
+            
+            NSString *path = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+            NSString *savePath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"book_%d.zip",temp.bookID]];
+            
             //save to local
-            [DownloadFileManage addToDownloadedList:temp.bookID path:nil];
+            [DownloadFileManage addToDownloadedList:@"" path:savePath];
 		}
 	}
 }
