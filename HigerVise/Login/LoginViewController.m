@@ -7,8 +7,9 @@
 //
 
 #import "LoginViewController.h"
-#import "GVTFirstViewController.h"
+#import "BookshelfViewController.h"
 #import "FlowCoverViewController.h"
+#import "catogory_list_model.h"
 @interface LoginViewController ()
 
 @end
@@ -440,7 +441,12 @@
     [animation setSubtype:kCATransitionFromLeft];
     [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
    
-//    GVTFirstViewController *fvc = [[GVTFirstViewController alloc] initWithNibName:nil bundle:nil];
+    //read database
+    NSArray *db = [catogory_list_model getBookList];
+    if (db != nil) {
+        //
+    }
+    
     
     FlowCoverViewController *c;
 	
@@ -448,7 +454,7 @@
 	c = [array objectAtIndex:0];
 	
 //	[self presentModalViewController:c animated:YES];
-    
+    c.data = [[NSMutableArray alloc]initWithArray:db];
     [self.navigationController pushViewController:c animated:NO];
 //    [self.navigationController.view.layer addAnimation:animation forKey:nil];
 }

@@ -8,7 +8,7 @@
 
 #import "LSBaseViewController.h"
 #import "LSHTTPImageKit.h"
-
+#import "LSImageMatch.h"
 #define LSImageMemoryCacheMaxCount 30
 
 @interface LSImagesViewController : LSBaseViewController

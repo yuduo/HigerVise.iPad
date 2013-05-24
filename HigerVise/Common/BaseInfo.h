@@ -28,6 +28,8 @@
 #define kSearchResultPageSize   20
 #define kNumbers                @"0123456789\n"
 #define kNumbersFlags           @"+-0123456789\n"
+static NSString *kHigerManageDatabase         = @"HigerViseClient.db";    //数据库文件名称
+static NSString *kHigerManageDatabaseOffLine   = @"HigerViseClient.db";    //数据库文件名称
 
 static NSString *kHigerViseClientOffLine = @"jijesoft";
 static NSString *kHigerDatabaseOffLine   = @"HigerViseClientOffLine.db";    //数据库文件名称
@@ -143,4 +145,5 @@ typedef enum
 //+ (NSString *)getVehicleEditionSettingHisSql:(SqlType)sqlType;
 + (NSString*)getLocalDocmentPath;
 + (NSString*)getDownloadManageFile;
++ (NSString *)getManageDataBasePath;
 @end

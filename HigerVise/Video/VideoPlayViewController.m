@@ -211,4 +211,10 @@
     }
 }
 
+-(void)displayError:(id)info
+{
+    //
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"出错" message:@"不支持这种格式" delegate:nil cancelButtonTitle:@"确认" otherButtonTitles:nil, nil];
+    [alertView show];
+}
 @end

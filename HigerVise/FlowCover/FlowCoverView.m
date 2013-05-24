@@ -220,6 +220,7 @@ const GLshort GTextures[] = {
 {
     if (self = [super initWithCoder:coder]) {
 		self = [self internalInit];
+        
     }
     return self;
 }
@@ -252,7 +253,14 @@ const GLshort GTextures[] = {
 		return 0;		// test
 	}
 }
-
+-(UIImage*)backgroundTileImage
+{
+    if (delegate) {
+		return [delegate backgroundImage];
+	} else {
+		return nil;		// should never happen
+	}
+}
 - (UIImage *)tileImage:(int)image
 {
 	if (delegate) {
@@ -365,13 +373,68 @@ static void *GData = NULL;
 	return fcr;
 }
 
+- (FlowCoverRecord *)getBackgroundTile
+{
+	NSNumber *num = [NSNumber numberWithInt:index];
+	FlowCoverRecord *fcr = [cache objectForKey:num];
+	if (fcr == nil) {
+		/*
+		 *	Object at index doesn't exist. Create a new texture
+		 */
+		
+		GLuint texture = [self imageToTexture:[self backgroundTileImage]];
+		fcr = [[[FlowCoverRecord alloc] initWithTexture:texture] autorelease];
+		[cache setObject:fcr forKey:num];
+	}
+	
+	return fcr;
+}
 
 /************************************************************************/
 /*																		*/
 /*	Drawing																*/
 /*																		*/
 /************************************************************************/
-
+-(void)drawBackground
+{
+    FlowCoverRecord *fcr = [self getBackgroundTile];
+    double off = 0.0;
+    GLfloat m[16];
+	memset(m,0,sizeof(m));
+	m[10] = 1;
+	m[15] = 1;
+	m[0] = 1;
+	m[5] = 1;
+	double trans = off * SPREADIMAGE;
+	
+	double f = off * FLANKSPREAD;
+	if (f < -FLANKSPREAD) {
+		f = -FLANKSPREAD;
+	} else if (f > FLANKSPREAD) {
+		f = FLANKSPREAD;
+	}
+	m[3] = -f;
+	m[0] = 1-fabs(f);
+	double sc = 0.45 * (1 - fabs(f));
+	trans += f * 1;
+	
+	glPushMatrix();
+	glBindTexture(GL_TEXTURE_2D,fcr.texture);
+	glTranslatef(trans, 0, 0);
+	glScalef(1,1,1.0);
+	glMultMatrixf(m);
+	glDrawArrays(GL_TRIANGLE_STRIP,0,4);
+	
+	// reflect
+	glTranslatef(0,-2,0);
+	glScalef(1,-1,1);
+	glColor4f(0.5,0.5,0.5,0.5);
+	glDrawArrays(GL_TRIANGLE_STRIP,0,4);
+	glColor4f(1,1,1,1);
+	
+	glPopMatrix();
+    
+}
 - (void)drawTile:(int)index atOffset:(double)off
 {
 	FlowCoverRecord *fcr = [self getTileAtIndex:index];
@@ -477,7 +540,8 @@ static void *GData = NULL;
 		[self drawTile:i atOffset:i-offset];
 	}
 	*/
-	
+	[self drawBackground];
+    
 	int len = [self numTiles];
 	int iStartPos = -VISTILES;
 	int iEndPos = VISTILES;

@@ -6,8 +6,8 @@
 //  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
 //
 
-#import "LSCompanyListViewController.h"
+#import "LSBookListViewController.h"
 
-@interface LSCollectionViewController : LSCompanyListViewController
+@interface LSCollectionViewController : LSBookListViewController
 
 @end

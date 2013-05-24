@@ -13,6 +13,7 @@
 {
 
 }
-
+-(id)init;
+@property(nonatomic,strong)NSMutableArray *data;
 @end
 

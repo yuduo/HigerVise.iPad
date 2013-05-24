@@ -123,7 +123,11 @@
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-	NSString *path = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] bundlePath], _fullsizeUrl];
+//	NSString *path = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] bundlePath], _fullsizeUrl];
+    
+    NSString *path = _fullsizeUrl;
+//    NSLog(@"main bundle = %@",[NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] bundlePath], _fullsizeUrl]);
+//    NSLog(@"url = %@",path);
 	_fullsize = [[UIImage imageWithContentsOfFile:path] retain];
 	
 	_hasFullsizeLoaded = YES;
@@ -139,7 +143,10 @@
 {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
-	NSString *path = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] bundlePath], _thumbUrl];
+//	NSString *path = [NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] bundlePath], _thumbUrl];
+    NSString *path = _thumbUrl;
+//    NSLog(@"main bundle = %@",[NSString stringWithFormat:@"%@/%@", [[NSBundle mainBundle] bundlePath], _thumbUrl]);
+//    NSLog(@"url = %@",path);
 	_thumbnail = [[UIImage imageWithContentsOfFile:path] retain];
 	
 	_hasThumbLoaded = YES;

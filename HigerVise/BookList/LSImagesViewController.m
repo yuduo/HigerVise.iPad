@@ -8,26 +8,7 @@
 
 #import "LSImagesViewController.h"
 
-#pragma mark - LSImageMatch
-@interface LSImageMatch : NSObject
-{
-    UIView* _view;
-    NSString* _imageURL;
-}
-@property (nonatomic, retain) UIView* view;
-@property (nonatomic, retain) NSString* imageURL;
-@end
 
-@implementation LSImageMatch
-@synthesize view = _view;
-@synthesize imageURL = _imageURL;
-- (void)dealloc
-{
-    self.view = nil;
-    self.imageURL = nil;
-    [super dealloc];
-}
-@end
 
 #pragma mark - LSImagesViewController
 @interface LSImagesViewController ()

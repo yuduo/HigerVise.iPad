@@ -97,5 +97,7 @@ woody@chaosinmotion.com. Chaos In Motion is at http://www.chaosinmotion.com
 @protocol FlowCoverViewDelegate
 - (int)flowCoverNumberImages:(FlowCoverView *)view;
 - (UIImage *)flowCover:(FlowCoverView *)view cover:(int)cover;
+- (NSString *)flowCover:(FlowCoverView *)view text:(int)index;
 - (void)flowCover:(FlowCoverView *)view didSelect:(int)cover;
+- (UIImage *)backgroundImage;
 @end

@@ -103,6 +103,21 @@
 
 #pragma mark - database
 
++ (NSString *)getManageDataBasePath
+{
+    if (![[UserInfo sharedUserInfo].userName isEqualToString:kHigerViseClientOffLine]) {
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsPath = [paths objectAtIndex:0];
+        NSString *databasePath = [documentsPath stringByAppendingPathComponent:kHigerManageDatabase];
+        return databasePath;
+    }
+    else {
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsPath = [paths objectAtIndex:0];
+        NSString *databasePath = [[NSBundle mainBundle] pathForResource:kHigerManageDatabaseOffLine ofType:@""];
+        return databasePath;
+    }
+}
 + (NSString *)getDataBasePath
 {
     if (![[UserInfo sharedUserInfo].userName isEqualToString:kHigerViseClientOffLine]) {

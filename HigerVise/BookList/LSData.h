@@ -12,20 +12,20 @@
 
 @end
 //
-//LSDataCompany
+//LSDataBook
 //
-@interface LSDataCompany : NSObject
+@interface LSDataBook : NSObject
 {
-    long            _companyID;
-    NSString*       _companyName;
+    long            _bookID;
+    NSString*       _bookName;
     NSString*       _logo;
-    NSString*       _address;
-    NSInteger       _state;//认证状态
+    NSString*       _local_resource;
+    NSInteger       _bookType;
     
 }
-@property (nonatomic) long companyID;
-@property (nonatomic, retain) NSString* companyName;
+@property (nonatomic) long bookID;
+@property (nonatomic, retain) NSString* bookName;
 @property (nonatomic, retain) NSString* logo;
-@property (nonatomic, retain) NSString* address;
-@property (nonatomic) NSInteger state;
+@property (nonatomic, retain) NSString* local_resource;
+@property (nonatomic) NSInteger bookType;
 @end

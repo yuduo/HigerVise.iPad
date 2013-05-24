@@ -9,6 +9,13 @@
 #import "ASIHTTPRequest.h"
 #import "ZipArchive.h"
 #import "MBProgressHUD.h"
+#import "LSImageMatch.h"
+#import "LSString.h"
+#define DOWNLOAD_STATE_NONE 0
+#define DOWNLOAD_STATE_DOWNING 1//downloading
+#define DOWNLOAD_STATE_STOP 2//stop
+#define DOWNLOAD_STATE_FINISHED 3
+
 
 @implementation MyBookView
 
@@ -26,7 +33,7 @@
 @synthesize downText;
 @synthesize downloadCompleteStatus;
 
-- (id)initWithFrame:(CGRect)frame {
+- (id)initWithFrame:(CGRect)frame picturePath:(NSString*)picturePath{
     
     self = [super initWithFrame:frame];
     if (self) {
@@ -36,28 +43,29 @@
         //picture
         // 展示图片
         UIImageView *bookView = [[UIImageView alloc] initWithFrame:CGRectMake(0, -20, 130, 175)];
-        NSString *bookName = @"Book_Cover.png";
-        bookView.image = [UIImage imageNamed:bookName];
+        
+        [self addImage:bookView imageURL:picturePath];
+        
         [self addSubview:bookView];
         
 		//系统进度条的设置
-		zztjProView = [[UIProgressView alloc] initWithFrame:CGRectMake(0, 100, 150, 20)];
+		zztjProView = [[UIProgressView alloc] initWithFrame:CGRectMake(0, 100, 130, 20)];
 		//自己的进度条设置,默认宽度为0
 		imageProView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 121, 0, 4)];
 		[imageProView setImage:[UIImage imageNamed:@"proImage.png"]];
 		//自己进度条的背景
-		imageProBgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 120, 150, 6)];
+//		imageProBgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 102, 130, 6)];
 		//[imageProBgView setImage:[UIImage imageNamed:@"proImage_bg.png"]];
 		imageProBgView.backgroundColor = [UIColor blackColor];
         
 		//初始化显示书名的Lable
-		downText = [[UILabel alloc] initWithFrame:CGRectMake(0, 180-15, 50, 30)];
+		downText = [[UILabel alloc] initWithFrame:CGRectMake(0, 180-15, 100, 30)];
         downText.backgroundColor = [UIColor clearColor];
 		downText.text = @"book";
         
 		//初始化下载按键
 		self.downButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-		downButton.frame = CGRectMake(50, 180-15, 100, 30);
+		downButton.frame = CGRectMake(80, 180-45, 50, 30);
 		[downButton setTitle:@"down" forState:UIControlStateNormal];
 		[downButton setTitle:@"waiting..." forState:UIControlStateDisabled];
 		[downButton addTarget:self action:@selector(downButtonClick) forControlEvents:UIControlEventTouchDown];
@@ -85,7 +93,7 @@
 		downButton.enabled = YES;
 //		//下载按键隐藏
 //		downButton.hidden = YES;
-		self.downState = 2;
+		self.downState = DOWNLOAD_STATE_FINISHED;
         [downButton setTitle:@"read" forState:UIControlStateNormal];
 		
 		//系统进度条隐藏
@@ -98,17 +106,34 @@
 		
 	}else {
 		
-		//下载按键显示
-//		downButton.hidden =	NO;
-//		//下载按键启用
-//		downButton.enabled = YES;
+		
 	}
 }
-
+-(BOOL)checkZip
+{
+    if ([bookPath hasSuffix:@"zip"]) {
+        return YES;
+    }
+    return NO;
+}
 #pragma mark -
 #pragma mark click method
+-(void)startDownload
+{
+    if ([delegate respondsToSelector:@selector(downBtnOfBookWasClicked:)]) {
+		//下载按键禁用
+        //		downButton.enabled = NO;
+		
+		//调用 DownAndASIRequestViewController 的 downBtnOfBookWasClicked 方法
+		[delegate downBtnOfBookWasClicked:self];
+	}
+}
 - (void)downButtonClick {//下载按键事件
-	if (downState) {
+    
+	if (downState == DOWNLOAD_STATE_FINISHED ) {
+        
+        
+        
         //read
         if ([delegate respondsToSelector:@selector(readBtnOfBookWasClicked:)]) {
             
@@ -117,15 +142,46 @@
         }
         return;
     }
-	if ([delegate respondsToSelector:@selector(downBtnOfBookWasClicked:)]) {
-		//下载按键禁用
-		downButton.enabled = NO;
-		
-		//调用 DownAndASIRequestViewController 的 downBtnOfBookWasClicked 方法
-		[delegate downBtnOfBookWasClicked:self];
-	}
-}
 
+    
+    switch (downState) {
+        case DOWNLOAD_STATE_NONE:
+            downState = DOWNLOAD_STATE_DOWNING;//downloading
+            [downButton setTitle:@"downing" forState:UIControlStateNormal];
+            [self startDownload];
+            break;
+        case DOWNLOAD_STATE_DOWNING:
+            downState = DOWNLOAD_STATE_STOP;//stop
+            [downButton setTitle:@"stop" forState:UIControlStateNormal];
+            [self pauseButtonClick];
+            break;
+        case DOWNLOAD_STATE_STOP:
+            downState = DOWNLOAD_STATE_DOWNING;
+            [downButton setTitle:@"downing" forState:UIControlStateNormal];
+            [self startDownload];
+            break;
+        default:
+            break;
+    }
+}
+- (void)pauseButtonClick {//暂停按键事件
+	
+	if ([delegate respondsToSelector:@selector(pauseBtnOfBookWasClicked:)]) {
+		//下载按键启用
+//		downButton.enabled = YES;
+		
+		//调用 DownAndASIRequestViewController 的 pauseBtnOfBookWasClicked 方法
+		[delegate pauseBtnOfBookWasClicked:self];
+	}
+	
+}
+-(void)startUnZip
+{
+    //unzip first
+    if ([self checkZip]) {
+        [self unZipClick];
+    }
+}
 -(void)unZipClick {//解压按键事件
 	
 	MBProgressHUD *mbp = [MBProgressHUD showHUDAddedTo:self animated:YES];
@@ -135,7 +191,7 @@
 	//设置ZIP文件路径
 	NSString *filePath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"book_%d.zip",bookID]];
 	//设置解压文件夹的路径
-	NSString *unZipPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"book_%d",bookID]];
+	NSString *unZipPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"unzip/book_%d/",bookID]];
 	//初始化ZipArchive
 	ZipArchive *zip = [[ZipArchive alloc] init];
 	
@@ -150,6 +206,8 @@
 		}else {
 			//解压成功
 			NSLog(@"unzip success.............");
+            //delete download zip file
+            [self deleteDownloadZip:filePath];
 			//因为文件小,解压太快,为了更好的看到效果,故添加了一个3秒之后执行的取消"菊花"操作.
 			[self performSelector:@selector(threeClick) withObject:nil afterDelay:3];
 		}
@@ -158,6 +216,15 @@
 	}
 	
 	
+}
+
+- (void)deleteDownloadZip:(NSString*)filePath
+{
+
+    //删除数据包以及临时文件夹
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    [fileManager removeItemAtPath:filePath error:nil];
+
 }
 - (void)threeClick {
 	
@@ -251,5 +318,200 @@
     [super dealloc];
 }
 
+#pragma mark custom methods
+- (void)addImage:(UIImageView*)aImageView imageURL:(NSString*)aImageURL
+{
+    [self addImage:aImageView imageURL:aImageURL useCache:YES];
+}
 
+- (void)addImage:(UIImageView*)aImageView imageURL:(NSString*)aImageURL useCache:(BOOL)aUseCache
+{
+    if (nil == aImageView || [aImageURL length] == 0)
+    {
+        NSLog(@"%@ addImage failed!",NSStringFromClass([self class]));
+        return;
+    }
+    
+    if (NO == aUseCache)
+    {
+        [_memoryCache removeObjectForKey:aImageURL];
+    }
+    else
+    {
+        UIImage* image = [self imageInMemoryCache:aImageURL];
+        if (image)
+        {
+            aImageView.image = [self handleImageHook:image];
+            //            [self didImageFinished:_imageKit imageURL:aImageURL image:image];
+            NSLog(@"imageURL= %@\n image memeory cache",aImageURL);
+            return;
+        }
+    }
+    
+    if (nil == _imageKit)
+    {
+        _imageKit = [[LSHTTPImageKit alloc] init];
+    }
+    [_imageKit addImage:aImageURL delegate:self useCache:aUseCache];
+    
+    if (nil == _arrMatch)
+    {
+        _arrMatch = [[NSMutableArray alloc] initWithCapacity:10];
+    }
+    LSImageMatch* match = [[LSImageMatch alloc] init];
+    match.view  = aImageView;
+    match.imageURL = aImageURL;
+    [_arrMatch addObject:match];
+    [match release];
+}
+
+- (void)addImageForButton:(UIButton*)aButton imageURL:(NSString*)aImageURL
+{
+    [self addImageForButton:aButton imageURL:aImageURL useCache:YES];
+}
+
+- (void)addImageForButton:(UIButton*)aButton imageURL:(NSString*)aImageURL useCache:(BOOL)aUseCache
+{
+    if (nil == aButton || [aImageURL length] == 0)
+    {
+        NSLog(@"%@ addImage failed!",NSStringFromClass([self class]));
+        return;
+    }
+    
+    if (NO == aUseCache)
+    {
+        [_memoryCache removeObjectForKey:aImageURL];
+    }
+    else
+    {
+        UIImage* image = [self imageInMemoryCache:aImageURL];
+        if (image)
+        {
+            [aButton setImage:[self handleImageHook:image] forState:UIControlStateNormal];
+            NSLog(@"imageURL= %@\n image memeory cache",aImageURL);
+            return;
+        }
+    }
+    
+    if (nil == _imageKit)
+    {
+        _imageKit = [[LSHTTPImageKit alloc] init];
+    }
+    [_imageKit addImage:aImageURL delegate:self useCache:aUseCache];
+    
+    if (nil == _arrMatch)
+    {
+        _arrMatch = [[NSMutableArray alloc] initWithCapacity:10];
+    }
+    LSImageMatch* match = [[LSImageMatch alloc] init];
+    match.view  = aButton;
+    match.imageURL = aImageURL;
+    [_arrMatch addObject:match];
+    [match release];
+}
+
+- (void)addImage:(NSString*)aImageURL useCache:(BOOL)aUseCache
+{
+    if ([aImageURL length] == 0)
+    {
+        NSLog(@"%@ addImage failed_2!",NSStringFromClass([self class]));
+        //        return;
+    }
+    
+    if (NO == aUseCache)
+    {
+        [_memoryCache removeObjectForKey:aImageURL];
+    }
+    else
+    {
+        UIImage* image = [self imageInMemoryCache:aImageURL];
+        if (image)
+        {
+            image = [self handleImageHook:image];
+            [self didImageFinished:_imageKit imageURL:aImageURL image:image];
+            NSLog(@"imageURL= %@\n image memeory cache",aImageURL);
+            return;
+        }
+    }
+    
+    if (nil == _imageKit)
+    {
+        _imageKit = [[LSHTTPImageKit alloc] init];
+    }
+    [_imageKit addImage:aImageURL delegate:self useCache:aUseCache];
+}
+
+- (UIImage*)handleImageHook:(UIImage*)aSrcImage
+{
+    return aSrcImage;
+}
+
+- (void)addImageToMemoryCache:(UIImage*)aImage urlString:(NSString*)aImageURL
+{
+    if (nil == _memoryCache)
+    {
+        _memoryCache = [[NSMutableDictionary alloc] initWithCapacity:20];
+    }
+    
+    NSInteger cacheCount = [[_memoryCache allKeys] count];
+    if (cacheCount <= 30)
+    {
+        [_memoryCache setObject:aImage forKey:aImageURL];
+    }
+    else
+    {
+        NSString* key = [[_memoryCache allKeys] objectAtIndex:0];
+        [_memoryCache removeObjectForKey:key];
+        [_memoryCache setObject:aImage forKey:aImageURL];
+    }
+}
+
+- (UIImage*)imageInMemoryCache:(NSString*)aImageURL
+{
+    if ([aImageURL length] == 0)
+    {
+        return nil;
+    }
+    
+    if (nil == _memoryCache)
+    {
+        _memoryCache = [[NSMutableDictionary alloc] initWithCapacity:20];
+        return nil;
+    }
+    else
+    {
+        UIImage* image = [_memoryCache valueForKey:aImageURL];
+        return image;
+    }
+}
+#pragma mark LSHTTPImageKitDelegate
+- (void)didImageFinished:(LSHTTPImageKit*)aKit imageURL:(NSString*)aImageURL image:(UIImage*)aImage
+{
+    NSAssert(_imageKit == aKit, @"");
+    
+    for (LSImageMatch* match in _arrMatch)
+    {
+        if ([match.imageURL isEqualToString:aImageURL])
+        {
+            if ([match.view isKindOfClass:[UIImageView class]])
+            {
+                UIImageView* imageView = (UIImageView*)match.view;
+                imageView.image = [self handleImageHook:aImage];
+            }
+            else if ([match.view isKindOfClass:[UIButton class]])
+            {
+                UIButton* button = (UIButton*)match.view;
+                [button setImage:[self handleImageHook:aImage] forState:UIControlStateNormal];
+            }
+        }
+    }
+    
+    [self addImageToMemoryCache:aImage urlString:aImageURL];
+}
+
+- (void)didImageFailed:(LSHTTPImageKit*)aKit imageURL:(NSString*)aImageURL
+{
+    NSAssert(_imageKit == aKit, @"");
+    NSLog(@"%@ get image failed. url= %@",NSStringFromClass([self class]), aImageURL);
+}
 @end

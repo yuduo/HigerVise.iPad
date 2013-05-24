@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class LSDataCompany,LSImagesViewController;
+@class LSDataBook,LSImagesViewController;
 @interface LSCompanyListCell : UITableViewCell
 {
     UIImageView* _thumbView;
@@ -17,5 +17,5 @@
     UILabel* _lbDescrption;
 }
 + (LSCompanyListCell*)companyListCell:(UITableView*)aTableView;
-- (void)setCompanyData:(LSDataCompany*)aCompany imageViewController:(LSImagesViewController*)aImageVC;
+- (void)setCompanyData:(LSDataBook*)aCompany imageViewController:(LSImagesViewController*)aImageVC;
 @end

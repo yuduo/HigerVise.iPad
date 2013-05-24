@@ -27,7 +27,7 @@
 #define LSJSONKEY_childid           @"childid"
 
 #define LSJSONKEY_companyid         @"companyid"
-#define LSJSONKEY_companyname       @"companyname"
+#define LSJSONKEY_bookName       @"bookName"
 #define LSJSONKEY_logo              @"logo"
 #define LSJSONKEY_address           @"address"
 #define LSJSONKEY_MapX           @"mapx"
@@ -79,5 +79,5 @@
 #define LSJSONKEY_url                   @"url"
 
 @interface LSParseDataUtils : NSObject
-
++ (LSDataBook*)parseBook:(NSDictionary*)aJSONData;
 @end

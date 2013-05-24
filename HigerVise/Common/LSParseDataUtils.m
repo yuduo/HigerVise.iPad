@@ -9,4 +9,16 @@
 #import "LSParseDataUtils.h"
 
 @implementation LSParseDataUtils
++ (LSDataBook*)parseBook:(NSDictionary*)aJSONData
+{
+    LSDataBook* company = [[[LSDataBook alloc] init] autorelease];
+    
+    company.bookID = [[aJSONData valueForKey:@"bookID"] longValue];
+    company.bookName = [aJSONData valueForKey:@"bookName"];
+    company.logo = [aJSONData valueForKey:@"logo"];
+//    company.logo = @"Book_Cover.png";
+    company.local_resource = [aJSONData valueForKey:@"local_resource"];
+    company.bookType  = [[aJSONData valueForKey:@"bookType"] integerValue];
+    return company;
+}
 @end

@@ -11,19 +11,19 @@
 @implementation LSData
 
 @end
-#pragma mark LSDataCompany
-@implementation LSDataCompany
-@synthesize companyID = _companyID;
-@synthesize companyName = _companyName;
+#pragma mark LSDataBook
+@implementation LSDataBook
+@synthesize bookID = _bookID;
+@synthesize bookName = _bookName;
 @synthesize logo = _logo;
-@synthesize address = _address;
-@synthesize state = _state;
+@synthesize local_resource = _local_resource;
+@synthesize bookType = _bookType;
 
 - (void)dealloc
 {
-    self.companyName = nil;
+    self.bookName = nil;
     self.logo = nil;
-    self.address = nil;
+    self.local_resource = nil;
     
     [super dealloc];
 }

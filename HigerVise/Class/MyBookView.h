@@ -7,6 +7,7 @@
 
 #import <UIKit/UIKit.h>
 #import "ASIProgressDelegate.h"
+#import "LSHTTPImageKit.h"
 
 @class MyBookView;
 //书的代理
@@ -18,12 +19,12 @@
 @end
 
 
-@interface MyBookView : UIView <ASIProgressDelegate>{
+@interface MyBookView : UIView <ASIProgressDelegate,LSHTTPImageKitDelegate>{
 
 	id delegate;
 	int bookID;//ID
 	NSString *bookName;//book名字
-    NSString *bookType;
+    int bookType;
 	float contentLength;//书的大小(BIT)
 	NSString *bookPath;//书的路径
     NSString *picturePath;
@@ -35,15 +36,18 @@
 	UILabel *downText;//显示书的名字
 	BOOL downloadCompleteStatus;//下载状态(是否已经下载完成)
     NSInteger buttonState;
+    LSHTTPImageKit* _imageKit;
+    NSMutableArray* _arrMatch;
+    NSMutableDictionary* _memoryCache;
 }
-
+@property (nonatomic, retain) LSHTTPImageKit* imageKit;
 @property (nonatomic,assign)id<MyBookDelegate> delegate;
 
 @property (nonatomic,assign)int bookID;
 @property (nonatomic,assign)int downState;
 @property (nonatomic,assign)int resourceType;
 @property(nonatomic ,retain)NSString *bookName;
-@property(nonatomic ,retain)NSString *bookType;
+@property(nonatomic ,assign)int bookType;
 @property (nonatomic,assign)float contentLength;
 @property(nonatomic ,retain)NSString *bookPath;
 @property(nonatomic ,retain)NSString *picturePath;
@@ -54,4 +58,7 @@
 @property(nonatomic ,retain)UIImageView *imageProBgView;
 @property(nonatomic ,retain)UILabel *downText;
 @property (nonatomic,assign)BOOL downloadCompleteStatus;
+
+-(void)startUnZip;
+- (id)initWithFrame:(CGRect)frame picturePath:(NSString*)picturePath;
 @end

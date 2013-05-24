@@ -7,10 +7,12 @@
 //
 
 #import "FlowCoverViewController.h"
-#import "GVTFirstViewController.h"
+#import "BookshelfViewController.h"
+#import "book_list_model.h"
+#import "client_catgory.h"
 @implementation FlowCoverViewController
 
-
+@synthesize data;
 
 /*
 // The designated initializer. Override to perform setup that is required before the view is loaded.
@@ -27,12 +29,19 @@
 - (void)loadView {
 }
 */
-
+-(id)init
+{
+    self = [super init];
+    data = [[NSMutableArray alloc] init];
+    
+    return self;
+}
 
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     
 }
 -(void)viewWillAppear:(BOOL)animated
@@ -64,12 +73,16 @@
 
 - (int)flowCoverNumberImages:(FlowCoverView *)view
 {
-	return 6;
+	return [data count];
 }
+- (UIImage *)backgroundImage
+{
 
+    return [UIImage imageNamed:@"cover_bg.png"];
+}
 - (UIImage *)flowCover:(FlowCoverView *)view cover:(int)image
 {
-	switch (image % 6) {
+	switch (image % [data count]) {
 		case 0:
 		default:
 			return [UIImage imageNamed:@"book.png"];
@@ -83,14 +96,35 @@
 			return [UIImage imageNamed:@"book.png"];
 		case 5:
 			return [UIImage imageNamed:@"book.png"];
+        
 	}
 }
-
+- (NSString *)flowCover:(FlowCoverView *)view text:(int)index
+{
+	if (index <= [data count]) {
+        client_catgory *cat = [data objectAtIndex:index];
+        return cat.catgory_name;
+    }
+    return @"";
+}
 - (void)flowCover:(FlowCoverView *)view didSelect:(int)image
 {
 	NSLog(@"Selected Index %d",image);
+    //start animate
+    
+    //read database
+    NSInteger index = abs(image % [data count]);
+    client_catgory *cat = [data objectAtIndex:index];
+    NSArray *db = [book_list_model getBookList:[cat.resource_class_id integerValue]];
+    if (db != nil) {
+        //
+    }
+    
+    //stop animate
+    
     //go to book
-    GVTFirstViewController *ibook = [[GVTFirstViewController alloc]init];
+    BookshelfViewController *ibook = [[BookshelfViewController alloc]init];
+    ibook.data = [[NSMutableArray alloc]initWithArray: db];
     [self.navigationController pushViewController:ibook animated:YES];
 }
 

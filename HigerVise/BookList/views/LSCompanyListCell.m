@@ -72,23 +72,23 @@
     return self;
 }
 
-- (void)setCompanyData:(LSDataCompany*)aCompany imageViewController:(LSImagesViewController*)aImageVC
+- (void)setCompanyData:(LSDataBook*)aCompany imageViewController:(LSImagesViewController*)aImageVC
 {
     if ([aCompany.logo length] > 0)
     {
         [aImageVC addImage:_thumbView imageURL:[aCompany.logo stringByHandleImageURL]];
     }
     
-    NSMutableString* nameText = [NSMutableString stringWithString:aCompany.companyName];
-    if (aCompany.state > 0)
-    {
-        _approveView.hidden = NO;
-        [nameText insertString:@"      " atIndex:0];
-    }
-    else 
-    {
-        _approveView.hidden = YES;
-    }
+    NSMutableString* nameText = [NSMutableString stringWithString:aCompany.bookName];
+//    if (aCompany.state > 0)
+//    {
+//        _approveView.hidden = NO;
+//        [nameText insertString:@"      " atIndex:0];
+//    }
+//    else 
+//    {
+//        _approveView.hidden = YES;
+//    }
     
     _lbName.text = nameText;
     CGFloat width = [_lbName fitWidth:20];
@@ -103,7 +103,7 @@
     }
     [_lbName setViewSize:size];
     
-    _lbDescrption.text = aCompany.address;
+    _lbDescrption.text = aCompany.local_resource;
     width = [_lbDescrption fitWidth:20];
     if (width > LSCompanyListCellNameWidth) 
     {
