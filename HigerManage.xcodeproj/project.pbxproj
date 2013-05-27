@@ -473,7 +473,14 @@
 		CA7F31CE1739F2FD00D250EA /* ThumbsMainToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = CA7F31A51739F2FD00D250EA /* ThumbsMainToolbar.m */; };
 		CA7F31CF1739F2FD00D250EA /* ThumbsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA7F31A71739F2FD00D250EA /* ThumbsViewController.m */; };
 		CA7F31D01739F2FD00D250EA /* UIXToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = CA7F31A91739F2FD00D250EA /* UIXToolbarView.m */; };
+		CA80ABA3174F2FD8008AF512 /* higerlogo.png in Resources */ = {isa = PBXBuildFile; fileRef = CA80ABA2174F2FD8008AF512 /* higerlogo.png */; };
+		CA80ABA5174F3063008AF512 /* login_text.png in Resources */ = {isa = PBXBuildFile; fileRef = CA80ABA4174F3063008AF512 /* login_text.png */; };
+		CA80ABA7174F451C008AF512 /* cover_bg_ver.png in Resources */ = {isa = PBXBuildFile; fileRef = CA80ABA6174F451C008AF512 /* cover_bg_ver.png */; };
 		CA80E68C174C8D0500C04C61 /* ReadAllBook.m in Sources */ = {isa = PBXBuildFile; fileRef = CA80E68B174C8D0500C04C61 /* ReadAllBook.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		CA816A82175300B400EAF019 /* shelf_one.png in Resources */ = {isa = PBXBuildFile; fileRef = CA816A80175300B300EAF019 /* shelf_one.png */; };
+		CA816A83175300B400EAF019 /* shelf_top.png in Resources */ = {isa = PBXBuildFile; fileRef = CA816A81175300B300EAF019 /* shelf_top.png */; };
+		CA816A861753198D00EAF019 /* back.png in Resources */ = {isa = PBXBuildFile; fileRef = CA816A841753198D00EAF019 /* back.png */; };
+		CA816A871753198D00EAF019 /* button.png in Resources */ = {isa = PBXBuildFile; fileRef = CA816A851753198D00EAF019 /* button.png */; };
 		CA81E27E174B01E900024C04 /* LSCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CA81E27C174B01E900024C04 /* LSCollectionViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		CA81E27F174B01E900024C04 /* LSCollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = CA81E27D174B01E900024C04 /* LSCollectionViewController.xib */; };
 		CA81E282174B023100024C04 /* LSCollectPE.m in Sources */ = {isa = PBXBuildFile; fileRef = CA81E281174B023100024C04 /* LSCollectPE.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -1227,8 +1234,15 @@
 		CA7F31A71739F2FD00D250EA /* ThumbsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThumbsViewController.m; sourceTree = "<group>"; };
 		CA7F31A81739F2FD00D250EA /* UIXToolbarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIXToolbarView.h; sourceTree = "<group>"; };
 		CA7F31A91739F2FD00D250EA /* UIXToolbarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIXToolbarView.m; sourceTree = "<group>"; };
+		CA80ABA2174F2FD8008AF512 /* higerlogo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = higerlogo.png; sourceTree = "<group>"; };
+		CA80ABA4174F3063008AF512 /* login_text.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = login_text.png; sourceTree = "<group>"; };
+		CA80ABA6174F451C008AF512 /* cover_bg_ver.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cover_bg_ver.png; path = manage/cover_bg_ver.png; sourceTree = "<group>"; };
 		CA80E68A174C8D0500C04C61 /* ReadAllBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ReadAllBook.h; path = Class/ReadAllBook.h; sourceTree = "<group>"; };
 		CA80E68B174C8D0500C04C61 /* ReadAllBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ReadAllBook.m; path = Class/ReadAllBook.m; sourceTree = "<group>"; };
+		CA816A80175300B300EAF019 /* shelf_one.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = shelf_one.png; path = manage/shelf_one.png; sourceTree = "<group>"; };
+		CA816A81175300B300EAF019 /* shelf_top.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = shelf_top.png; path = manage/shelf_top.png; sourceTree = "<group>"; };
+		CA816A841753198D00EAF019 /* back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = back.png; path = manage/back.png; sourceTree = "<group>"; };
+		CA816A851753198D00EAF019 /* button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = button.png; path = manage/button.png; sourceTree = "<group>"; };
 		CA81E27B174B01E900024C04 /* LSCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LSCollectionViewController.h; sourceTree = "<group>"; };
 		CA81E27C174B01E900024C04 /* LSCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LSCollectionViewController.m; sourceTree = "<group>"; };
 		CA81E27D174B01E900024C04 /* LSCollectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LSCollectionViewController.xib; sourceTree = "<group>"; };
@@ -2107,6 +2121,8 @@
 		AFD003031627C5EE00D5D604 /* home */ = {
 			isa = PBXGroup;
 			children = (
+				CA80ABA4174F3063008AF512 /* login_text.png */,
+				CA80ABA2174F2FD8008AF512 /* higerlogo.png */,
 				AF501C2C167F08F00089B382 /* index-goto.png */,
 				AF501C02167F02510089B382 /* index-setting-test.jpg */,
 				AFF802F7163FC3A800C724FB /* index-car-cell-bg-u.png */,
@@ -2552,6 +2568,11 @@
 		CA7B993A17377061000A13A4 /* manage */ = {
 			isa = PBXGroup;
 			children = (
+				CA816A841753198D00EAF019 /* back.png */,
+				CA816A851753198D00EAF019 /* button.png */,
+				CA816A80175300B300EAF019 /* shelf_one.png */,
+				CA816A81175300B300EAF019 /* shelf_top.png */,
+				CA80ABA6174F451C008AF512 /* cover_bg_ver.png */,
 				CA824F50174E0C3E00BDE3FA /* searchBar.png */,
 				CA824F51174E0C3E00BDE3FA /* Title_hor.png */,
 				CA824F52174E0C3E00BDE3FA /* Title_ver.png */,
@@ -3256,6 +3277,13 @@
 				CA824F53174E0C3E00BDE3FA /* searchBar.png in Resources */,
 				CA824F54174E0C3E00BDE3FA /* Title_hor.png in Resources */,
 				CA824F55174E0C3E00BDE3FA /* Title_ver.png in Resources */,
+				CA80ABA3174F2FD8008AF512 /* higerlogo.png in Resources */,
+				CA80ABA5174F3063008AF512 /* login_text.png in Resources */,
+				CA80ABA7174F451C008AF512 /* cover_bg_ver.png in Resources */,
+				CA816A82175300B400EAF019 /* shelf_one.png in Resources */,
+				CA816A83175300B400EAF019 /* shelf_top.png in Resources */,
+				CA816A861753198D00EAF019 /* back.png in Resources */,
+				CA816A871753198D00EAF019 /* button.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

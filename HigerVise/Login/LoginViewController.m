@@ -175,6 +175,7 @@
     return YES;
 }
 - (NSUInteger)supportedInterfaceOrientations {
+    [self viewDidLayoutSubviews];
     return UIInterfaceOrientationMaskAll;
 }
 - (void)viewDidLayoutSubviews
@@ -204,23 +205,17 @@
 -(void)setVerticalFrame
 {
     [imgLoginFrame setImage:[UIImage imageNamed:@"login-bg.png"]];
-    [lblUserName setFrame:CGRectMake(15, 220, 120, 41)];
+    [viewLogin setFrame:CGRectMake(108, 224, 426, 300)];
     
-    [lblUserPwd setFrame:CGRectMake(15, 264, 120, 41)];
-    [txtUserName setFrame:CGRectMake(125, 226, 344, 31)];
-    [txtUserPwd setFrame:CGRectMake(125, 269, 344, 31)];
-    [btnLogin setFrame:CGRectMake(125, 308, 344, 83)];
+    
      
 }
 -(void)setHorizontalFrame
 {
     [imgLoginFrame setImage:[UIImage imageNamed:@"login-bg.png"]];
-    [lblUserName setFrame:CGRectMake(45, 120, 120, 41)];
+    [viewLogin setFrame:CGRectMake(265, 130, 560, 385)];
     
-    [lblUserPwd setFrame:CGRectMake(45, 164, 120, 41)];
-    [txtUserName setFrame:CGRectMake(155, 126, 344, 31)];
-    [txtUserPwd setFrame:CGRectMake(155, 169, 344, 31)];
-    [btnLogin setFrame:CGRectMake(155, 208, 344, 83)];
+    
 }
 #pragma mark - MBProgressHUDDelegate
 

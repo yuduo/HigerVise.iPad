@@ -415,13 +415,13 @@ static void *GData = NULL;
 	}
 	m[3] = -f;
 	m[0] = 1-fabs(f);
-	double sc = 0.45 * (1 - fabs(f));
+	double sc = 1.45 * (1 - fabs(f));
 	trans += f * 1;
 	
 	glPushMatrix();
 	glBindTexture(GL_TEXTURE_2D,fcr.texture);
 	glTranslatef(trans, 0, 0);
-	glScalef(1,1,1.0);
+	glScalef(sc,sc,1.0);
 	glMultMatrixf(m);
 	glDrawArrays(GL_TRIANGLE_STRIP,0,4);
 	

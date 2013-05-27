@@ -67,7 +67,8 @@
     self.navigationController.navigationBarHidden = NO;
 
     self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Title_hor.png"]];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemEdit target:self action:@selector(editButtonClicked)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"button.png"] style:UIBarButtonItemStylePlain target:self action:@selector(editButtonClicked)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"back.png"] style:UIBarButtonItemStylePlain target:self action:@selector(backButtonClicked)];
 //    self.navigationItem.hidesBackButton = YES;
 
 //    GMGridView *gmGridView = [[GMGridView alloc] initWithFrame:self.view.bounds];
@@ -98,21 +99,33 @@
     }
     [self.view addSubview:tbView];
     
-    searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(200, 0, 131, 44)];
-    searchBar = [[UISearchBar alloc] init];
-            searchBar.frame = CGRectMake(0, 0, 50, 44);
+
     
+    UIDeviceOrientation interfaceOrientation=[[UIApplication sharedApplication] statusBarOrientation];
+    if (interfaceOrientation == UIDeviceOrientationPortrait || interfaceOrientation == UIDeviceOrientationPortraitUpsideDown) {
+        //翻转为竖屏时
+        bLandScape = NO;
+    }else if (interfaceOrientation==UIDeviceOrientationLandscapeLeft || interfaceOrientation == UIDeviceOrientationLandscapeRight) {
+        //翻转为横屏时
+        bLandScape = YES;
+    }
+    
+    
+    searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(((bLandScape == YES ? 1024 : 768) -331)/2, 0, 331, SEARCH_BAR_HEIGHT)];
+    searchBar = [[UISearchBar alloc] init];
+    searchBar.frame = CGRectMake(((bLandScape == YES ? 1024 : 768) -331)/2, 0, 331, SEARCH_BAR_HEIGHT);
+    
+    searchBar.backgroundColor = [UIColor clearColor];
     searchBar.backgroundImage = [UIImage imageNamed:@"searchBar.png"];
     searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
     
     searchDisplayController.delegate = self;
     searchDisplayController.searchResultsDataSource = self;
-    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 1024, 44)];
-    [view addSubview:[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"Title_hor.png"] ]];
-    [view addSubview:searchBar];
-            tbView.tableHeaderView = view;
-//    [searchBar sizeToFit];
-    //        [self.searchDisplayController.searchResultsTableView setFrame:CGRectMake((1024-331)/2, 0, 1024, 44)];
+    searchView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, bLandScape == YES ? 1024 : 768, SEARCH_BAR_HEIGHT)];
+    [searchView addSubview:[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"shelf_top.png"] ]];
+    [searchView addSubview:searchBar];
+    tbView.tableHeaderView = searchView;
+
     searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
     searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
     
@@ -132,7 +145,7 @@
 {
     [super viewDidAppear:animated];
     self.navigationController.navigationBarHidden = NO;
-    searchBar.frame = CGRectMake((1024-331)/2, 0, 331, 44);
+    searchBar.frame = CGRectMake(((bLandScape == YES ? 1024 : 768) -331)/2, 0, 331, SEARCH_BAR_HEIGHT);
 }
 -(void)viewWillDisappear:(BOOL)animated
 {
@@ -436,37 +449,14 @@
     cell.backgroundView = shelfView;
     NSLog(@"row = %d",indexPath.row);
     //index = 0, is search bar
-#if 0
-    if (indexPath.row == 0) {
-        
-        searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, 131, 44)];
-//        searchBar.frame = CGRectMake(200, 0, 131, 44);
-        
-        searchBar.backgroundImage = [UIImage imageNamed:@"searchBar.png"];
-        searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
-        
-        searchDisplayController.delegate = self;
-        searchDisplayController.searchResultsDataSource = self;
-        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 1024, 234)];
-        //    [view addSubview:[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"Title_hor.png"] ]];
-        [view addSubview:searchBar];
-//        tbView.tableHeaderView = view;
-        [searchBar sizeToFit];
-//        [self.searchDisplayController.searchResultsTableView setFrame:CGRectMake((1024-331)/2, 0, 1024, 44)];
-        searchBar.autocorrectionType = UITextAutocorrectionTypeNo;
-        searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
-        
-        [cell.contentView addSubview:view];
-        return cell;
-    }
-#endif
+
     // 定义图书大小
-#define kCell_Items_Width 130
+#define kCell_Items_Width 150
 #define kCell_Items_Height 175
     // 设置图片大小206*306
     // 图片与图片之间距离为50
     // 每行3，4本图书
-    CGFloat x = 80;
+    CGFloat x = 100;
     CGFloat y = 40;
     
 
@@ -548,7 +538,9 @@
 		bLandScape = NO;
 	}
 	tbView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
+    
     [tbView reloadData];
+    searchView.frame = CGRectMake(((bLandScape == YES ? 1024 : 768) -331)/2, 0, 331, SEARCH_BAR_HEIGHT);
 }
 - (BOOL)shouldAutorotate {
     return YES;
@@ -815,7 +807,10 @@
 		}
 	}
 }
-
+-(void)backButtonClicked
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
 -(void)editButtonClicked
 {
     LSCollectionViewController *ibook = [[LSCollectionViewController alloc]init];
@@ -921,10 +916,10 @@
 }
 - (void) searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller
 {
-    searchBar.frame = CGRectMake(0, 0, 331, 44);
+    searchBar.frame = CGRectMake(0, 0, 331, SEARCH_BAR_HEIGHT);
 }
 - (void) searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller;
 {
-    searchBar.frame = CGRectMake((1024-331)/2, 0, 331, 44);
+    searchBar.frame = CGRectMake(((bLandScape == YES ? 1024 : 768) -331)/2, 0, 331, SEARCH_BAR_HEIGHT);
 }
 @end

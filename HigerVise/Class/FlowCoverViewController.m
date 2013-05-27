@@ -77,8 +77,15 @@
 }
 - (UIImage *)backgroundImage
 {
-
-    return [UIImage imageNamed:@"cover_bg.png"];
+    UIDeviceOrientation interfaceOrientation=[[UIApplication sharedApplication] statusBarOrientation];
+    if (interfaceOrientation == UIDeviceOrientationPortrait || interfaceOrientation == UIDeviceOrientationPortraitUpsideDown) {
+        //翻转为竖屏时
+        return [UIImage imageNamed:@"cover_bg_ver.png"];
+    }else if (interfaceOrientation==UIDeviceOrientationLandscapeLeft || interfaceOrientation == UIDeviceOrientationLandscapeRight) {
+        //翻转为横屏时
+        return [UIImage imageNamed:@"cover_bg.png"];
+    }
+    
 }
 - (UIImage *)flowCover:(FlowCoverView *)view cover:(int)image
 {

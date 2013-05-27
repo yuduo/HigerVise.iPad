@@ -17,6 +17,7 @@
 #define BOOK_WIDTH 130
 #define BOOK_HEIGHT 175
 #define SHELF_HEIGHT 234
+#define SEARCH_BAR_HEIGHT 234
 #define kNum 3
 
 
@@ -33,6 +34,7 @@
     ReadAllBook *readAllBooks;
     NSMutableArray *searchData;
     UISearchBar *searchBar;
+    UIView *searchView;
     UISearchDisplayController *searchDisplayController;
 }
 -(id)init;
