@@ -206,18 +206,22 @@
 }
 -(void)setVerticalFrame
 {
-    [imgLoginFrame setImage:[UIImage imageNamed:@"login-bg.png"]];
-    [viewLogin setFrame:CGRectMake(108, 224, 426, 300)];
+    [imgLoginFrame setImage:[UIImage imageNamed:@"login_her.png"]];
+//    [viewLogin setFrame:CGRectMake(108, 224, 426, 300)];
     
     
-     
+    [txtUserName setFrame:CGRectMake(310, 340, 247, 38)];
+    [txtUserPwd setFrame:CGRectMake(310, 413, 247, 38)];
+    [btnLogin setFrame:CGRectMake(228, 505, 341, 46)];
 }
 -(void)setHorizontalFrame
 {
-    [imgLoginFrame setImage:[UIImage imageNamed:@"login-bg.png"]];
-    [viewLogin setFrame:CGRectMake(265, 130, 560, 385)];
+    [imgLoginFrame setImage:[UIImage imageNamed:@"login_ver.png"]];
+//    [viewLogin setFrame:CGRectMake(265, 130, 560, 385)];
     
-    
+    [txtUserName setFrame:CGRectMake(457, 274, 248, 37)];
+    [txtUserPwd setFrame:CGRectMake(457, 347, 248, 37)];
+    [btnLogin setFrame:CGRectMake(372, 439, 341, 46)];
 }
 #pragma mark - MBProgressHUDDelegate
 

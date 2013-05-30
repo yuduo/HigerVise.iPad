@@ -75,7 +75,8 @@
     
     
 //    self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Title_hor.png"]];
-
+    
+    
     self.navigationItem.title = @"我的书架";
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomWithTitle:@"下载内容"
                                                                                       bgImage:[UIImage imageNamed:@"button.png"]
@@ -85,24 +86,9 @@
                                                                             bgImage:[UIImage imageNamed:@"back.png"]
                                                                              target:self
                                                                              action:@selector(backButtonClicked)];
-//    self.navigationItem.hidesBackButton = YES;
 
-//    GMGridView *gmGridView = [[GMGridView alloc] initWithFrame:self.view.bounds];
-//    GMGridView *gmGridView = [[GMGridView alloc] initWithFrame:CGRectMake(0, 0, 768, 1024-60)];
-//    gmGridView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-//    gmGridView.backgroundColor = [UIColor clearColor];
-//    [self.view addSubview:gmGridView];
-//    _gmGridView = gmGridView;
-//    
-//    _gmGridView.style = GMGridViewStyleSwap;
-//    _gmGridView.itemSpacing = 50;
-//    _gmGridView.itemHSpacing = 59;
-//    _gmGridView.minEdgeInsets = UIEdgeInsetsMake(30, 10, -5, 10);
-//    _gmGridView.centerGrid = YES;
-//    _gmGridView.actionDelegate = self;
-//    _gmGridView.sortingDelegate = self;
-//    _gmGridView.transformDelegate = self;
-//    _gmGridView.dataSource = self;
+    
+    
     // 创建uitableview
     if(!tbView){
         tbView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height) style:UITableViewStylePlain];

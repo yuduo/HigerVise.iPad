@@ -34,7 +34,7 @@
 	UIProgressView *zztjProView;//系统的进度条
 	UIImageView *imageProView;//自己做的进度条VIEW
 	UIImageView *imageProBgView;//自己做的进度条VIEW背景
-	UILabel *downText;//显示书的名字
+	UILabel *bookNameText;//显示书的名字
     UILabel *sizeText;
     UILabel *detailText;
     UILabel *dateText;
@@ -65,7 +65,7 @@
 @property(nonatomic ,retain)UIProgressView *zztjProView;
 @property(nonatomic ,retain)UIImageView *imageProView;
 @property(nonatomic ,retain)UIImageView *imageProBgView;
-@property(nonatomic ,retain)UILabel *downText;
+@property(nonatomic ,retain)UILabel *bookNameText;
 @property (nonatomic,assign)BOOL downloadCompleteStatus;
 
 -(void)startUnZip;

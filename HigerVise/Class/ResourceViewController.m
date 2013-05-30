@@ -29,7 +29,7 @@
 #define BOOK_HEIGHT 175
 #define SHELF_HEIGHT 234
 #define SEARCH_BAR_HEIGHT 38
-#define CATEGORY_HEIGHT 68
+#define CATEGORY_HEIGHT 80
 #define kNum 2
 
 //////////////////////////////////////////////////////////////
@@ -103,27 +103,8 @@
     
 
 #if 1
-    {
-    UIImageView *view = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"bookstore.png"]];
-    view.frame = CGRectMake((768-67)/2, 10, 67, 40);
-    [self.navigationController.navigationBar addSubview:view];
-    }
-    UIImageView *logo = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"logo.png"]];
-    logo.frame = CGRectMake(0, 10, 190, 40);
-    [self.navigationController.navigationBar addSubview:logo];
-    
-    UIButton *btnBack = [UIButton buttonWithType:UIButtonTypeCustom];
-    btnBack.frame = CGRectMake(573, 11, 66, 38);
-    
-    [btnBack setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"button" ofType:@"png"]] forState:UIControlStateNormal];
-    [btnBack addTarget:self action:@selector(addButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-    [self.navigationController.navigationBar addSubview:btnBack];
-    
-    UIButton *btnHome = [UIButton buttonWithType:UIButtonTypeCustom];
-    btnHome.frame = CGRectMake(653, 11, 97, 40);
-    [btnHome setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"button_mybook" ofType:@"png"]] forState:UIControlStateNormal];
-    [btnHome addTarget:self action:@selector(editButtonClicked) forControlEvents:UIControlEventTouchUpInside];
-    [self.navigationController.navigationBar addSubview:btnHome];
+    controlArray = [[NSMutableArray alloc]init];
+    [self addControlToNavi];
 #else
     NSArray* arr = [[NSArray alloc] initWithObjects:[UIImage imageNamed:@"button.png"], [UIImage   imageNamed:@"button.png"], nil];
     UISegmentedControl *segmentedControl = [[UISegmentedControl alloc] initWithItems:arr];
@@ -183,13 +164,20 @@
 
 #endif
     
-    searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(((bLandScape == YES ? 1024 : 768) -331)/2, 0, 331, SEARCH_BAR_HEIGHT)];
-    //    searchBar = [[UISearchBar alloc] init];
-    //    searchBar.frame = CGRectMake(0, 0, 331, SEARCH_BAR_HEIGHT);
+    searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(((bLandScape == YES ? 1024 : 768) -331)/2, -10, 331, SEARCH_BAR_HEIGHT)];
+    for (UIView *subview in searchBar.subviews) {
+        if ([subview isKindOfClass:NSClassFromString(@"UISearchBarBackground")]) {
+            [subview removeFromSuperview];
+            break;
+        }
+    }
+    for (UIView *view in searchBar.subviews) {
+        if ([view isKindOfClass:[UIImageView class]])
+            [view removeFromSuperview];
+    }
+     
+//    searchBar.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"searchBar.png"]];
     
-    searchBar.translucent = YES;
-   [[searchBar.subviews objectAtIndex:0]removeFromSuperview];
-    searchBar.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"searchBar.png"]];
 //    [searchBar setSearchFieldBackgroundImage:[UIImage imageNamed:@"searchBar.png"] forState:UIControlStateNormal];
     //3自定义背景
     UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"searchBar.png"]];
@@ -229,27 +217,64 @@
     
     categoryView = [[UIView alloc]initWithFrame:CGRectMake(0, SEARCH_BAR_HEIGHT, bLandScape == YES ? 1024 : 768, CATEGORY_HEIGHT)];
     categoryView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"category_bg.png"]];
-//    categoryView.hidden = YES;
+
     [self addButtonToCategory];
     UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, bLandScape == YES ? 1024 : 768, SEARCH_BAR_HEIGHT+CATEGORY_HEIGHT+SEARCH_BAR_HEIGHT)];
+    UIImageView *back = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, bLandScape == YES ? 1024 : 768, SEARCH_BAR_HEIGHT)];
+    back.image = [UIImage imageNamed:@"search_bg.png"];
+    back.frame = CGRectMake(0, 0, bLandScape == YES ? 1024 : 768, SEARCH_BAR_HEIGHT);
     searchView.frame = CGRectMake(0, SEARCH_BAR_HEIGHT, bLandScape == YES ? 1024 : 768, SEARCH_BAR_HEIGHT);
     categoryView.frame = CGRectMake(0, SEARCH_BAR_HEIGHT*2, bLandScape == YES ? 1024 : 768, CATEGORY_HEIGHT);
+    UIImageView *slice = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, bLandScape == YES ? 1024 : 768, 4)];
+    slice.image = [UIImage imageNamed:@"ver_slice.png"];
+    slice.frame = CGRectMake(0, SEARCH_BAR_HEIGHT+10, bLandScape == YES ? 1024 : 768, 4);
+    [categoryView addSubview:slice];
+    [view addSubview:back];
     [view addSubview:searchView];
     [view addSubview:categoryView];
-    tbView.tableHeaderView = searchView;
+    tbView.tableHeaderView = view;
     
 }
-
+-(void)addControlToNavi
+{
+    {
+        UIImageView *view = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"bookstore.png"]];
+        view.frame = CGRectMake((768-67)/2, 10, 67, 40);
+        [self.navigationController.navigationBar addSubview:view];
+        [controlArray addObject:view];
+    }
+    UIImageView *logo = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"logo.png"]];
+    logo.frame = CGRectMake(0, 10, 190, 40);
+    [self.navigationController.navigationBar addSubview:logo];
+    [controlArray addObject:logo];
+    UIButton *btnBack = [UIButton buttonWithType:UIButtonTypeCustom];
+    btnBack.frame = CGRectMake(573, 11, 66, 38);
+    
+    [btnBack setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"button" ofType:@"png"]] forState:UIControlStateNormal];
+    [btnBack addTarget:self action:@selector(addButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    [self.navigationController.navigationBar addSubview:btnBack];
+    [controlArray addObject:btnBack];
+    UIButton *btnHome = [UIButton buttonWithType:UIButtonTypeCustom];
+    btnHome.frame = CGRectMake(653, 11, 97, 40);
+    [btnHome setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"button_mybook" ofType:@"png"]] forState:UIControlStateNormal];
+    [btnHome addTarget:self action:@selector(editButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    [self.navigationController.navigationBar addSubview:btnHome];
+    [controlArray addObject:btnHome];
+}
 - (void)viewDidUnload
 {
     [super viewDidUnload];
 //    _gmGridView = nil;
 }
-
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self addControlToNavi];
+}
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    [self.navigationController.navigationBar setFrame:CGRectMake(0, 0, 768, 60)];
+    [self.navigationController.navigationBar setFrame:CGRectMake(0, 0, (bLandScape == YES ? 1024 : 768), 60)];
 
     self.navigationController.navigationBarHidden = NO;
 //    searchBar.frame = CGRectMake(0, 0, 331, SEARCH_BAR_HEIGHT);
@@ -257,6 +282,13 @@
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    for (int i = 0; i < [controlArray count]; i ++) {
+        
+        [(UIView*)[controlArray objectAtIndex:i] removeFromSuperview];
+    }
+
+    
     [self stopAllDownload];
     
     if (![markArray count]) {
@@ -271,6 +303,7 @@
     }
     sql = [sql stringByAppendingString:@")"];
     [book_list_model updateBookListMarked:sql];
+    
 }
 //////////////////////////////////////////////////////////////
 #pragma mark memory management
@@ -571,8 +604,8 @@
     //index = 0, is search bar
 
     // 定义图书大小
-#define kCell_Items_Width 303
-#define kCell_Items_Height 175
+    int kCell_Items_Width = 768/2;
+    int kCell_Items_Height = 175;
     // 设置图片大小206*306
     // 图片与图片之间距离为50
     // 每行3，4本图书
@@ -600,7 +633,7 @@
         }
         NSDictionary *book = [temp objectAtIndex:row];
         // 展示图片
-        ResourceView *bookView = [[ResourceView alloc]initWithFrame:CGRectMake(x, y, kCell_Items_Width, kCell_Items_Height) picturePath:[book valueForKey:@"resource_thum_url"]];
+        ResourceView *bookView = [[ResourceView alloc]initWithFrame:CGRectMake(i == 0 ? x : (kCell_Items_Width+8), y, kCell_Items_Width, kCell_Items_Height) picturePath:[book valueForKey:@"resource_thum_url"]];
         bookView.picturePath = [book valueForKey:@"resource_thum_url"];
         bookView.bookID = [[book valueForKey:@"resource_master_id"] integerValue];
         bookView.bookName = [book valueForKey:@"resource_title"];
@@ -617,7 +650,7 @@
         [cell.contentView addSubview:bookView];
         
 
-        x += (80+kCell_Items_Width);
+        
         // row+1
         ++row;
     }
@@ -673,7 +706,7 @@
 }
 - (void)viewDidLayoutSubviews
 {
-    
+    [self.navigationController.navigationBar setFrame:CGRectMake(0, 0, (bLandScape == YES ? 1024 : 768), 60)];
     UIDeviceOrientation interfaceOrientation=[[UIApplication sharedApplication] statusBarOrientation];
     if (interfaceOrientation == UIDeviceOrientationPortrait || interfaceOrientation == UIDeviceOrientationPortraitUpsideDown) {
         //翻转为竖屏时
@@ -688,11 +721,13 @@
 {
     tbView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
     [tbView reloadData];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"Title_ver.png"] forBarMetrics:UIBarMetricsDefault];
 }
 -(void)setHorizontalFrame
 {
     tbView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
     [tbView reloadData];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"Title_hor.png"] forBarMetrics:UIBarMetricsDefault];
 }
 
 #pragma mark -
@@ -956,6 +991,8 @@
     ibook.data = [[NSMutableArray alloc]initWithArray: db];
     [self.navigationController pushViewController:ibook animated:YES];
 #endif
+    
+    [self viewWillDisappear:NO];
 }
 - (LSListProtocolEngine*)protocolEngine
 {
@@ -1052,7 +1089,7 @@
     return YES;
 }
 -(void)searchDisplayController:(UISearchDisplayController *)controller didShowSearchResultsTableView:(UITableView *)tableView {
-    tableView.frame = CGRectMake(0, 0, 331, 44);
+    
 }
 - (void) searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller
 {
@@ -1107,7 +1144,7 @@
 //    client_catgory
     UIScrollView *scroll = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, bLandScape == YES ? 1024 : 768, SEARCH_BAR_HEIGHT)];
     scroll.pagingEnabled = YES;
-    
+    scroll.showsHorizontalScrollIndicator = NO;
     scroll.contentSize = CGSizeMake(scroll.frame.size.width*pageCount, scroll.frame.size.height);
     
     CGRect frame = scroll.bounds;

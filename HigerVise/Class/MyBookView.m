@@ -32,7 +32,7 @@
 @synthesize zztjProView;
 @synthesize imageProView;
 @synthesize imageProBgView;
-@synthesize downText;
+@synthesize bookNameText;
 @synthesize downloadCompleteStatus,createTime,resourceSize,videoDuration,imageCount;
 
 - (id)initWithFrame:(CGRect)frame picturePath:(NSString*)picturePath{
@@ -61,9 +61,9 @@
 		imageProBgView.backgroundColor = [UIColor blackColor];
         
 		//初始化显示书名的Lable
-		downText = [[UILabel alloc] initWithFrame:CGRectMake(0, 180-45, 100, 30)];
-        downText.backgroundColor = [UIColor clearColor];
-		downText.text = @"book";
+		bookNameText = [[UILabel alloc] initWithFrame:CGRectMake(0, 180-45, 100, 30)];
+        bookNameText.backgroundColor = [UIColor clearColor];
+		bookNameText.text = @"book";
         
         int lable_x = 80;
         
@@ -94,7 +94,7 @@
         [self addSubview:zztjProView];
 		[self addSubview:imageProBgView];
 		[self addSubview:imageProView];
-		[self addSubview:downText];
+		[self addSubview:bookNameText];
         [self addSubview:sizeText];
         [self addSubview:detailText];
 		[self addSubview:downButton];
@@ -125,7 +125,7 @@
 - (void)drawRect:(CGRect)rect {
     // Drawing code.
 	//设置书的名字
-	downText.text = bookName;
+	bookNameText.text = bookName;
     sizeText.text = resourceSize;
     switch (bookType) {
         case RESOURCE_TYPE_IMAGE:
@@ -356,7 +356,7 @@
 	//从持久化里面取出内容的总大小
 	self.contentLength = [[userDefaults objectForKey:[NSString stringWithFormat:@"book_%d_contentLength",bookID]] floatValue];
 	//设置进度文本
-	downText.text = [NSString stringWithFormat:@"%.2f/%.2fM",self.contentLength*newProgress,self.contentLength];
+	bookNameText.text = [NSString stringWithFormat:@"%.2f/%.2fM",self.contentLength*newProgress,self.contentLength];
 	//设置自己的进度条
 	imageProView.frame = CGRectMake(75, 121, 150*newProgress, 4);
 	//设置系统的进度条
@@ -375,7 +375,7 @@
 	[zztjProView release];
 	[imageProView release];
 	[imageProBgView release];
-	[downText release];
+	[bookNameText release];
 	
     [super dealloc];
 }

@@ -12,12 +12,24 @@
 #import "LSImageMatch.h"
 #import "LSString.h"
 #import "ReadAllBook.h"
+#import "LSDefine.h"
 #define DOWNLOAD_STATE_NONE 0
 #define DOWNLOAD_STATE_DOWNING 1//downloading
 #define DOWNLOAD_STATE_STOP 2//stop
 #define DOWNLOAD_STATE_FINISHED 3
 
+#define RESOURCE_TITLE_SIZE 18
+#define RESOURCE_DETAIL_SIZE  14
+#define RESOURCE_CATEGORY_FONT_SIZE  18
 
+
+#define RESOURCE_TITLE_COLOR LSRGBA(51,51,51,1)
+#define RESOURCE_DETAIL_COLOR  LSRGBA(102,102,102,1)
+#define RESOURCE_CATEGORY_FONT_COLOR  LSRGBA(93,50,18,1)
+
+#define RESOURCE_TEXT_FONT @"Helvetica"
+#define DOWN_BUTTON_SIZE_X 68
+#define DOWN_BUTTON_SIZE_Y 26
 @implementation ResourceView
 
 @synthesize delegate;
@@ -31,7 +43,7 @@
 @synthesize zztjProView;
 @synthesize imageProView;
 @synthesize imageProBgView;
-@synthesize downText;
+@synthesize bookNameText;
 @synthesize downloadCompleteStatus,createTime,resourceSize,videoDuration,imageCount;
 
 - (id)initWithFrame:(CGRect)frame picturePath:(NSString*)picturePath{
@@ -62,33 +74,37 @@
         int lable_x = 130;
         int lable_y = -20;
 		//初始化显示书名的Lable
-		downText = [[UILabel alloc] initWithFrame:CGRectMake(lable_x, lable_y, 100, 30)];
-        downText.backgroundColor = [UIColor clearColor];
-		downText.text = @"";
-        downText.textColor = [UIColor blackColor];
+		bookNameText = [[UILabel alloc] initWithFrame:CGRectMake(lable_x, lable_y, 100, 30)];
+        bookNameText.backgroundColor = [UIColor clearColor];
+		bookNameText.text = @"";
+        bookNameText.font = [UIFont fontWithName:RESOURCE_TEXT_FONT size:RESOURCE_TITLE_SIZE];
+        bookNameText.textColor = RESOURCE_TITLE_COLOR;
         
         //初始化显示书名的Lable
 		sizeText = [[UILabel alloc] initWithFrame:CGRectMake(lable_x, lable_y+30, 100, 30)];
         sizeText.backgroundColor = [UIColor clearColor];
 		sizeText.text = @"";
-        sizeText.textColor = [UIColor blackColor];
+        bookNameText.font = [UIFont fontWithName:RESOURCE_TEXT_FONT size:RESOURCE_DETAIL_SIZE];
+        sizeText.textColor = RESOURCE_DETAIL_COLOR;
         
         //初始化显示书名的Lable
 		detailText = [[UILabel alloc] initWithFrame:CGRectMake(lable_x+100, lable_y+30, 100, 30)];
         detailText.backgroundColor = [UIColor clearColor];
 		detailText.text = @"";
-        detailText.textColor = [UIColor blackColor];
+        bookNameText.font = [UIFont fontWithName:RESOURCE_TEXT_FONT size:RESOURCE_DETAIL_SIZE];
+        detailText.textColor = RESOURCE_DETAIL_COLOR;
         
         //初始化显示书名的Lable
 		dateText = [[UILabel alloc] initWithFrame:CGRectMake(lable_x, lable_y+60, 100, 30)];
         dateText.backgroundColor = [UIColor clearColor];
 		dateText.text = @"";
-        dateText.textColor = [UIColor blackColor];
+        bookNameText.font = [UIFont fontWithName:RESOURCE_TEXT_FONT size:RESOURCE_DETAIL_SIZE];
+        dateText.textColor = RESOURCE_DETAIL_COLOR;
         
         
 		//初始化下载按键
 		self.downButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-		downButton.frame = CGRectMake(lable_x, 70, 50, 30);
+		downButton.frame = CGRectMake(lable_x, 70, DOWN_BUTTON_SIZE_X, DOWN_BUTTON_SIZE_Y);
 		[downButton setTitle:@"未下载" forState:UIControlStateNormal];
 		
 		[downButton addTarget:self action:@selector(downButtonClick) forControlEvents:UIControlEventTouchDown];
@@ -96,7 +112,7 @@
         [self addSubview:zztjProView];
 		[self addSubview:imageProBgView];
 		[self addSubview:imageProView];
-		[self addSubview:downText];
+		[self addSubview:bookNameText];
         [self addSubview:sizeText];
         [self addSubview:detailText];
         [self addSubview:dateText];
@@ -117,7 +133,7 @@
 - (void)drawRect:(CGRect)rect {
     // Drawing code.
 	//设置书的名字
-	downText.text = bookName;
+	bookNameText.text = bookName;
     sizeText.text = resourceSize;
     switch (bookType) {
         case RESOURCE_TYPE_IMAGE:
@@ -353,7 +369,7 @@
 	//从持久化里面取出内容的总大小
 	self.contentLength = [[userDefaults objectForKey:[NSString stringWithFormat:@"book_%d_contentLength",bookID]] floatValue];
 	//设置进度文本
-	downText.text = [NSString stringWithFormat:@"%.2f/%.2fM",self.contentLength*newProgress,self.contentLength];
+	bookNameText.text = [NSString stringWithFormat:@"%.2f/%.2fM",self.contentLength*newProgress,self.contentLength];
 	//设置自己的进度条
 	imageProView.frame = CGRectMake(75, 121, 150*newProgress, 4);
 	//设置系统的进度条
@@ -372,7 +388,7 @@
 	[zztjProView release];
 	[imageProView release];
 	[imageProBgView release];
-	[downText release];
+	[bookNameText release];
 	
     [super dealloc];
 }

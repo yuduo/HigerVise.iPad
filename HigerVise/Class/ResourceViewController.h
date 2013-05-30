@@ -34,6 +34,7 @@
     BOOL categoryButtonState;
     UIView *categoryView;
     NSMutableArray *markArray;
+    NSMutableArray *controlArray;
 }
 -(id)init;
 @property(nonatomic,strong)NSMutableArray *data;
