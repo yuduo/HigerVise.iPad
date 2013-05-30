@@ -146,7 +146,7 @@
 
 - (UITableView*)tableView
 {
-    return  [[[UITableView alloc] initWithFrame:CGRectMake(0,0,320,460-44-49) style:UITableViewStylePlain] autorelease];
+    return  [[[UITableView alloc] initWithFrame:CGRectMake(0,0,768,1024-44-49) style:UITableViewStylePlain] autorelease];
 }
 
 - (BOOL)checkNeedShowMoreButton:(id)aNewData

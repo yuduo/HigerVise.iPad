@@ -12,7 +12,7 @@
 @implementation UINavigationBar (Customized)
 
 - (void)drawRect:(CGRect)rect {
-    UIImage *image = [UIImage imageNamed:@"navigationbar.png"];
+    UIImage *image = [UIImage imageNamed:@"Title_hor.png"];
     [image drawInRect:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
 }
 

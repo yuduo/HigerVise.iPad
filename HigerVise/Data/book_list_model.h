@@ -10,4 +10,7 @@
 
 @interface book_list_model : NSObject
 +(NSArray*)getBookList:(NSInteger)index;
++(void)updateBookListMarked:(NSString*)sql;
++(void)updateBookListUnMark:(NSString*)sql;
++(NSArray*)getMarkedBookList;
 @end

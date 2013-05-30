@@ -18,7 +18,14 @@
 #import "LSCollectionViewController.h"
 #import "client_book.h"
 #import "AddBookToLocal.h"
-
+#import "book_list_model.h"
+#define GRID_VIEW_WIDTH 768
+#define GRID_VIEW_HEIGHT 1024-200
+#define BOOK_WIDTH 130
+#define BOOK_HEIGHT 175
+#define SHELF_HEIGHT 234
+#define SEARCH_BAR_HEIGHT 38
+#define kNum 4
 
 
 //////////////////////////////////////////////////////////////
@@ -65,10 +72,19 @@
     [super viewDidLoad];
     
     self.navigationController.navigationBarHidden = NO;
+    
+    
+//    self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Title_hor.png"]];
 
-    self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Title_hor.png"]];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"button.png"] style:UIBarButtonItemStylePlain target:self action:@selector(editButtonClicked)];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"back.png"] style:UIBarButtonItemStylePlain target:self action:@selector(backButtonClicked)];
+    self.navigationItem.title = @"我的书架";
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomWithTitle:@"下载内容"
+                                                                                      bgImage:[UIImage imageNamed:@"button.png"]
+                                                                                       target:self
+                                                                                       action:@selector(editButtonClicked)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustom:[UIImage imageNamed:@"back.png"]
+                                                                            bgImage:[UIImage imageNamed:@"back.png"]
+                                                                             target:self
+                                                                             action:@selector(backButtonClicked)];
 //    self.navigationItem.hidesBackButton = YES;
 
 //    GMGridView *gmGridView = [[GMGridView alloc] initWithFrame:self.view.bounds];
@@ -451,19 +467,19 @@
     //index = 0, is search bar
 
     // 定义图书大小
-#define kCell_Items_Width 150
+#define kCell_Items_Width 130
 #define kCell_Items_Height 175
     // 设置图片大小206*306
     // 图片与图片之间距离为50
     // 每行3，4本图书
-    CGFloat x = 100;
+    CGFloat x = 60;
     CGFloat y = 40;
     
 
     NSInteger nowNum = kNum;
-    if (bLandScape) {
-        nowNum += 1;
-    }
+//    if (bLandScape) {
+//        nowNum += 1;
+//    }
     
     NSInteger row = indexPath.row * nowNum;
     
@@ -489,12 +505,16 @@
         bookView.bookPath = [book valueForKey:@"resource_url"];
         bookView.bookType = [[book valueForKey:@"resource_type"] integerValue];
         bookView.downloadCompleteStatus = [self checkDownloadState:bookView.bookID bookType:bookView.bookType];
+        bookView.createTime = [book valueForKey:@"create_time"];
+        bookView.imageCount = [book valueForKey:@"resource_image_count"];
+        bookView.videoDuration = [book valueForKey:@"resource_video_duration"];
+        bookView.resourceSize = [book valueForKey:@"resource_size"];
         bookView.delegate = self;
         [bookViewArray addObject:bookView];
         [cell.contentView addSubview:bookView];
         
 
-        x += (80+kCell_Items_Width);
+        x += (42+kCell_Items_Width);
         // row+1
         ++row;
     }
@@ -576,7 +596,7 @@
 #pragma mark MyBookDelegate method
 
 - (void)readBtnOfBookWasClicked:(MyBookView *)book {
-    //    NSInteger type = book.resourceType;
+    
     NSString *suffix ;
     NSInteger type = book.bookType;
     
@@ -711,6 +731,21 @@
 			[request clearDelegatesAndCancel];
 		}
 	}
+}
+
+- (void)closeBtnOfBookWasClicked:(MyBookView *)book {
+  
+    NSInteger bookID = book.bookID;
+    //remove from data
+    for (int i = 0; i < [_data count]; i ++) {
+        client_book *book = [_data objectAtIndex:i];
+        if (bookID == [book.resource_master_id integerValue]) {
+            [_data removeObjectAtIndex:i];
+            break;
+        }
+    }
+    [tbView reloadData];
+    [book_list_model updateBookListUnMark:[NSString stringWithFormat:@"%d",bookID]];
 }
 #pragma mark -
 #pragma mark ASIHTTPRequestDelegate method

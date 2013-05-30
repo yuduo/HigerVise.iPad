@@ -7,9 +7,11 @@
 //
 
 #import "LoginViewController.h"
-#import "BookshelfViewController.h"
+
 #import "FlowCoverViewController.h"
 #import "catogory_list_model.h"
+#import "book_list_model.h"
+#import "ResourceViewController.h"
 @interface LoginViewController ()
 
 @end
@@ -435,7 +437,7 @@
     [animation setType:@"fade"];
     [animation setSubtype:kCATransitionFromLeft];
     [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
-   
+#if 0
     //read database
     NSArray *db = [catogory_list_model getBookList];
     if (db != nil) {
@@ -448,10 +450,27 @@
 	NSArray *array = [[NSBundle mainBundle] loadNibNamed:@"TestFC" owner:self options:nil];
 	c = [array objectAtIndex:0];
 	
-//	[self presentModalViewController:c animated:YES];
+
     c.data = [[NSMutableArray alloc]initWithArray:db];
     [self.navigationController pushViewController:c animated:NO];
-//    [self.navigationController.view.layer addAnimation:animation forKey:nil];
+#else
+    
+    
+    NSArray *db = [book_list_model getBookList:1];
+    if (db != nil) {
+        //
+    }
+    
+    //stop animate
+    
+    //go to book
+    ResourceViewController *ibook = [[ResourceViewController alloc]init];
+    ibook.data = [[NSMutableArray alloc]initWithArray: db];
+    [self.navigationController pushViewController:ibook animated:YES];
+
+#endif
+    
+    
 }
 
 - (IBAction)btnLogin_TouchUpInside:(id)sender 

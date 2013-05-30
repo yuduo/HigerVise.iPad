@@ -28,4 +28,6 @@
 @property (nonatomic, retain) NSString* logo;
 @property (nonatomic, retain) NSString* local_resource;
 @property (nonatomic) NSInteger bookType;
+@property (nonatomic) NSInteger bookSize;
+@property (nonatomic, retain) NSDate *createTime;
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "FatNavigationController.h"
 //#import "UINavigationController+Rotation.h"
 @implementation AppDelegate
 
@@ -17,7 +18,7 @@
     //设置启动导航条
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     UINib *nib = [UINib nibWithNibName:@"NavigationController" bundle:nil];
-    UINavigationController *navigationController = [[nib instantiateWithOwner:nil options:nil] objectAtIndex:0];
+    FatNavigationController *navigationController = [[nib instantiateWithOwner:nil options:nil] objectAtIndex:0];
     if ( [[UIDevice currentDevice].systemVersion floatValue] < 6.0){
         // warning: addSubView doesn't work on iOS6
         [self.window addSubview: navigationController.view];

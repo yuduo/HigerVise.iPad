@@ -15,4 +15,8 @@
 @property (nonatomic, strong) NSNumber * resource_type;
 @property (nonatomic, strong) NSNumber * resource_master_id;
 @property (nonatomic, strong) NSString * resource_thum_url;
+@property (nonatomic, assign) BOOL is_marked;
+@property (nonatomic, strong) NSString *create_time;
+@property (nonatomic, strong) NSString *resource_image_count;
+@property (nonatomic, strong) NSString * resource_video_duration;
 @end

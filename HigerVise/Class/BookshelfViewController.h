@@ -12,13 +12,6 @@
 #import "ASINetworkQueue.h"
 #import "ReadAllBook.h"
 #import "LSCollectPE.h"
-#define GRID_VIEW_WIDTH 768
-#define GRID_VIEW_HEIGHT 1024-200
-#define BOOK_WIDTH 130
-#define BOOK_HEIGHT 175
-#define SHELF_HEIGHT 234
-#define SEARCH_BAR_HEIGHT 234
-#define kNum 3
 
 
 @interface BookshelfViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,MyBookDelegate,ASIHTTPRequestDelegate,ReadAllBookDelegate,UISearchBarDelegate, UISearchDisplayDelegate>

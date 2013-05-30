@@ -11,6 +11,8 @@
 #import "MBProgressHUD.h"
 #import "LSImageMatch.h"
 #import "LSString.h"
+#import "ReadAllBook.h"
+
 #define DOWNLOAD_STATE_NONE 0
 #define DOWNLOAD_STATE_DOWNING 1//downloading
 #define DOWNLOAD_STATE_STOP 2//stop
@@ -20,7 +22,7 @@
 @implementation MyBookView
 
 @synthesize delegate;
-@synthesize bookID,downState,resourceType;
+@synthesize bookID,downState;
 @synthesize bookName,bookType;
 @synthesize contentLength;
 @synthesize bookPath,picturePath;
@@ -31,7 +33,7 @@
 @synthesize imageProView;
 @synthesize imageProBgView;
 @synthesize downText;
-@synthesize downloadCompleteStatus;
+@synthesize downloadCompleteStatus,createTime,resourceSize,videoDuration,imageCount;
 
 - (id)initWithFrame:(CGRect)frame picturePath:(NSString*)picturePath{
     
@@ -59,25 +61,63 @@
 		imageProBgView.backgroundColor = [UIColor blackColor];
         
 		//初始化显示书名的Lable
-		downText = [[UILabel alloc] initWithFrame:CGRectMake(0, 180-15, 100, 30)];
+		downText = [[UILabel alloc] initWithFrame:CGRectMake(0, 180-45, 100, 30)];
         downText.backgroundColor = [UIColor clearColor];
 		downText.text = @"book";
         
+        int lable_x = 80;
+        
 		//初始化下载按键
 		self.downButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-		downButton.frame = CGRectMake(80, 180-45, 50, 30);
-		[downButton setTitle:@"down" forState:UIControlStateNormal];
-		[downButton setTitle:@"waiting..." forState:UIControlStateDisabled];
+		downButton.frame = CGRectMake(lable_x, 180-10, 14, 18);
+		[downButton setBackgroundImage:[UIImage imageNamed:@"download.png"] forState:UIControlStateNormal];
 		[downButton addTarget:self action:@selector(downButtonClick) forControlEvents:UIControlEventTouchDown];
 		
+        //初始化显示书名的Lable
+		sizeText = [[UILabel alloc] initWithFrame:CGRectMake(0, 180-15, 100, 30)];
+        sizeText.backgroundColor = [UIColor clearColor];
+		sizeText.text = @"";
+        sizeText.textColor = [UIColor blackColor];
+        
+        //初始化显示书名的Lable
+		detailText = [[UILabel alloc] initWithFrame:CGRectMake(100, 180-15, 100, 30)];
+        detailText.backgroundColor = [UIColor clearColor];
+		detailText.text = @"";
+        detailText.textColor = [UIColor blackColor];
+        
+        //初始化显示书名的Lable
+		dateText = [[UILabel alloc] initWithFrame:CGRectMake(lable_x, 80, 100, 30)];
+        dateText.backgroundColor = [UIColor clearColor];
+		dateText.text = @"";
+        dateText.textColor = [UIColor blackColor];
+        
         [self addSubview:zztjProView];
 		[self addSubview:imageProBgView];
 		[self addSubview:imageProView];
 		[self addSubview:downText];
-
+        [self addSubview:sizeText];
+        [self addSubview:detailText];
 		[self addSubview:downButton];
         
-
+        _tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureUpdated:)];
+        _tapGesture.delegate = self;
+        _tapGesture.numberOfTapsRequired = 1;
+        _tapGesture.numberOfTouchesRequired = 1;
+        [self addGestureRecognizer:_tapGesture];
+        
+        
+        _sortingLongPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(sortingLongPressGestureUpdated:)];
+        _sortingLongPressGesture.numberOfTouchesRequired = 1;
+        _sortingLongPressGesture.delegate = self;
+        [self addGestureRecognizer:_sortingLongPressGesture];
+        
+        //CLOSE
+        closeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+		closeButton.frame = CGRectMake(130-20, -10, 18, 18);
+		[closeButton setBackgroundImage:[UIImage imageNamed:@"close.png"] forState:UIControlStateNormal];
+		[closeButton addTarget:self action:@selector(closeButtonClick) forControlEvents:UIControlEventTouchDown];
+        closeButton.hidden = YES;
+        [self addSubview:closeButton];
     }
     return self;
 }
@@ -86,6 +126,21 @@
     // Drawing code.
 	//设置书的名字
 	downText.text = bookName;
+    sizeText.text = resourceSize;
+    switch (bookType) {
+        case RESOURCE_TYPE_IMAGE:
+            detailText.text = imageCount;
+            break;
+        case RESOURCE_TYPE_MP4:
+            detailText.text = videoDuration;
+            break;
+        case RESOURCE_TYPE_PDF:
+            detailText.text = @"";
+            break;
+        default:
+            break;
+    }
+    dateText.text = createTime;
 	//判断是否下载成功
 	if (downloadCompleteStatus) {//下载状态(已经下载成功)
 		
@@ -231,7 +286,14 @@
 	[MBProgressHUD hideHUDForView:self animated:YES];
 
 }
-
+-(void)closeButtonClick
+{
+    if ([delegate respondsToSelector:@selector(closeBtnOfBookWasClicked:)]) {
+		
+		//调用 DownAndASIRequestViewController 的 readBtnOfBookWasClicked 方法
+		[delegate closeBtnOfBookWasClicked:self];
+	}
+}
 -(void)readClick {//查看按键事件
 	
 	if ([delegate respondsToSelector:@selector(readBtnOfBookWasClicked:)]) {
@@ -514,4 +576,45 @@
     NSAssert(_imageKit == aKit, @"");
     NSLog(@"%@ get image failed. url= %@",NSStringFromClass([self class]), aImageURL);
 }
+
+//////////////////////////////////////////////////////////////
+#pragma mark Tap
+//////////////////////////////////////////////////////////////
+
+- (void)tapGestureUpdated:(UITapGestureRecognizer *)tapGesture
+{
+    CGPoint locationTouch = [_tapGesture locationInView:self];
+    closeButtonShow = NO;
+    closeButton.hidden = YES;
+}
+
+
+//////////////////////////////////////////////////////////////
+#pragma mark Sorting gestures & logic
+//////////////////////////////////////////////////////////////
+
+- (void)sortingLongPressGestureUpdated:(UILongPressGestureRecognizer *)longPressGesture
+{
+    switch (longPressGesture.state)
+    {
+        case UIGestureRecognizerStateBegan:
+        {
+            
+            closeButtonShow = YES;
+            closeButton.hidden = NO;
+            break;
+        }
+        case UIGestureRecognizerStateEnded:
+        case UIGestureRecognizerStateCancelled:
+        case UIGestureRecognizerStateFailed:
+        {
+            
+            
+            break;
+        }
+        default:
+            break;
+    }
+}
+
 @end

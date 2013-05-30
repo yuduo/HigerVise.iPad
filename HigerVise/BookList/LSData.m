@@ -18,6 +18,7 @@
 @synthesize logo = _logo;
 @synthesize local_resource = _local_resource;
 @synthesize bookType = _bookType;
+@synthesize bookSize,createTime;
 
 - (void)dealloc
 {

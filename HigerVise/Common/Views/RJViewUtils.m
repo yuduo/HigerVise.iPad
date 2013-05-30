@@ -58,7 +58,7 @@
               target:(id)aTarget action:(SEL)aAction
 {
     UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.frame = CGRectMake(0,0,38,28);
+    button.frame = CGRectMake(0,0,38,38);
     [button setImage:aImageName forState:UIControlStateNormal];
     [button setBackgroundImage:aBgImage forState:UIControlStateNormal];
     [button addTarget:aTarget action:aAction forControlEvents:UIControlEventTouchUpInside];
@@ -74,7 +74,7 @@
 {
     UIButton* button = [UIButton buttonWithType:UIButtonTypeCustom];
     
-    UIFont* font = [UIFont systemFontOfSize:13.0f];
+    UIFont* font = [UIFont systemFontOfSize:20.0f];
     button.titleLabel.font = font;
     CGSize size = [aTitle sizeWithFont:font];
     NSInteger buttonWidth = 0;
@@ -84,10 +84,10 @@
     }
     else 
     {
-        buttonWidth = 60;
+        buttonWidth = 80;
     }
     
-    button.frame = CGRectMake(0,0,buttonWidth,29);
+    button.frame = CGRectMake(0,0,buttonWidth,39);
     
     [button setTitle:aTitle forState:UIControlStateNormal];
     [button setBackgroundImage:aBgImage forState:UIControlStateNormal];
