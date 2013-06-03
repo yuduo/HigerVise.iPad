@@ -72,36 +72,22 @@
     [super viewDidLoad];
     
     self.navigationController.navigationBarHidden = NO;
-    
-    
+    [self.navigationItem setHidesBackButton:YES animated:NO];
+//    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bookshelf_background.png"]];
 //    self.navigationItem.titleView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Title_hor.png"]];
     
     
-    self.navigationItem.title = @"我的书架";
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomWithTitle:@"下载内容"
-                                                                                      bgImage:[UIImage imageNamed:@"button.png"]
-                                                                                       target:self
-                                                                                       action:@selector(editButtonClicked)];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustom:[UIImage imageNamed:@"back.png"]
-                                                                            bgImage:[UIImage imageNamed:@"back.png"]
-                                                                             target:self
-                                                                             action:@selector(backButtonClicked)];
-
+//    self.navigationItem.title = @"我的书架";
+//    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomWithTitle:@"下载内容"
+//                                                                                      bgImage:[UIImage imageNamed:@"button.png"]
+//                                                                                       target:self
+//                                                                                       action:@selector(editButtonClicked)];
+//    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustom:[UIImage imageNamed:@"back.png"]
+//                                                                            bgImage:[UIImage imageNamed:@"back.png"]
+//                                                                             target:self
+//                                                                             action:@selector(backButtonClicked)];
+//
     
-    
-    // 创建uitableview
-    if(!tbView){
-        tbView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height) style:UITableViewStylePlain];
-        tbView.delegate = self;
-        tbView.dataSource = self;
-        // 设置table的分割符透明
-        tbView.separatorColor = [UIColor clearColor];
-        // 设置table背景透明
-        tbView.backgroundColor = [UIColor clearColor];
-    }
-    [self.view addSubview:tbView];
-    
-
     
     UIDeviceOrientation interfaceOrientation=[[UIApplication sharedApplication] statusBarOrientation];
     if (interfaceOrientation == UIDeviceOrientationPortrait || interfaceOrientation == UIDeviceOrientationPortraitUpsideDown) {
@@ -111,20 +97,45 @@
         //翻转为横屏时
         bLandScape = YES;
     }
+    UIImageView *background = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, (bLandScape == YES ? 1024 : 768), (bLandScape == YES ? 768 : 1024))];
+    if (bLandScape) {
+        background.image = [UIImage imageNamed:@"bookshelf_background.png"];
+        
+    }else
+    {
+        background.image = [UIImage imageNamed:@"bookshelf_background_ver.png"];
+    }
+    self.view.backgroundColor = [UIColor colorWithPatternImage:background.image];
+//    [self.view addSubview:background];
+    
+    // 创建uitableview
+    if(!tbView){
+        tbView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, (bLandScape == YES ? 1024 : 768), (bLandScape == YES ? 768 : 1024)) style:UITableViewStylePlain];
+        tbView.delegate = self;
+        tbView.dataSource = self;
+        // 设置table的分割符透明
+        tbView.separatorColor = [UIColor clearColor];
+        // 设置table背景透明
+        tbView.backgroundColor = [UIColor clearColor];
+        tbView.showsVerticalScrollIndicator = NO;
+    }
+    [self.view addSubview:tbView];
+    
+
     
     
-    searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(((bLandScape == YES ? 1024 : 768) -331)/2, 0, 331, SEARCH_BAR_HEIGHT)];
-    searchBar = [[UISearchBar alloc] init];
-    searchBar.frame = CGRectMake(((bLandScape == YES ? 1024 : 768) -331)/2, 0, 331, SEARCH_BAR_HEIGHT);
+    searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(((bLandScape == YES ? 1024 : 768) -331)/2, 20, 331, SEARCH_BAR_HEIGHT)];
+    searchBar.delegate = self;
+    [[searchBar.subviews objectAtIndex:0] removeFromSuperview];
+    [searchBar setSearchFieldBackgroundImage:[UIImage imageNamed:@"searchBar"] forState:UIControlStateNormal];
+
     
-    searchBar.backgroundColor = [UIColor clearColor];
-    searchBar.backgroundImage = [UIImage imageNamed:@"searchBar.png"];
-    searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
-    
-    searchDisplayController.delegate = self;
-    searchDisplayController.searchResultsDataSource = self;
-    searchView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, bLandScape == YES ? 1024 : 768, SEARCH_BAR_HEIGHT)];
-    [searchView addSubview:[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"shelf_top.png"] ]];
+    searchView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, bLandScape == YES ? 1024 : 768, SEARCH_BAR_HEIGHT+25)];
+    UIImageView *imageview = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"shelf_top.png"] ];
+    imageview.frame = CGRectMake(0, 20, bLandScape == YES ? 1024 : 768, SEARCH_BAR_HEIGHT+20);
+    imageview.tag = 123;
+//    [searchView addSubview:imageview];
+//    searchView.backgroundColor  = [UIColor colorWithPatternImage:[UIImage imageNamed:@"shelf_top.png"]];
     [searchView addSubview:searchBar];
     tbView.tableHeaderView = searchView;
 
@@ -133,8 +144,68 @@
     
     
     CGRect bounds = [tbView bounds];
-    bounds.origin.y += searchBar.bounds.size.height;
+    bounds.origin.y += (searchBar.bounds.size.height+4);
     [tbView setBounds:bounds];
+    
+    controlArray = [[NSMutableArray alloc]init];
+    [self addControlToNavi];
+}
+-(void)addControlToNavi
+{
+    {
+        UIImageView *view = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"my_book_button.png"]];
+        view.frame = CGRectMake(((bLandScape == YES ? 1024 : 768)-138)/2, 10, 138, 40);
+        view.tag = 1;
+        [self.navigationController.navigationBar addSubview:view];
+        [controlArray addObject:view];
+    }
+    
+    UIImageView *logo = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"logo.png"]];
+    logo.frame = CGRectMake(10+6, 10, 190, 40);
+    logo.tag = 2;
+    [self.navigationController.navigationBar addSubview:logo];
+    [controlArray addObject:logo];
+    
+    UIButton *btnBack = [UIButton buttonWithType:UIButtonTypeCustom];
+    btnBack.frame = CGRectMake(bLandScape == YES ? 936 : 684, 10, 70, 40);
+    btnBack.tag = 3;
+    [btnBack setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"button_bookshelf" ofType:@"png"]] forState:UIControlStateNormal];
+    [btnBack addTarget:self action:@selector(backButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    [self.navigationController.navigationBar addSubview:btnBack];
+    [controlArray addObject:btnBack];
+    
+    UIButton *btnHome = [UIButton buttonWithType:UIButtonTypeCustom];
+    btnHome.frame = CGRectMake(bLandScape == YES ? 827 : 577, 10, 100, 40);
+    btnHome.tag = 4;
+    [btnHome setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"down_manage_button" ofType:@"png"]] forState:UIControlStateNormal];
+    [btnHome addTarget:self action:@selector(editButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    [self.navigationController.navigationBar addSubview:btnHome];
+    [controlArray addObject:btnHome];
+}
+-(void)resetControlPosition
+{
+    
+    
+    for (int i = 0; i < [controlArray count]; i ++) {
+        UIView *view = [controlArray objectAtIndex:i];
+        int tag = view.tag;
+        switch (tag) {
+            case 1:
+                [view setFrame:bLandScape == YES ? CGRectMake((1024-138)/2, 10, 138, 40):CGRectMake((768-138)/2, 10, 138, 40)];
+                break;
+            case 2:
+                [view setFrame:CGRectMake(10+6, 10, 190, 40)];
+                break;
+            case 3:
+                [view setFrame:CGRectMake(bLandScape == YES ? 936 : 684, 10, 70, 40)];
+                break;
+            case 4:
+                [view setFrame:CGRectMake(bLandScape == YES ? 827 : 577, 10, 100, 40)];
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 - (void)viewDidUnload
@@ -142,16 +213,36 @@
     [super viewDidUnload];
 //    _gmGridView = nil;
 }
-
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    UIDeviceOrientation interfaceOrientation=[[UIApplication sharedApplication] statusBarOrientation];
+    if (interfaceOrientation == UIDeviceOrientationPortrait || interfaceOrientation == UIDeviceOrientationPortraitUpsideDown) {
+        //翻转为竖屏时
+        bLandScape = NO;
+    }else if (interfaceOrientation==UIDeviceOrientationLandscapeLeft || interfaceOrientation == UIDeviceOrientationLandscapeRight) {
+        //翻转为横屏时
+        bLandScape = YES;
+    }
+    [self addControlToNavi];
+    [self resetControlPosition];
+    
+}
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     self.navigationController.navigationBarHidden = NO;
-    searchBar.frame = CGRectMake(((bLandScape == YES ? 1024 : 768) -331)/2, 0, 331, SEARCH_BAR_HEIGHT);
+    [self.navigationController.navigationBar setFrame:CGRectMake(0, 0, (bLandScape == YES ? 1024 : 768), 60)];
+    is_searching = NO;
+
 }
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    for (int i = 0; i < [controlArray count]; i ++) {
+        
+        [(UIView*)[controlArray objectAtIndex:i] removeFromSuperview];
+    }
     [self stopAllDownload];
 }
 //////////////////////////////////////////////////////////////
@@ -399,19 +490,8 @@
     NSInteger count = 0;
     
     
-    if (tableView == tbView) {
-        count = ([_data count]+kNum-1)/kNum;
-        if (count <= 5) {
-            count = 5;
-        }
-        if (bLandScape) {
-            count = ([_data count]+kNum)/(kNum+1);
-            if (count <= 4) {
-                count = 4;
-            }
-        }
-    }
-    if(tableView == self.searchDisplayController.searchResultsTableView){
+    
+    if(is_searching){
         
         count = ([searchData count]+kNum-1)/kNum;
         if (count <= 5) {
@@ -419,6 +499,17 @@
         }
         if (bLandScape) {
             count = ([searchData count]+kNum)/(kNum+1);
+            if (count <= 4) {
+                count = 4;
+            }
+        }
+    }else{
+        count = ([_data count]+kNum-1)/kNum;
+        if (count <= 5) {
+            count = 5;
+        }
+        if (bLandScape) {
+            count = ([_data count]+kNum)/(kNum+1);
             if (count <= 4) {
                 count = 4;
             }
@@ -446,35 +537,57 @@
             [(UIView*)[cell.contentView.subviews lastObject] removeFromSuperview];
         }
     }
-    UIImageView *shelfView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"shelf.png"]];
+    UIImageView *shelfView = nil;
+    if (indexPath.row > 0) {
+        if (bLandScape){
+            shelfView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"shelf_mark_hor.png"]];
+        }else
+        {
+            shelfView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"shelf_mark_ver.png"]];
+        }
+    }else
+    {
+        if (bLandScape){
+            shelfView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"shelf_one.png"]];
+        }else
+        {
+            shelfView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"shelf_one_ver.png"]];
+        }
+        
+    }
+    
 //    [cell.contentView addSubview: shelfView];
     cell.backgroundView = shelfView;
     NSLog(@"row = %d",indexPath.row);
     //index = 0, is search bar
 
     // 定义图书大小
-#define kCell_Items_Width 130
-#define kCell_Items_Height 175
+    int kCell_Items_Width = 150;
+    int kCell_Items_Height = 234;
+    int CELL_WITH  = 22;
+    if (bLandScape) {
+        kCell_Items_Width = 150;
+        CELL_WITH  = 42;
+    }
     // 设置图片大小206*306
     // 图片与图片之间距离为50
     // 每行3，4本图书
     CGFloat x = 60;
-    CGFloat y = 40;
+    CGFloat y = 0;
     
 
     NSInteger nowNum = kNum;
-//    if (bLandScape) {
-//        nowNum += 1;
-//    }
+    if (bLandScape) {
+        nowNum += 1;
+    }
     
     NSInteger row = indexPath.row * nowNum;
     
     NSMutableArray *temp;
-    if (tableView == tbView) {
-        temp = _data;
-    }
-    if(tableView == self.searchDisplayController.searchResultsTableView){
+    if(is_searching){
         temp = searchData;
+    }else{
+        temp = _data;
     }
     
     for (int i = 0; i<nowNum; ++i) {
@@ -494,13 +607,13 @@
         bookView.createTime = [book valueForKey:@"create_time"];
         bookView.imageCount = [book valueForKey:@"resource_image_count"];
         bookView.videoDuration = [book valueForKey:@"resource_video_duration"];
-        bookView.resourceSize = [book valueForKey:@"resource_size"];
+        bookView.resourceSize = [NSString stringWithFormat:@"共%@M",[book valueForKey:@"resource_size"]];//[[book valueForKey:@"resource_size"] stringByAppendingString:@"M"];
         bookView.delegate = self;
         [bookViewArray addObject:bookView];
         [cell.contentView addSubview:bookView];
         
 
-        x += (42+kCell_Items_Width);
+        x += (CELL_WITH+kCell_Items_Width);
         // row+1
         ++row;
     }
@@ -540,13 +653,32 @@
 	   interfaceOrientation == UIInterfaceOrientationLandscapeRight)
 	{
 		bLandScape = YES;
+        [self setHorizontalFrame];
 	}else {
 		bLandScape = NO;
+        [self setVerticalFrame];
 	}
 	tbView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
     
     [tbView reloadData];
+    searchBar.frame = CGRectMake(((bLandScape == YES ? 1024 : 768) -331)/2, 20, 331, SEARCH_BAR_HEIGHT);
     searchView.frame = CGRectMake(((bLandScape == YES ? 1024 : 768) -331)/2, 0, 331, SEARCH_BAR_HEIGHT);
+    UIView *view = (UIView*)[self.view viewWithTag:123];
+    [view removeFromSuperview];
+    UIImageView *imageview = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"shelf_top.png"] ];
+    imageview.frame = CGRectMake(0, 20, bLandScape == YES ? 1024 : 768, SEARCH_BAR_HEIGHT+20);
+    imageview.tag = 123;
+//    [searchView insertSubview:imageview belowSubview:searchBar];
+    UIImage *background;
+    if (bLandScape) {
+        background = [UIImage imageNamed:@"bookshelf_background.png"];
+        
+    }else
+    {
+        background = [UIImage imageNamed:@"bookshelf_background_ver.png"];
+    }
+    self.view.backgroundColor = [UIColor colorWithPatternImage:background];
+    [self resetControlPosition];
 }
 - (BOOL)shouldAutorotate {
     return YES;
@@ -554,28 +686,34 @@
 - (NSUInteger)supportedInterfaceOrientations {
     return UIInterfaceOrientationMaskAll;
 }
-- (void)viewDidLayoutSubviews
-{
-    
-    UIDeviceOrientation interfaceOrientation=[[UIApplication sharedApplication] statusBarOrientation];
-    if (interfaceOrientation == UIDeviceOrientationPortrait || interfaceOrientation == UIDeviceOrientationPortraitUpsideDown) {
-        //翻转为竖屏时
-        [self setVerticalFrame];
-    }else if (interfaceOrientation==UIDeviceOrientationLandscapeLeft || interfaceOrientation == UIDeviceOrientationLandscapeRight) {
-        //翻转为横屏时
-        [self setHorizontalFrame];
-    }
-    
-}
+//- (void)viewDidLayoutSubviews
+//{
+//    
+//    UIDeviceOrientation interfaceOrientation=[[UIApplication sharedApplication] statusBarOrientation];
+//    if (interfaceOrientation == UIDeviceOrientationPortrait || interfaceOrientation == UIDeviceOrientationPortraitUpsideDown) {
+//        //翻转为竖屏时
+//        bLandScape = NO;
+//        [self setVerticalFrame];
+//    }else if (interfaceOrientation==UIDeviceOrientationLandscapeLeft || interfaceOrientation == UIDeviceOrientationLandscapeRight) {
+//        //翻转为横屏时
+//        bLandScape = YES;
+//        [self setHorizontalFrame];
+//    }
+//    [self.navigationController.navigationBar setFrame:CGRectMake(0, 0, (bLandScape == YES ? 1024 : 768), 60)];
+//}
 -(void)setVerticalFrame
 {
-    tbView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
-    [tbView reloadData];
+//    tbView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
+//    [tbView reloadData];
+    [self.navigationController.navigationBar setFrame:CGRectMake(0, 0, (bLandScape == YES ? 1024 : 768), 60)];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"Title_ver.png"] forBarMetrics:UIBarMetricsDefault];
 }
 -(void)setHorizontalFrame
 {
-    tbView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
-    [tbView reloadData];
+//    tbView.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
+//    [tbView reloadData];
+    [self.navigationController.navigationBar setFrame:CGRectMake(0, 0, (bLandScape == YES ? 1024 : 768), 60)];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"Title_hor.png"] forBarMetrics:UIBarMetricsDefault];
 }
 
 #pragma mark -
@@ -802,6 +940,7 @@
                 book.local_resource = savePath;
                 book.bookType = temp.bookType;
                 book.logo = temp.picturePath;
+                book.createTime = temp.createTime;
                 //save to local
                 [AddBookToLocal addBookToArray:book];
 			}
@@ -813,9 +952,12 @@
 - (void)requestFailed:(ASIHTTPRequest *)request {
     
 	NSLog(@"down fail.....");
-	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 100, 100)];
-	label.text = @"down fail,请检查网络是否连接!";
-	[self.view addSubview:label];
+//	UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 100, 100)];
+//	label.text = @"down fail,请检查网络是否连接!";
+//	[self.view addSubview:label];
+    UIAlertView *alarm = [[UIAlertView alloc]initWithTitle:@"下载失败！" message:@"请检查网络是否连接!" delegate:self cancelButtonTitle:nil otherButtonTitles:@"确定", nil];
+    [alarm show];
+    
 }
 
 -(void)stopAllDownload
@@ -921,6 +1063,35 @@
     
     return YES;
 }
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    [searchData removeAllObjects];
+    
+    if ([searchText length] == 0) {
+        is_searching = NO;
+        [tbView reloadData];
+    }
+    client_book *group;
+    
+    for(group in _data)
+    {
+        
+        NSString *element;
+        
+        element = group.resource_title;
+        if(element != nil)
+        {
+            NSRange range = [element rangeOfString:searchText options:NSCaseInsensitiveSearch];
+            
+            if (range.length > 0) {
+                [searchData addObject:group];
+                is_searching = YES;
+                [tbView reloadData];
+            }
+        }
+        
+    }
+}
 -(BOOL)searchBarShouldBeginEditing:(UISearchBar*)searchBar{
     //準備搜尋前，把上面調整的TableView調整回全屏幕的狀態，如果要產生動畫效果，要另外執行animation代碼
     
@@ -941,6 +1112,7 @@
 }
 - (void) searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller;
 {
+    [self.navigationController.navigationBar setFrame:CGRectMake(0, 0, (bLandScape == YES ? 1024 : 768), 60)];
     searchBar.frame = CGRectMake(((bLandScape == YES ? 1024 : 768) -331)/2, 0, 331, SEARCH_BAR_HEIGHT);
 }
 @end

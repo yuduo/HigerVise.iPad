@@ -7,7 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <QuartzCore/QuartzCore.h>
 
-@interface UISearchBar : NSObject
+
+@interface UISearchBar(CustomBackground)
 
 @end

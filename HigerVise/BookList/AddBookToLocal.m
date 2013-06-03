@@ -34,6 +34,7 @@
       [NSNumber numberWithInt:detail.bookID], @"bookID",
       detail.bookName!=nil?detail.bookName:[NSNull null], @"bookName",
       detail.local_resource!=nil?detail.local_resource:[NSNull null], @"local_resource",
+      detail.createTime!=nil?detail.createTime:[NSNull null], @"createTime",
       detail.logo != nil ? detail.logo:[NSNull null] ,@"logo",
       [NSNumber numberWithInt:detail.bookType] ,@"bookType",
       

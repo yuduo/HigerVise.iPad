@@ -18,8 +18,8 @@
 #define DOWNLOAD_STATE_STOP 2//stop
 #define DOWNLOAD_STATE_FINISHED 3
 
-#define RESOURCE_TITLE_SIZE 18
-#define RESOURCE_DETAIL_SIZE  14
+#define RESOURCE_TITLE_SIZE 28
+#define RESOURCE_DETAIL_SIZE  18
 #define RESOURCE_CATEGORY_FONT_SIZE  18
 
 
@@ -27,7 +27,7 @@
 #define RESOURCE_DETAIL_COLOR  LSRGBA(102,102,102,1)
 #define RESOURCE_CATEGORY_FONT_COLOR  LSRGBA(93,50,18,1)
 
-#define RESOURCE_TEXT_FONT @"Helvetica"
+
 #define DOWN_BUTTON_SIZE_X 68
 #define DOWN_BUTTON_SIZE_Y 26
 @implementation ResourceView
@@ -64,6 +64,7 @@
 		//系统进度条的设置
 		zztjProView = [[UIProgressView alloc] initWithFrame:CGRectMake(0, 100, 102, 20)];
 		//自己的进度条设置,默认宽度为0
+        zztjProView.hidden = YES;
 		imageProView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 121, 0, 4)];
 		[imageProView setImage:[UIImage imageNamed:@"proImage.png"]];
 		//自己进度条的背景
@@ -71,31 +72,31 @@
 		//[imageProBgView setImage:[UIImage imageNamed:@"proImage_bg.png"]];
 		imageProBgView.backgroundColor = [UIColor blackColor];
         
-        int lable_x = 130;
-        int lable_y = -20;
+        int lable_x = 115;
+        int lable_y = -30;
 		//初始化显示书名的Lable
-		bookNameText = [[UILabel alloc] initWithFrame:CGRectMake(lable_x, lable_y, 100, 30)];
+		bookNameText = [[UILabel alloc] initWithFrame:CGRectMake(lable_x, lable_y, 200, 30)];
         bookNameText.backgroundColor = [UIColor clearColor];
 		bookNameText.text = @"";
         bookNameText.font = [UIFont fontWithName:RESOURCE_TEXT_FONT size:RESOURCE_TITLE_SIZE];
         bookNameText.textColor = RESOURCE_TITLE_COLOR;
         
         //初始化显示书名的Lable
-		sizeText = [[UILabel alloc] initWithFrame:CGRectMake(lable_x, lable_y+30, 100, 30)];
+		sizeText = [[UILabel alloc] initWithFrame:CGRectMake(lable_x, lable_y+28, 100, 30)];
         sizeText.backgroundColor = [UIColor clearColor];
 		sizeText.text = @"";
         bookNameText.font = [UIFont fontWithName:RESOURCE_TEXT_FONT size:RESOURCE_DETAIL_SIZE];
         sizeText.textColor = RESOURCE_DETAIL_COLOR;
         
         //初始化显示书名的Lable
-		detailText = [[UILabel alloc] initWithFrame:CGRectMake(lable_x+100, lable_y+30, 100, 30)];
+		detailText = [[UILabel alloc] initWithFrame:CGRectMake(lable_x+100, lable_y+28, 100, 30)];
         detailText.backgroundColor = [UIColor clearColor];
 		detailText.text = @"";
         bookNameText.font = [UIFont fontWithName:RESOURCE_TEXT_FONT size:RESOURCE_DETAIL_SIZE];
         detailText.textColor = RESOURCE_DETAIL_COLOR;
         
         //初始化显示书名的Lable
-		dateText = [[UILabel alloc] initWithFrame:CGRectMake(lable_x, lable_y+60, 100, 30)];
+		dateText = [[UILabel alloc] initWithFrame:CGRectMake(lable_x, lable_y+56, 100, 30)];
         dateText.backgroundColor = [UIColor clearColor];
 		dateText.text = @"";
         bookNameText.font = [UIFont fontWithName:RESOURCE_TEXT_FONT size:RESOURCE_DETAIL_SIZE];
@@ -104,9 +105,9 @@
         
 		//初始化下载按键
 		self.downButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-		downButton.frame = CGRectMake(lable_x, 70, DOWN_BUTTON_SIZE_X, DOWN_BUTTON_SIZE_Y);
+		downButton.frame = CGRectMake(lable_x, 60, DOWN_BUTTON_SIZE_X, DOWN_BUTTON_SIZE_Y);
 		[downButton setTitle:@"未下载" forState:UIControlStateNormal];
-		
+		[downButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 		[downButton addTarget:self action:@selector(downButtonClick) forControlEvents:UIControlEventTouchDown];
 		
         [self addSubview:zztjProView];
@@ -121,7 +122,7 @@
 
         //add button
         self.addButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-		addButton.frame = CGRectMake(lable_x+100, 80, 50, 30);
+		addButton.frame = CGRectMake(lable_x+150, 80, 50, 30);
 //		[addButton setTitle:@"add" forState:UIControlStateNormal];
 		[addButton setBackgroundImage:[UIImage imageNamed:@"add_button.png"] forState:UIControlStateNormal];
 		[addButton addTarget:self action:@selector(markButtonClick) forControlEvents:UIControlEventTouchDown];
@@ -194,6 +195,7 @@
 }
 -(void)markButtonClick
 {
+    addButton.hidden = YES;
     if ([delegate respondsToSelector:@selector(markBtnOfBookWasClicked:)]) {
         
         //调用 DownAndASIRequestViewController 的 readBtnOfBookWasClicked 方法
@@ -372,6 +374,7 @@
 	bookNameText.text = [NSString stringWithFormat:@"%.2f/%.2fM",self.contentLength*newProgress,self.contentLength];
 	//设置自己的进度条
 	imageProView.frame = CGRectMake(75, 121, 150*newProgress, 4);
+    zztjProView.hidden = NO;
 	//设置系统的进度条
 	zztjProView.progress = newProgress;
 }

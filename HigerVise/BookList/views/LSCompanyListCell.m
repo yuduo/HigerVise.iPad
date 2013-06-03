@@ -103,7 +103,7 @@
     }
     [_lbName setViewSize:size];
     
-    _lbDescrption.text = aCompany.local_resource;
+    _lbDescrption.text = aCompany.createTime;
     width = [_lbDescrption fitWidth:20];
     if (width > LSCompanyListCellNameWidth) 
     {

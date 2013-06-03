@@ -18,6 +18,7 @@
     company.logo = [aJSONData valueForKey:@"logo"];
 //    company.logo = @"Book_Cover.png";
     company.local_resource = [aJSONData valueForKey:@"local_resource"];
+    company.createTime = [aJSONData valueForKey:@"createTime"];
     company.bookType  = [[aJSONData valueForKey:@"bookType"] integerValue];
     return company;
 }

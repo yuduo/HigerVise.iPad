@@ -29,6 +29,8 @@
     UISearchBar *searchBar;
     UIView *searchView;
     UISearchDisplayController *searchDisplayController;
+    NSMutableArray *controlArray;
+    BOOL is_searching;
 }
 -(id)init;
 @property(nonatomic,strong)NSMutableArray *data;

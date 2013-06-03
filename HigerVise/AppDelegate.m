@@ -55,6 +55,17 @@
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+    UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
+    UIDeviceOrientation interfaceOrientation=[[UIApplication sharedApplication] statusBarOrientation];
+    BOOL bLandScape;
+    if (interfaceOrientation == UIDeviceOrientationPortrait || interfaceOrientation == UIDeviceOrientationPortraitUpsideDown) {
+        //翻转为竖屏时
+        bLandScape = NO;
+    }else{
+        //翻转为横屏时
+        bLandScape = YES;
+    }
+    [navigationController.navigationBar setFrame:CGRectMake(0, 0, (bLandScape == YES ? 1024 : 768), 60)];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
@@ -105,6 +116,17 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
+    UIDeviceOrientation interfaceOrientation=[[UIApplication sharedApplication] statusBarOrientation];
+    BOOL bLandScape;
+    if (interfaceOrientation == UIDeviceOrientationPortrait || interfaceOrientation == UIDeviceOrientationPortraitUpsideDown) {
+        //翻转为竖屏时
+        bLandScape = NO;
+    }else{
+        //翻转为横屏时
+        bLandScape = YES;
+    }
+    [navigationController.navigationBar setFrame:CGRectMake(0, 0, (bLandScape == YES ? 1024 : 768), 60)];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

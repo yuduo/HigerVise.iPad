@@ -35,6 +35,7 @@
     UIView *categoryView;
     NSMutableArray *markArray;
     NSMutableArray *controlArray;
+    BOOL is_searching;
 }
 -(id)init;
 @property(nonatomic,strong)NSMutableArray *data;

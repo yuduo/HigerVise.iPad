@@ -36,7 +36,31 @@
     [db close];
     return array;
 }
-
++(NSArray*)getBookListAll
+{
+    NSString *dbPath = [BaseInfo getManageDataBasePath];
+    FMDatabase *db = [[FMDatabase alloc] initWithPath:dbPath];
+    [db open];
+    NSMutableArray *array = [[NSMutableArray alloc] init];
+    NSString *strSql = @"SELECT * FROM vise_klsz_resource_master";
+    FMResultSet *result = [db executeQuery:strSql];
+    while ([result next]) {
+        client_book *rtn = [[client_book alloc] init];
+        rtn.resource_size = [result stringForColumn:@"resource_size"];
+        rtn.resource_title = [result stringForColumn:@"resource_title"];
+        rtn.resource_type = [NSNumber numberWithInt:[result intForColumn:@"resource_type"]];
+        rtn.resource_url = [result stringForColumn:@"resource_url"];
+        rtn.resource_master_id = [NSNumber numberWithInt:[result intForColumn:@"resource_master_id"]];
+        rtn.resource_thum_url = [result stringForColumn:@"resource_thum_url"];
+        rtn.is_marked = [result boolForColumn:@"is_marked"];
+        rtn.create_time = [result stringForColumn:@"create_time"];
+        rtn.resource_image_count = [result stringForColumn:@"resource_image_count"];
+        rtn.resource_video_duration = [result stringForColumn:@"resource_video_duration"];
+        [array addObject:rtn];
+    }
+    [db close];
+    return array;
+}
 +(void)updateBookListMarked:(NSString*)sql
 {
     NSString *dbPath = [BaseInfo getManageDataBasePath];

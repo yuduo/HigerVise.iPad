@@ -12,13 +12,17 @@
 #import "LSImageMatch.h"
 #import "LSString.h"
 #import "ReadAllBook.h"
-
+#import "LSDefine.h"
 #define DOWNLOAD_STATE_NONE 0
 #define DOWNLOAD_STATE_DOWNING 1//downloading
 #define DOWNLOAD_STATE_STOP 2//stop
 #define DOWNLOAD_STATE_FINISHED 3
 
+#define RESOURCE_TITLE_SIZE 20
+#define RESOURCE_DETAIL_SIZE  16
 
+#define RESOURCE_TITLE_COLOR [UIColor whiteColor]
+#define RESOURCE_DETAIL_COLOR  LSRGBA(86,38,12,1)
 @implementation MyBookView
 
 @synthesize delegate;
@@ -41,19 +45,24 @@
     if (self) {
         // Initialization code.
 		self.backgroundColor = [UIColor clearColor];
-		
+		int offset = 40;
         //picture
         // 展示图片
-        UIImageView *bookView = [[UIImageView alloc] initWithFrame:CGRectMake(0, -20, 130, 175)];
+        UIImageView *bookView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 20, 130, 175)];
         
         [self addImage:bookView imageURL:picturePath];
         
         [self addSubview:bookView];
         
+        UIImageView *markView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 120-10+offset, 130, 40)];
+        markView.image = [UIImage imageNamed:@"mark.png"];
+        [self addSubview:markView];
+        
 		//系统进度条的设置
-		zztjProView = [[UIProgressView alloc] initWithFrame:CGRectMake(0, 100, 130, 20)];
+		zztjProView = [[UIProgressView alloc] initWithFrame:CGRectMake(0, 150+offset, 130, 20)];
+        zztjProView.hidden = YES;
 		//自己的进度条设置,默认宽度为0
-		imageProView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 121, 0, 4)];
+		imageProView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 171+offset, 0, 4)];
 		[imageProView setImage:[UIImage imageNamed:@"proImage.png"]];
 		//自己进度条的背景
 //		imageProBgView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 102, 130, 6)];
@@ -61,42 +70,53 @@
 		imageProBgView.backgroundColor = [UIColor blackColor];
         
 		//初始化显示书名的Lable
-		bookNameText = [[UILabel alloc] initWithFrame:CGRectMake(0, 180-45, 100, 30)];
+		bookNameText = [[UILabel alloc] initWithFrame:CGRectMake(0, 120+offset, 130, 20)];
         bookNameText.backgroundColor = [UIColor clearColor];
+        bookNameText.textColor = RESOURCE_TITLE_COLOR;
+        bookNameText.font = [UIFont fontWithName:RESOURCE_TEXT_FONT size:RESOURCE_TITLE_SIZE];
 		bookNameText.text = @"book";
         
         int lable_x = 80;
         
 		//初始化下载按键
-		self.downButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-		downButton.frame = CGRectMake(lable_x, 180-10, 14, 18);
-		[downButton setBackgroundImage:[UIImage imageNamed:@"download.png"] forState:UIControlStateNormal];
-		[downButton addTarget:self action:@selector(downButtonClick) forControlEvents:UIControlEventTouchDown];
-		
+		self.downButton = [[UIButton alloc]initWithFrame:CGRectMake(lable_x-20, 160+offset, 60, 30) ];
+        
+//		self.downButton.frame = CGRectMake(lable_x-20, 160, 100, 40);
+        self.downButton.backgroundColor = [UIColor clearColor];
+        UIImageView *icon = [[UIImageView alloc]initWithFrame:CGRectMake(lable_x, 180-10+offset, 14, 18)];
+        icon.image = [UIImage imageNamed:@"download.png"];
+//		[self.downButton setBackgroundImage:[UIImage imageNamed:@"download.png"] forState:UIControlStateNormal];
+		[self.downButton addTarget:self action:@selector(downButtonClick) forControlEvents:UIControlEventTouchDown];
+        
+		int lable_detail_x = 162+offset;
         //初始化显示书名的Lable
-		sizeText = [[UILabel alloc] initWithFrame:CGRectMake(0, 180-15, 100, 30)];
+		sizeText = [[UILabel alloc] initWithFrame:CGRectMake(0, lable_detail_x, 100, 30)];
         sizeText.backgroundColor = [UIColor clearColor];
 		sizeText.text = @"";
-        sizeText.textColor = [UIColor blackColor];
+        sizeText.textColor = RESOURCE_DETAIL_COLOR;
+        sizeText.font = [UIFont fontWithName:RESOURCE_TEXT_FONT size:RESOURCE_DETAIL_SIZE];
         
         //初始化显示书名的Lable
-		detailText = [[UILabel alloc] initWithFrame:CGRectMake(100, 180-15, 100, 30)];
+		detailText = [[UILabel alloc] initWithFrame:CGRectMake(100, lable_detail_x, 100, 30)];
         detailText.backgroundColor = [UIColor clearColor];
 		detailText.text = @"";
-        detailText.textColor = [UIColor blackColor];
+        detailText.textColor = RESOURCE_DETAIL_COLOR;
+        detailText.font = [UIFont fontWithName:RESOURCE_TEXT_FONT size:RESOURCE_DETAIL_SIZE];
         
         //初始化显示书名的Lable
-		dateText = [[UILabel alloc] initWithFrame:CGRectMake(lable_x, 80, 100, 30)];
-        dateText.backgroundColor = [UIColor clearColor];
-		dateText.text = @"";
-        dateText.textColor = [UIColor blackColor];
+//		dateText = [[UILabel alloc] initWithFrame:CGRectMake(lable_x, 80, 100, 30)];
+//        dateText.backgroundColor = [UIColor clearColor];
+//		dateText.text = @"";
+//        dateText.textColor = [UIColor blackColor];
         
         [self addSubview:zztjProView];
 		[self addSubview:imageProBgView];
 		[self addSubview:imageProView];
+        
 		[self addSubview:bookNameText];
         [self addSubview:sizeText];
         [self addSubview:detailText];
+        [self addSubview:icon];
 		[self addSubview:downButton];
         
         _tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureUpdated:)];
@@ -113,7 +133,7 @@
         
         //CLOSE
         closeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-		closeButton.frame = CGRectMake(130-20, -10, 18, 18);
+		closeButton.frame = CGRectMake(130-15, 10, 30, 28);
 		[closeButton setBackgroundImage:[UIImage imageNamed:@"close.png"] forState:UIControlStateNormal];
 		[closeButton addTarget:self action:@selector(closeButtonClick) forControlEvents:UIControlEventTouchDown];
         closeButton.hidden = YES;
@@ -144,12 +164,11 @@
 	//判断是否下载成功
 	if (downloadCompleteStatus) {//下载状态(已经下载成功)
 		
-//		//下载按键启用
-		downButton.enabled = YES;
+
 //		//下载按键隐藏
-//		downButton.hidden = YES;
+
 		self.downState = DOWNLOAD_STATE_FINISHED;
-        [downButton setTitle:@"read" forState:UIControlStateNormal];
+        
 		
 		//系统进度条隐藏
 		zztjProView.hidden = YES;
@@ -177,8 +196,7 @@
 {
     if ([delegate respondsToSelector:@selector(downBtnOfBookWasClicked:)]) {
 		//下载按键禁用
-        //		downButton.enabled = NO;
-		
+        
 		//调用 DownAndASIRequestViewController 的 downBtnOfBookWasClicked 方法
 		[delegate downBtnOfBookWasClicked:self];
 	}
@@ -202,17 +220,17 @@
     switch (downState) {
         case DOWNLOAD_STATE_NONE:
             downState = DOWNLOAD_STATE_DOWNING;//downloading
-            [downButton setTitle:@"downing" forState:UIControlStateNormal];
+//            [downButton setTitle:@"downing" forState:UIControlStateNormal];
             [self startDownload];
             break;
         case DOWNLOAD_STATE_DOWNING:
             downState = DOWNLOAD_STATE_STOP;//stop
-            [downButton setTitle:@"stop" forState:UIControlStateNormal];
+//            [downButton setTitle:@"stop" forState:UIControlStateNormal];
             [self pauseButtonClick];
             break;
         case DOWNLOAD_STATE_STOP:
             downState = DOWNLOAD_STATE_DOWNING;
-            [downButton setTitle:@"downing" forState:UIControlStateNormal];
+//            [downButton setTitle:@"downing" forState:UIControlStateNormal];
             [self startDownload];
             break;
         default:
@@ -223,8 +241,7 @@
 	
 	if ([delegate respondsToSelector:@selector(pauseBtnOfBookWasClicked:)]) {
 		//下载按键启用
-//		downButton.enabled = YES;
-		
+
 		//调用 DownAndASIRequestViewController 的 pauseBtnOfBookWasClicked 方法
 		[delegate pauseBtnOfBookWasClicked:self];
 	}
@@ -360,6 +377,7 @@
 	//设置自己的进度条
 	imageProView.frame = CGRectMake(75, 121, 150*newProgress, 4);
 	//设置系统的进度条
+    zztjProView.hidden = NO;
 	zztjProView.progress = newProgress;
 }
 

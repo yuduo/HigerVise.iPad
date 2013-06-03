@@ -11,5 +11,7 @@
 @interface LSCollectionViewController : LSBookListViewController<ReadAllBookDelegate>
 {
     ReadAllBook *readAllBooks;
+    NSMutableArray *controlArray;
+    BOOL bLandScape;
 }
 @end
