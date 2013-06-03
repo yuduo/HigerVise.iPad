@@ -460,16 +460,13 @@
 #else
     
     
-    NSArray *db = [book_list_model getBookList:1];
-    if (db != nil) {
-        //
-    }
+    
     
     //stop animate
     
     //go to book
     ResourceViewController *ibook = [[ResourceViewController alloc]init];
-    ibook.data = [[NSMutableArray alloc]initWithArray: db];
+    
     [self.navigationController pushViewController:ibook animated:YES];
 
 #endif

@@ -36,6 +36,7 @@
     NSMutableArray *markArray;
     NSMutableArray *controlArray;
     BOOL is_searching;
+    NSMutableArray *buttonArray;
 }
 -(id)init;
 @property(nonatomic,strong)NSMutableArray *data;

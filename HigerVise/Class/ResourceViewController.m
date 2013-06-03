@@ -71,6 +71,7 @@
     readAllBooks.viewSource = self;
     searchData = [[NSMutableArray alloc] init];
     markArray = [[NSMutableArray alloc] init];
+    buttonArray = [[NSMutableArray alloc] init];
     return self;
 }
 - (void)viewDidLoad
@@ -303,6 +304,14 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self.navigationItem setHidesBackButton:YES animated:NO];
+    
+    NSArray *db = [book_list_model getBookList:1];
+    if (db != nil) {
+        //
+    }
+    self.data = [[NSMutableArray alloc]initWithArray: db];
+    
     UIDeviceOrientation interfaceOrientation=[[UIApplication sharedApplication] statusBarOrientation];
     if (interfaceOrientation == UIDeviceOrientationPortrait || interfaceOrientation == UIDeviceOrientationPortraitUpsideDown) {
         //翻转为竖屏时
@@ -1233,13 +1242,100 @@
     length += 55;
     return 1+length/(bLandScape == YES ? 1024 : 768);
 }
+-(NSInteger)getCaluPageWidth:(NSMutableArray*)array
+{
+    int length = 0;
+    for (int i = 0; i < [array count]; i ++) {
+        //
+        client_catgory *category = [array objectAtIndex:i];
+        length += ([self getButtonWidth:category.catgory_name]+25);
+    }
+    length += 55;
+    return length;
+}
+//-(void)addButtonToCategory
+//{
+//    //read database
+//    NSMutableArray *db = (NSMutableArray*)[catogory_list_model getBookList];
+//    if (db != nil) {
+//        //
+//        
+//    }
+//    client_catgory *all = [[client_catgory alloc]init];
+//    all.catgory_name = @"全部";
+//    [db insertObject:all atIndex:0];
+//    
+//    int BUTTON_COUNT = 5;
+//    NSInteger count = [db count];
+//    NSInteger pageCount = [self getCaluPageCount:db];//count/BUTTON_COUNT+1;
+////    client_catgory
+//    UIScrollView *scroll = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, bLandScape == YES ? 1024 : 768, SEARCH_BAR_HEIGHT)];
+//    scroll.pagingEnabled = YES;
+//    scroll.showsHorizontalScrollIndicator = NO;
+//    scroll.contentSize = CGSizeMake(scroll.frame.size.width*pageCount, scroll.frame.size.height);
+//    
+//    CGRect frame = scroll.bounds;
+//    frame.origin.y = 0.0f;
+//    
+//    
+//    
+//    for (int i = 1; i <= pageCount; i ++) {
+//        //page
+//        
+//        UIView *view = [[UIView alloc] initWithFrame:frame];
+//        frame.origin.x += scroll.frame.size.width*(i-1);
+//        [view setFrame:frame];
+//        [scroll addSubview:view];
+//        int index_x = 0;
+//        for (int j = 1; j <= BUTTON_COUNT; j ++) {
+//            
+//            if (((i-1)*BUTTON_COUNT+j) > count) {
+//                break;
+//            }
+//            {
+//            
+//                client_catgory *category = [db objectAtIndex:(i-1)*BUTTON_COUNT+(j-1)];
+//                
+//                NSLog(@"name = %@",category.catgory_name);
+//                //button
+//                int len = [self getButtonWidth:category.catgory_name];
+//                NSLog(@"len = %d",len);
+//                
+//                UIButton *button = [[UIButton alloc]initWithFrame:CGRectMake(55+index_x, 0, len, 40)];
+//                [button setTitle:category.catgory_name forState:UIControlStateNormal];
+//                UIImage *buttonBack = nil;
+//                if (len == 102) {
+//                    buttonBack = [UIImage imageNamed:@"button_three.png"];
+//                }else if (len == 118) {
+//                    buttonBack = [UIImage imageNamed:@"button_four.png"];
+//                }else
+//                {
+//                    buttonBack = [UIImage imageNamed:@"category_button.png"];
+//                }
+//                    
+//                [button setBackgroundImage:i == 1 && j == 1 ? buttonBack : [UIImage imageNamed:@"category_all.png"] forState:UIControlStateNormal];
+//                [button setTitleColor:i == 1 && j == 1 ?[UIColor whiteColor]:RESOURCE_CATEGORY_BUTTON_COLOR forState:UIControlStateNormal];
+//                button.tag = (i-1)*BUTTON_COUNT+(j-1);
+//                [button addTarget:self action:@selector(categoryButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+//                [view addSubview:button];
+//                
+//                index_x += (len+22);
+//            }
+//        }
+//        
+//    }
+//    [categoryView addSubview:scroll];
+////    [self.view addSubview:categoryView];
+//}
 -(void)addButtonToCategory
 {
     //read database
     NSMutableArray *db = (NSMutableArray*)[catogory_list_model getBookList];
     if (db != nil) {
         //
-        
+        if ([db count] == 0) {
+            return;
+        }
     }
     client_catgory *all = [[client_catgory alloc]init];
     all.catgory_name = @"全部";
@@ -1247,65 +1343,63 @@
     
     int BUTTON_COUNT = 5;
     NSInteger count = [db count];
-    NSInteger pageCount = [self getCaluPageCount:db];//count/BUTTON_COUNT+1;
-//    client_catgory
+    NSInteger scrollWidth = [self getCaluPageWidth:db];//count/BUTTON_COUNT+1;
+    //    client_catgory
     UIScrollView *scroll = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, bLandScape == YES ? 1024 : 768, SEARCH_BAR_HEIGHT)];
     scroll.pagingEnabled = YES;
     scroll.showsHorizontalScrollIndicator = NO;
-    scroll.contentSize = CGSizeMake(scroll.frame.size.width*pageCount, scroll.frame.size.height);
+    scroll.contentSize = CGSizeMake(scrollWidth, scroll.frame.size.height);
     
     CGRect frame = scroll.bounds;
     frame.origin.y = 0.0f;
     
     
-    
-    for (int i = 1; i <= pageCount; i ++) {
-        //page
-        
-        UIView *view = [[UIView alloc] initWithFrame:frame];
-        frame.origin.x += scroll.frame.size.width*(i-1);
-        [view setFrame:frame];
-        [scroll addSubview:view];
-        int index_x = 0;
-        for (int j = 1; j <= BUTTON_COUNT; j ++) {
-            
-            if (((i-1)*BUTTON_COUNT+j) > count) {
-                break;
-            }
-            {
-            
-                client_catgory *category = [db objectAtIndex:(i-1)*BUTTON_COUNT+(j-1)];
+    int index_x = 0;
+    for (int i = 1; i <= [db count]; i ++) {
+        client_catgory *category = [db objectAtIndex:(i-1)];
                 
-                NSLog(@"name = %@",category.catgory_name);
-                //button
-                int len = [self getButtonWidth:category.catgory_name];
-                NSLog(@"len = %d",len);
+        NSLog(@"name = %@",category.catgory_name);
+        //button
+        int len = [self getButtonWidth:category.catgory_name];
+        NSLog(@"len = %d",len);
                 
-                UIButton *button = [[UIButton alloc]initWithFrame:CGRectMake(55+index_x, 0, len, 40)];
-                [button setTitle:category.catgory_name forState:UIControlStateNormal];
-                UIImage *buttonBack = nil;
-                if (len == 102) {
-                    buttonBack = [UIImage imageNamed:@"button_three.png"];
-                }else if (len == 118) {
-                    buttonBack = [UIImage imageNamed:@"button_four.png"];
-                }else
-                {
-                    buttonBack = [UIImage imageNamed:@"category_button.png"];
-                }
-                    
-                [button setBackgroundImage:i == 1 && j == 1 ? buttonBack : [UIImage imageNamed:@"category_all.png"] forState:UIControlStateNormal];
-                [button setTitleColor:i == 1 && j == 1 ?[UIColor whiteColor]:RESOURCE_CATEGORY_BUTTON_COLOR forState:UIControlStateNormal];
-                button.tag = (i-1)*BUTTON_COUNT+(j-1);
-                [button addTarget:self action:@selector(categoryButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-                [view addSubview:button];
-                
-                index_x += (len+22);
-            }
+        UIButton *button = [[UIButton alloc]initWithFrame:CGRectMake(55+index_x, 0, len, 40)];
+        [button setTitle:category.catgory_name forState:UIControlStateNormal];
+        UIImage *buttonBack = nil;
+        if (len == 102) {
+            buttonBack = [UIImage imageNamed:@"button_three.png"];
+        }else if (len == 118) {
+            buttonBack = [UIImage imageNamed:@"button_four.png"];
+        }else
+        {
+            buttonBack = [UIImage imageNamed:@"category_all.png"];
         }
+        
+        [button setBackgroundImage:i == 1  ?  [UIImage imageNamed:@"category_button.png"]: buttonBack  forState:UIControlStateNormal];
+        [button setTitleColor:i == 1  ?[UIColor whiteColor]:RESOURCE_CATEGORY_BUTTON_COLOR forState:UIControlStateNormal];
+        button.tag = (i-1);
+        [button addTarget:self action:@selector(categoryButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        [scroll addSubview:button];
+        [buttonArray addObject:button];
+       index_x += (len+22);
         
     }
     [categoryView addSubview:scroll];
-//    [self.view addSubview:categoryView];
+    
+}
+-(void)setButtonPressed:(NSInteger)tag
+{
+    for (int i = 0; i < [buttonArray count]; i ++) {
+        UIButton *button = [buttonArray objectAtIndex:i];
+        if (tag == button.tag) {
+            [button setBackgroundImage:[UIImage imageNamed:@"category_button.png"]  forState:UIControlStateNormal];
+            [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        }else
+        {
+            [button setBackgroundImage:[UIImage imageNamed:@"category_all.png"]  forState:UIControlStateNormal];
+            [button setTitleColor:RESOURCE_CATEGORY_BUTTON_COLOR forState:UIControlStateNormal];
+        }
+    }
 }
 -(NSInteger)getButtonWidth:(NSString*)str
 {
@@ -1344,6 +1438,7 @@
     self.data  = nil;
     self.data = [[NSMutableArray alloc]initWithArray: db];
     [tbView reloadData];
+    [self setButtonPressed:button.tag];
 }
 
 -(BOOL)checkAddButtonState:(BOOL)buttonState

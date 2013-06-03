@@ -32,7 +32,7 @@ static NSString *kHigerManageDatabase         = @"HigerViseClient.db";    //数�
 static NSString *kHigerManageDatabaseOffLine   = @"HigerViseClient.db";    //数据库文件名称
 
 static NSString *kHigerViseClientOffLine = @"jijesoft";
-static NSString *kHigerDatabaseOffLine   = @"HigerViseClientOffLine.db";    //数据库文件名称
+static NSString *kHigerDatabaseOffLine   = @"HigerViseClient.db";    //数据库文件名称
 
 static NSString *kVehiclePromptCodes    = @"KLQ";   //汽车编码搜索范围
 
