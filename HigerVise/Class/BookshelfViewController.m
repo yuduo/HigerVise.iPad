@@ -216,6 +216,11 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    NSArray *db = [book_list_model getMarkedBookList];
+    if (db != nil) {
+        //
+    }
+    self.data = [[NSMutableArray alloc]initWithArray: db];
     UIDeviceOrientation interfaceOrientation=[[UIApplication sharedApplication] statusBarOrientation];
     if (interfaceOrientation == UIDeviceOrientationPortrait || interfaceOrientation == UIDeviceOrientationPortraitUpsideDown) {
         //翻转为竖屏时
@@ -441,7 +446,7 @@
 - (void)dismissReaderViewController:(ReaderViewController *)viewController
 {
     [self.navigationController popViewControllerAnimated:YES];
-    
+    [self.navigationController.navigationBar setFrame:CGRectMake(0, 0, (bLandScape == YES ? 1024 : 768), 60)];
 }
 
 
@@ -605,9 +610,17 @@
         bookView.bookType = [[book valueForKey:@"resource_type"] integerValue];
         bookView.downloadCompleteStatus = [self checkDownloadState:bookView.bookID bookType:bookView.bookType];
         bookView.createTime = [book valueForKey:@"create_time"];
-        bookView.imageCount = [book valueForKey:@"resource_image_count"];
+        bookView.imageCount = [NSString stringWithFormat:@"%@页", [book valueForKey:@"resource_image_count"]];//[book valueForKey:@"resource_image_count"];
+        NSLog(@"image count = %@",bookView.imageCount);
         bookView.videoDuration = [book valueForKey:@"resource_video_duration"];
-        bookView.resourceSize = [NSString stringWithFormat:@"共%@M",[book valueForKey:@"resource_size"]];//[[book valueForKey:@"resource_size"] stringByAppendingString:@"M"];
+        if (bookView.bookType == RESOURCE_TYPE_MP4) {
+            [[book valueForKey:@"resource_size"] stringByAppendingString:@"M"];
+        }else
+        {
+            bookView.resourceSize = [NSString stringWithFormat:@"共%@M",[book valueForKey:@"resource_size"]];
+        }
+        
+        
         bookView.delegate = self;
         [bookViewArray addObject:bookView];
         [cell.contentView addSubview:bookView];
@@ -870,6 +883,11 @@
     }
     [tbView reloadData];
     [book_list_model updateBookListUnMark:[NSString stringWithFormat:@"%d",bookID]];
+}
+
+- (void)viewBtnOfBookWasClicked:(MyBookView *)book
+{
+    [self readBtnOfBookWasClicked:book];
 }
 #pragma mark -
 #pragma mark ASIHTTPRequestDelegate method

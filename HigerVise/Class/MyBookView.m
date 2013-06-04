@@ -79,25 +79,25 @@
         int lable_x = 80;
         
 		//初始化下载按键
-		self.downButton = [[UIButton alloc]initWithFrame:CGRectMake(lable_x-20, 160+offset, 60, 30) ];
+		self.downButton = [[UIButton alloc]initWithFrame:CGRectMake(100, 160+offset, 60, 30) ];
         
 //		self.downButton.frame = CGRectMake(lable_x-20, 160, 100, 40);
         self.downButton.backgroundColor = [UIColor clearColor];
-        UIImageView *icon = [[UIImageView alloc]initWithFrame:CGRectMake(lable_x, 180-10+offset, 14, 18)];
+        UIImageView *icon = [[UIImageView alloc]initWithFrame:CGRectMake(116, 180-10+offset, 14, 18)];
         icon.image = [UIImage imageNamed:@"download.png"];
 //		[self.downButton setBackgroundImage:[UIImage imageNamed:@"download.png"] forState:UIControlStateNormal];
 		[self.downButton addTarget:self action:@selector(downButtonClick) forControlEvents:UIControlEventTouchDown];
         
 		int lable_detail_x = 162+offset;
         //初始化显示书名的Lable
-		sizeText = [[UILabel alloc] initWithFrame:CGRectMake(0, lable_detail_x, 100, 30)];
+		sizeText = [[UILabel alloc] initWithFrame:CGRectMake(0, lable_detail_x, 50, 30)];
         sizeText.backgroundColor = [UIColor clearColor];
 		sizeText.text = @"";
         sizeText.textColor = RESOURCE_DETAIL_COLOR;
         sizeText.font = [UIFont fontWithName:RESOURCE_TEXT_FONT size:RESOURCE_DETAIL_SIZE];
         
         //初始化显示书名的Lable
-		detailText = [[UILabel alloc] initWithFrame:CGRectMake(100, lable_detail_x, 100, 30)];
+		detailText = [[UILabel alloc] initWithFrame:CGRectMake(50, lable_detail_x, 66, 30)];
         detailText.backgroundColor = [UIColor clearColor];
 		detailText.text = @"";
         detailText.textColor = RESOURCE_DETAIL_COLOR;
@@ -153,6 +153,7 @@
             break;
         case RESOURCE_TYPE_MP4:
             detailText.text = videoDuration;
+//            detailText.text = @"";
             break;
         case RESOURCE_TYPE_PDF:
             detailText.text = @"";
@@ -604,6 +605,9 @@
     CGPoint locationTouch = [_tapGesture locationInView:self];
     closeButtonShow = NO;
     closeButton.hidden = YES;
+    if (locationTouch.x < 130 && locationTouch.y < 175) {
+        [self.delegate viewBtnOfBookWasClicked:self];
+    }
 }
 
 

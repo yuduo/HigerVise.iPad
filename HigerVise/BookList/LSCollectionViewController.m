@@ -305,4 +305,9 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         [manager removeItemAtPath:filePath error:&error];
     }
 }
+- (void)dismissReaderViewController:(ReaderViewController *)viewController
+{
+    [self.navigationController popViewControllerAnimated:YES];
+    [self.navigationController.navigationBar setFrame:CGRectMake(0, 0, (bLandScape == YES ? 1024 : 768), 60)];
+}
 @end

@@ -847,11 +847,31 @@
         if (!fileExists) {//如果不存在,下载
             return;
         }
+        [self readPDFBook:savePath];
         
-        
-        [readAllBooks readButtonClicked:type path:savePath];
+//        [readAllBooks readButtonClicked:type path:savePath];
     }
     
+}
+
+-(void)readPDFBook:(NSString*)filePath
+{
+    {
+        
+        
+        ReaderDocument *document = [ReaderDocument withDocumentFilePath:filePath password:nil];
+        if (document != nil) {
+            ReaderViewController *readerViewController = [[ReaderViewController alloc] initWithReaderDocument:document];
+            readerViewController.delegate = self;
+            self.navigationController.navigationBarHidden = YES;
+            
+            [self.navigationController pushViewController:readerViewController animated:YES];
+            
+            
+            
+            
+        }
+    }
 }
 -(void)searchDocFindPicture:(NSString*)path
 {
@@ -950,6 +970,11 @@
 {
     [markArray addObject:[NSString stringWithFormat:@"%d",book.bookID]];
     
+}
+
+- (void)viewBtnOfBookWasClicked:(ResourceView *)book
+{
+    [self readBtnOfBookWasClicked:book];
 }
 #pragma mark -
 #pragma mark ASIHTTPRequestDelegate method
@@ -1057,13 +1082,10 @@
     
     [self.navigationController pushViewController:ibook animated:YES];
 #else
-    NSArray *db = [book_list_model getMarkedBookList];
-    if (db != nil) {
-        //
-    }
+    
     //go to book
     BookshelfViewController *ibook = [[BookshelfViewController alloc]init];
-    ibook.data = [[NSMutableArray alloc]initWithArray: db];
+    
     [self.navigationController pushViewController:ibook animated:YES];
 #endif
     

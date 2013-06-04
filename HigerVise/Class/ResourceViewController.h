@@ -13,9 +13,9 @@
 #import "ReadAllBook.h"
 #import "LSCollectPE.h"
 
+#import "ReaderViewController.h"
 
-
-@interface ResourceViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,ResourceViewDelegate,ASIHTTPRequestDelegate,ReadAllBookDelegate,UISearchBarDelegate, UISearchDisplayDelegate>
+@interface ResourceViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,ResourceViewDelegate,ASIHTTPRequestDelegate,ReadAllBookDelegate,UISearchBarDelegate, UISearchDisplayDelegate,ReaderViewControllerDelegate>
 {
 
 

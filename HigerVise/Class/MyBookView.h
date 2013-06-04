@@ -17,6 +17,7 @@
 - (void)pauseBtnOfBookWasClicked:(MyBookView *)book;//暂停
 - (void)readBtnOfBookWasClicked:(MyBookView *)book;//查看
 - (void)closeBtnOfBookWasClicked:(MyBookView *)book;
+- (void)viewBtnOfBookWasClicked:(MyBookView *)book;
 @end
 
 

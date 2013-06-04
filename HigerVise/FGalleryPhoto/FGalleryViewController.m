@@ -100,7 +100,7 @@
 		_photoViews							= [[NSMutableArray alloc] init];
 		_photoThumbnailViews				= [[NSMutableArray alloc] init];
 		_barItems							= [[NSMutableArray alloc] init];
-        
+        controlArray = [[NSMutableArray alloc]init];
         /*
          // debugging: 
          _container.layer.borderColor = [[UIColor yellowColor] CGColor];
@@ -315,8 +315,74 @@
 	// init with next on first run.
 	if( _currentIndex == -1 ) [self next];
 	else [self gotoImageByIndex:_currentIndex animated:NO];
+    
+    
+    UIDeviceOrientation interfaceOrientation=[[UIApplication sharedApplication] statusBarOrientation];
+    if (interfaceOrientation == UIDeviceOrientationPortrait || interfaceOrientation == UIDeviceOrientationPortraitUpsideDown) {
+        //翻转为竖屏时
+        bLandScape = NO;
+    }else{
+        //翻转为横屏时
+        bLandScape = YES;
+    }
+    [self.navigationController.navigationBar setFrame:CGRectMake(0, 0, (bLandScape == YES ? 1024 : 768), 60)];
+    [self.navigationItem setHidesBackButton:YES animated:NO];
+    [self addControlToNavi];
 }
 
+-(void)addControlToNavi
+{
+    
+    UIImageView *logo = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"logo.png"]];
+    logo.frame = CGRectMake(((bLandScape == YES ? 1024 : 768)-190)/2, 10, 190, 40);
+    logo.tag = 2;
+    [self.navigationController.navigationBar addSubview:logo];
+    [controlArray addObject:logo];
+    UIButton *btnBack = [UIButton buttonWithType:UIButtonTypeCustom];
+    btnBack.frame = CGRectMake(10, 11, 46, 40);
+    btnBack.tag = 3;
+    [btnBack setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"back" ofType:@"png"]] forState:UIControlStateNormal];
+    [btnBack addTarget:self action:@selector(backButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+    [self.navigationController.navigationBar addSubview:btnBack];
+    [controlArray addObject:btnBack];
+    
+    UIButton *btnHome = [UIButton buttonWithType:UIButtonTypeCustom];
+    btnHome.frame = CGRectMake(653, 11, 98, 40);
+    btnHome.tag = 4;
+    [btnHome setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"button_seeall" ofType:@"png"]] forState:UIControlStateNormal];
+    [btnHome addTarget:self action:@selector(handleSeeAllTouch:) forControlEvents:UIControlEventTouchUpInside];
+    [self.navigationController.navigationBar addSubview:btnHome];
+    [controlArray addObject:btnHome];
+}
+-(void)backButtonClicked
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+-(void)resetControlPosition
+{
+    
+    
+    for (int i = 0; i < [controlArray count]; i ++) {
+        UIView *view = [controlArray objectAtIndex:i];
+        int tag = view.tag;
+        switch (tag) {
+            case 1:
+                
+                break;
+            case 2:
+                [view setFrame:CGRectMake(((bLandScape == YES ? 1024 : 768)-190)/2, 10, 190, 40)];
+                break;
+            case 3:
+                [view setFrame:CGRectMake(10, 11, 46, 40)];
+                break;
+            case 4:
+                [view setFrame:bLandScape == YES ? CGRectMake(904, 11, 98, 40):CGRectMake(653, 11, 98, 40)];
+                break;
+            default:
+                break;
+        }
+    }
+}
 
 - (void)viewWillDisappear:(BOOL)animated
 {
@@ -325,6 +391,10 @@
 	_isActive = NO;
 
 	[[UIApplication sharedApplication] setStatusBarStyle:_prevStatusStyle animated:animated];
+    for (int i = 0; i < [controlArray count]; i ++) {
+        
+        [(UIView*)[controlArray objectAtIndex:i] removeFromSuperview];
+    }
 }
 
 
@@ -371,7 +441,7 @@
 	
 	[self layoutViews];
 	[self updateButtons];
-    [self updateTitle];
+//    [self updateTitle];
 }
 
 
@@ -417,7 +487,7 @@
 		
 		_currentIndex = index;
 		[self moveScrollerToCurrentIndexWithAnimation:animated];
-		[self updateTitle];
+//		[self updateTitle];
 		
 		if( !animated )	{
 			[self preloadThumbnailImages];
@@ -446,7 +516,7 @@
 
 - (void)setUseThumbnailView:(BOOL)useThumbnailView
 {
-    
+#if 0
     UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle: NSLocalizedString(@"Back", @"") style: UIBarButtonItemStyleBordered target: nil action: nil];
     [[self navigationItem] setBackBarButtonItem: newBackButton];
     
@@ -461,6 +531,7 @@
             [self.navigationItem setRightBarButtonItem:nil animated:NO];
         }
     }
+#endif
 }
 
 
@@ -987,7 +1058,7 @@
 	
 	_currentIndex = newIndex;
 	[self updateCaption];
-	[self updateTitle];
+//	[self updateTitle];
 	[self updateButtons];
 	[self loadFullsizeImageWithIndex:_currentIndex];
 	[self preloadThumbnailImages];

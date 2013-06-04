@@ -239,6 +239,7 @@
 		CA80454F17587C04000717A2 /* done.png in Resources */ = {isa = PBXBuildFile; fileRef = CA80454B17587C04000717A2 /* done.png */; };
 		CA80455017587C04000717A2 /* head_background.png in Resources */ = {isa = PBXBuildFile; fileRef = CA80454C17587C04000717A2 /* head_background.png */; };
 		CA80ABA7174F451C008AF512 /* cover_bg_ver.png in Resources */ = {isa = PBXBuildFile; fileRef = CA80ABA6174F451C008AF512 /* cover_bg_ver.png */; };
+		CA80D95D175D830200AD50B0 /* added.png in Resources */ = {isa = PBXBuildFile; fileRef = CA80D95C175D830200AD50B0 /* added.png */; };
 		CA80E68C174C8D0500C04C61 /* ReadAllBook.m in Sources */ = {isa = PBXBuildFile; fileRef = CA80E68B174C8D0500C04C61 /* ReadAllBook.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		CA816A82175300B400EAF019 /* shelf_one.png in Resources */ = {isa = PBXBuildFile; fileRef = CA816A80175300B300EAF019 /* shelf_one.png */; };
 		CA816A83175300B400EAF019 /* shelf_top.png in Resources */ = {isa = PBXBuildFile; fileRef = CA816A81175300B300EAF019 /* shelf_top.png */; };
@@ -791,6 +792,7 @@
 		CA80454B17587C04000717A2 /* done.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = done.png; path = manage/done.png; sourceTree = "<group>"; };
 		CA80454C17587C04000717A2 /* head_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = head_background.png; path = manage/head_background.png; sourceTree = "<group>"; };
 		CA80ABA6174F451C008AF512 /* cover_bg_ver.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cover_bg_ver.png; path = manage/cover_bg_ver.png; sourceTree = "<group>"; };
+		CA80D95C175D830200AD50B0 /* added.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = added.png; path = manage/added.png; sourceTree = "<group>"; };
 		CA80E68A174C8D0500C04C61 /* ReadAllBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ReadAllBook.h; path = Class/ReadAllBook.h; sourceTree = "<group>"; };
 		CA80E68B174C8D0500C04C61 /* ReadAllBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ReadAllBook.m; path = Class/ReadAllBook.m; sourceTree = "<group>"; };
 		CA816A80175300B300EAF019 /* shelf_one.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = shelf_one.png; path = manage/shelf_one.png; sourceTree = "<group>"; };
@@ -1152,9 +1154,7 @@
 				CA85CBE1174615B6008724CE /* Json */,
 				CA85CBD71746140A008724CE /* BookList */,
 				CA3AB166173D2A07009ED438 /* FlowCover */,
-				CA7B991A173733EF000A13A4 /* Photos */,
 				CA7B9919173733E6000A13A4 /* Video */,
-				CA7B9918173733E0000A13A4 /* PDF */,
 				CA7B99171737339C000A13A4 /* Class */,
 				AFD002801627BAC600D5D604 /* Resources */,
 				AFD002851627BAC600D5D604 /* Data */,
@@ -1699,29 +1699,21 @@
 		CA7B99171737339C000A13A4 /* Class */ = {
 			isa = PBXGroup;
 			children = (
+				CA80D95F175D858E00AD50B0 /* BookList */,
+				CA80D95E175D857900AD50B0 /* resourceList */,
 				CA92C7A31756EB63001BAA91 /* FatNavigationBar.h */,
 				CA92C7A41756EB63001BAA91 /* FatNavigationBar.m */,
 				CA92C7A01756EB31001BAA91 /* FatNavigationController.h */,
 				CA92C7A11756EB31001BAA91 /* FatNavigationController.m */,
-				CA816A8B17532C0300EAF019 /* ResourceView.h */,
-				CA816A8C17532C0300EAF019 /* ResourceView.m */,
-				CA816A8817532AB900EAF019 /* ResourceViewController.h */,
-				CA816A8917532AB900EAF019 /* ResourceViewController.m */,
 				CA85CC45174628F1008724CE /* Photo.h */,
 				CA85CC46174628F1008724CE /* Photo.m */,
 				CA3AB172173D2E5D009ED438 /* TestFC.xib */,
 				CA3AB16D173D2B2F009ED438 /* FlowCoverViewController.h */,
 				CA3AB16E173D2B2F009ED438 /* FlowCoverViewController.m */,
-				CA1E34CB173B9A9200A64310 /* MyBookView.h */,
-				CA1E34CC173B9A9200A64310 /* MyBookView.m */,
-				CA1E34CD173B9A9200A64310 /* MyWebView.h */,
-				CA1E34CE173B9A9200A64310 /* MyWebView.m */,
 				CA7BFA521738E83400A44159 /* FGalleryPhoto */,
 				CA7BFA4E1738C15400A44159 /* ThumbnailView.h */,
 				CA7BFA4F1738C15400A44159 /* ThumbnailView.m */,
 				CA7BFA3E1738C08900A44159 /* REPhotoCollectionController */,
-				CA7B9923173753C9000A13A4 /* BookshelfViewController.h */,
-				CA7B9924173753C9000A13A4 /* BookshelfViewController.m */,
 				CA8293FC17407C330097222A /* DownloadFileManage.h */,
 				CA8293FD17407C330097222A /* DownloadFileManage.m */,
 				CA8293FF1740D5E40097222A /* DownloadFileViewController.h */,
@@ -1732,13 +1724,6 @@
 			name = Class;
 			sourceTree = "<group>";
 		};
-		CA7B9918173733E0000A13A4 /* PDF */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = PDF;
-			sourceTree = "<group>";
-		};
 		CA7B9919173733E6000A13A4 /* Video */ = {
 			isa = PBXGroup;
 			children = (
@@ -1746,13 +1731,6 @@
 				CA7B992117373D0D000A13A4 /* VideoPlayViewController.m */,
 			);
 			name = Video;
-			sourceTree = "<group>";
-		};
-		CA7B991A173733EF000A13A4 /* Photos */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Photos;
 			sourceTree = "<group>";
 		};
 		CA7B99261737546C000A13A4 /* GMGridView */ = {
@@ -1777,6 +1755,7 @@
 		CA7B993A17377061000A13A4 /* manage */ = {
 			isa = PBXGroup;
 			children = (
+				CA80D95C175D830200AD50B0 /* added.png */,
 				CA83CBDA175C6F7300A9A4FD /* button_four.png */,
 				CA83CBDB175C6F7300A9A4FD /* button_three.png */,
 				CA83CBD8175C6C4600A9A4FD /* button_seeall.png */,
@@ -2012,6 +1991,30 @@
 				CA7F31A91739F2FD00D250EA /* UIXToolbarView.m */,
 			);
 			path = Sources;
+			sourceTree = "<group>";
+		};
+		CA80D95E175D857900AD50B0 /* resourceList */ = {
+			isa = PBXGroup;
+			children = (
+				CA816A8B17532C0300EAF019 /* ResourceView.h */,
+				CA816A8C17532C0300EAF019 /* ResourceView.m */,
+				CA816A8817532AB900EAF019 /* ResourceViewController.h */,
+				CA816A8917532AB900EAF019 /* ResourceViewController.m */,
+			);
+			name = resourceList;
+			sourceTree = "<group>";
+		};
+		CA80D95F175D858E00AD50B0 /* BookList */ = {
+			isa = PBXGroup;
+			children = (
+				CA1E34CB173B9A9200A64310 /* MyBookView.h */,
+				CA1E34CC173B9A9200A64310 /* MyBookView.m */,
+				CA1E34CD173B9A9200A64310 /* MyWebView.h */,
+				CA1E34CE173B9A9200A64310 /* MyWebView.m */,
+				CA7B9923173753C9000A13A4 /* BookshelfViewController.h */,
+				CA7B9924173753C9000A13A4 /* BookshelfViewController.m */,
+			);
+			name = BookList;
 			sourceTree = "<group>";
 		};
 		CA85CB6F174610A8008724CE /* LSHTTP */ = {
@@ -2319,6 +2322,7 @@
 				CA83CBDC175C6F7300A9A4FD /* button_four.png in Resources */,
 				CA83CBDD175C6F7300A9A4FD /* button_three.png in Resources */,
 				CA83CBDF175C937400A9A4FD /* Default-Portrait~ipad.png in Resources */,
+				CA80D95D175D830200AD50B0 /* added.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -127,6 +127,12 @@
 		[addButton setBackgroundImage:[UIImage imageNamed:@"add_button.png"] forState:UIControlStateNormal];
 		[addButton addTarget:self action:@selector(markButtonClick) forControlEvents:UIControlEventTouchDown];
         [self addSubview:addButton];
+        
+        _tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGestureUpdated:)];
+        _tapGesture.delegate = self;
+        _tapGesture.numberOfTapsRequired = 1;
+        _tapGesture.numberOfTouchesRequired = 1;
+        [self addGestureRecognizer:_tapGesture];
     }
     return self;
 }
@@ -595,10 +601,27 @@
 
 -(void)setButtonState:(BOOL)addButtonState
 {
-    self.addButton.hidden = addButtonState;
-    if (self.addButton.hidden) {
-        [self.addButton removeFromSuperview];
+    
+    if (addButtonState) {
+        [addButton setEnabled:NO];
+        [addButton setBackgroundImage:[UIImage imageNamed:@"added.png"] forState:UIControlStateNormal];
+    }else
+    {
+        [addButton setEnabled:YES];
+        [addButton setBackgroundImage:[UIImage imageNamed:@"add_button.png"] forState:UIControlStateNormal];
     }
+}
 
+//////////////////////////////////////////////////////////////
+#pragma mark Tap
+//////////////////////////////////////////////////////////////
+
+- (void)tapGestureUpdated:(UITapGestureRecognizer *)tapGesture
+{
+    CGPoint locationTouch = [_tapGesture locationInView:self];
+    
+    if (locationTouch.x < 102 && locationTouch.y < 136) {
+        [self.delegate viewBtnOfBookWasClicked:self];
+    }
 }
 @end

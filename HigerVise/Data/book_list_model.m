@@ -104,6 +104,9 @@
         rtn.resource_master_id = [NSNumber numberWithInt:[result intForColumn:@"resource_master_id"]];
         rtn.resource_thum_url = [result stringForColumn:@"resource_thum_url"];
         rtn.is_marked = [result boolForColumn:@"is_marked"];
+        rtn.create_time = [result stringForColumn:@"create_time"];
+        rtn.resource_image_count = [result stringForColumn:@"resource_image_count"];
+        rtn.resource_video_duration = [result stringForColumn:@"resource_video_duration"];
         [array addObject:rtn];
     }
     [db close];

@@ -397,16 +397,7 @@
 
 #endif // end of READER_DISABLE_IDLE Option
     
-    //切换至竖屏
-    if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
-        SEL selector = NSSelectorFromString(@"setOrientation:");
-        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
-        [invocation setSelector:selector];
-        [invocation setTarget:[UIDevice currentDevice]];
-        int val = UIInterfaceOrientationPortrait;
-        [invocation setArgument:&val atIndex:2];
-        [invocation invoke];
-    }
+
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -427,16 +418,6 @@
 {
 	[super viewDidDisappear:animated];
     
-    //切换横屏
-    if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
-        SEL selector = NSSelectorFromString(@"setOrientation:");
-        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[UIDevice instanceMethodSignatureForSelector:selector]];
-        [invocation setSelector:selector];
-        [invocation setTarget:[UIDevice currentDevice]];
-        int val = UIInterfaceOrientationLandscapeLeft;
-        [invocation setArgument:&val atIndex:2];
-        [invocation invoke];
-    }
 }
 
 - (void)viewDidUnload
@@ -453,7 +434,15 @@
 
 	[super viewDidUnload];
 }
+- (BOOL)shouldAutorotate
+{
+    return YES;
+}
 
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return (UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskLandscapeLeft | UIInterfaceOrientationMaskLandscapeRight);
+}
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     if (interfaceOrientation == UIInterfaceOrientationPortrait ||

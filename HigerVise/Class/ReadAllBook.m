@@ -8,7 +8,7 @@
 
 #import "ReadAllBook.h"
 #import "VideoPlayViewController.h"
-
+#import "AppDelegate.h"
 @implementation ReadAllBook
 @synthesize viewSource = _viewSource;
 -(void)readButtonClicked:(NSInteger)tag path:(NSString*)path
@@ -35,10 +35,17 @@
             ReaderDocument *document = [ReaderDocument withDocumentFilePath:filePath password:nil];
             if (document != nil) {
                 ReaderViewController *readerViewController = [[ReaderViewController alloc] initWithReaderDocument:document];
-                readerViewController.delegate = self;
+                readerViewController.delegate = [_viewSource getCurrentViewController];
                 [_viewSource getCurrentViewController].navigationController.navigationBarHidden = YES;
-                [[_viewSource getCurrentViewController].navigationController pushViewController:readerViewController animated:YES];
+//                [[_viewSource getCurrentViewController].navigationController pushViewController:readerViewController animated:YES];
+                UIWindow* window = ((AppDelegate*)([UIApplication sharedApplication].delegate)).window;
+                UINavigationController *navigationController = (UINavigationController *)window.rootViewController;
+//                [window addSubview:readerViewController.view];
+                [navigationController pushViewController:readerViewController animated:YES];
                 
+                
+                
+
             }
         }
             break;

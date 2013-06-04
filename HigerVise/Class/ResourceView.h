@@ -17,10 +17,11 @@
 - (void)pauseBtnOfBookWasClicked:(ResourceView *)book;//暂停
 - (void)readBtnOfBookWasClicked:(ResourceView *)book;//查看
 - (void)markBtnOfBookWasClicked:(ResourceView *)book;
+- (void)viewBtnOfBookWasClicked:(ResourceView *)book;
 @end
 
 
-@interface ResourceView : UIView <ASIProgressDelegate,LSHTTPImageKitDelegate>{
+@interface ResourceView : UIView <ASIProgressDelegate,LSHTTPImageKitDelegate,UIGestureRecognizerDelegate>{
 
 	id delegate;
 	int bookID;//ID
@@ -43,6 +44,7 @@
     LSHTTPImageKit* _imageKit;
     NSMutableArray* _arrMatch;
     NSMutableDictionary* _memoryCache;
+    UITapGestureRecognizer       *_tapGesture;
 
 }
 @property (nonatomic, retain) LSHTTPImageKit* imageKit;
