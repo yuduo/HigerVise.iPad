@@ -23,6 +23,7 @@
 #import "BookshelfViewController.h"
 #import "client_catgory.h"
 #import "book_list_model.h"
+#import "UINavigationBar+Custom.h"
 
 #define GRID_VIEW_WIDTH 768
 #define GRID_VIEW_HEIGHT 1024-200
@@ -330,7 +331,7 @@
 {
     [super viewDidAppear:animated];
     [self.navigationController.navigationBar setFrame:CGRectMake(0, 0, (bLandScape == YES ? 1024 : 768), 60)];
-
+    
     self.navigationController.navigationBarHidden = NO;
     is_searching = NO;
 //    searchBar.frame = CGRectMake(0, 0, 331, SEARCH_BAR_HEIGHT);
@@ -704,7 +705,7 @@
         bookView.bookPath = [book valueForKey:@"resource_url"];
         bookView.bookType = [[book valueForKey:@"resource_type"] integerValue];
         bookView.downloadCompleteStatus = [self checkDownloadState:bookView.bookID bookType:bookView.bookType];
-        [bookView setButtonState:[self checkAddButtonState:[[book valueForKey:@"is_marked"] boolValue]]];
+        [bookView setButtonState:addButtonState isMarked:[[book valueForKey:@"is_marked"] intValue]];
         bookView.createTime = [book valueForKey:@"create_time"];
         bookView.imageCount = [NSString stringWithFormat:@"共%@页", [book valueForKey:@"resource_image_count"]];
         bookView.videoDuration = [book valueForKey:@"resource_video_duration"];
@@ -847,9 +848,9 @@
         if (!fileExists) {//如果不存在,下载
             return;
         }
-        [self readPDFBook:savePath];
         
-//        [readAllBooks readButtonClicked:type path:savePath];
+        
+        [readAllBooks readButtonClicked:type path:savePath];
     }
     
 }
@@ -974,7 +975,7 @@
 
 - (void)viewBtnOfBookWasClicked:(ResourceView *)book
 {
-    [self readBtnOfBookWasClicked:book];
+    
 }
 #pragma mark -
 #pragma mark ASIHTTPRequestDelegate method

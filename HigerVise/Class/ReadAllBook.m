@@ -23,6 +23,7 @@
             NSURL *url = [NSURL fileURLWithPath:videoPath];
             VideoPlayViewController *videoPlayer = [[VideoPlayViewController alloc]init];
             videoPlayer.videoAssetURL = url;
+            [_viewSource getCurrentViewController].navigationController.navigationBarHidden = YES;
             [[_viewSource getCurrentViewController].navigationController pushViewController:videoPlayer animated:YES];
             [videoPlayer playVideoWithMoviePlayerController];
         }

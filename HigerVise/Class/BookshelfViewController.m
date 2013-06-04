@@ -19,6 +19,8 @@
 #import "client_book.h"
 #import "AddBookToLocal.h"
 #import "book_list_model.h"
+#import "UINavigationBar+Custom.h"
+
 #define GRID_VIEW_WIDTH 768
 #define GRID_VIEW_HEIGHT 1024-200
 #define BOOK_WIDTH 130
@@ -216,6 +218,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self.navigationItem setHidesBackButton:YES animated:NO];
     NSArray *db = [book_list_model getMarkedBookList];
     if (db != nil) {
         //
@@ -248,7 +251,7 @@
         
         [(UIView*)[controlArray objectAtIndex:i] removeFromSuperview];
     }
-    [self stopAllDownload];
+//    [self stopAllDownload];
 }
 //////////////////////////////////////////////////////////////
 #pragma mark memory management
@@ -887,7 +890,7 @@
 
 - (void)viewBtnOfBookWasClicked:(MyBookView *)book
 {
-    [self readBtnOfBookWasClicked:book];
+    
 }
 #pragma mark -
 #pragma mark ASIHTTPRequestDelegate method

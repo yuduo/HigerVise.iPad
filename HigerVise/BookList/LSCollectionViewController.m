@@ -110,7 +110,22 @@
 
 - (void)navigationRightButtonItemClicked:(id)aSender
 {
+    
     [self setEditing:!self.editing animated:YES];
+    UIButton *btnHome;
+    for (int i = 0; i < [controlArray count]; i ++) {
+        UIButton *view = [controlArray objectAtIndex:i];
+        int tag = view.tag;
+        if (tag == 4) {
+            btnHome = view;
+        }
+    }
+    if (self.editing) {
+        [btnHome setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"done" ofType:@"png"]] forState:UIControlStateNormal];
+    }else
+    {
+        [btnHome setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"button_edit" ofType:@"png"]] forState:UIControlStateNormal];
+    }
 }
 #pragma mark Editing
 

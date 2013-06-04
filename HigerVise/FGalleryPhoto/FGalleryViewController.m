@@ -213,6 +213,7 @@
     
     // build stuff
     [self reloadGallery];
+    [self.navigationItem setHidesBackButton:YES animated:NO];
 }
 
 
@@ -296,7 +297,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-	
+	[self.navigationItem setHidesBackButton:YES animated:NO];
     _isActive = YES;
     
     self.useThumbnailView = _useThumbnailView;
@@ -326,7 +327,7 @@
         bLandScape = YES;
     }
     [self.navigationController.navigationBar setFrame:CGRectMake(0, 0, (bLandScape == YES ? 1024 : 768), 60)];
-    [self.navigationItem setHidesBackButton:YES animated:NO];
+    
     [self addControlToNavi];
 }
 
@@ -347,7 +348,7 @@
     [controlArray addObject:btnBack];
     
     UIButton *btnHome = [UIButton buttonWithType:UIButtonTypeCustom];
-    btnHome.frame = CGRectMake(653, 11, 98, 40);
+    btnHome.frame = (bLandScape == YES ? CGRectMake(904, 11, 98, 40):CGRectMake(653, 11, 98, 40));
     btnHome.tag = 4;
     [btnHome setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"button_seeall" ofType:@"png"]] forState:UIControlStateNormal];
     [btnHome addTarget:self action:@selector(handleSeeAllTouch:) forControlEvents:UIControlEventTouchUpInside];

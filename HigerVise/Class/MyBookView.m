@@ -281,14 +281,14 @@
 			NSLog(@"unzip success.............");
             //delete download zip file
             [self deleteDownloadZip:filePath];
-			//因为文件小,解压太快,为了更好的看到效果,故添加了一个3秒之后执行的取消"菊花"操作.
-			[self performSelector:@selector(threeClick) withObject:nil afterDelay:3];
+			
+			
 		}
 
 		[zip UnzipCloseFile];//关闭
 	}
 	
-	
+	[self performSelector:@selector(threeClick) withObject:nil afterDelay:3];
 }
 
 - (void)deleteDownloadZip:(NSString*)filePath
@@ -606,7 +606,7 @@
     closeButtonShow = NO;
     closeButton.hidden = YES;
     if (locationTouch.x < 130 && locationTouch.y < 175) {
-        [self.delegate viewBtnOfBookWasClicked:self];
+        [self downButtonClick];
     }
 }
 

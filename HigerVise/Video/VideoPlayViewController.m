@@ -30,7 +30,11 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
-
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = YES;
+}
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
@@ -38,6 +42,7 @@
 
 - (void)playVideoWithMoviePlayerViewController
 {
+    self.navigationController.navigationBarHidden = YES;
     MPMoviePlayerViewController *viewController = [[MPMoviePlayerViewController alloc] initWithContentURL:self.videoAssetURL];
     [self presentMoviePlayerViewControllerAnimated:viewController];
 }

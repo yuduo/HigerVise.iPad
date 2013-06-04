@@ -292,12 +292,12 @@
             //delete download zip file
             [self deleteDownloadZip:filePath];
 			//因为文件小,解压太快,为了更好的看到效果,故添加了一个3秒之后执行的取消"菊花"操作.
-			[self performSelector:@selector(threeClick) withObject:nil afterDelay:3];
+			
 		}
 
 		[zip UnzipCloseFile];//关闭
 	}
-	
+	[self performSelector:@selector(threeClick) withObject:nil afterDelay:3];
 	
 }
 
@@ -599,17 +599,23 @@
     NSLog(@"%@ get image failed. url= %@",NSStringFromClass([self class]), aImageURL);
 }
 
--(void)setButtonState:(BOOL)addButtonState
+-(void)setButtonState:(BOOL)addButtonState isMarked:(BOOL)isMarked
 {
-    
     if (addButtonState) {
-        [addButton setEnabled:NO];
-        [addButton setBackgroundImage:[UIImage imageNamed:@"added.png"] forState:UIControlStateNormal];
+        addButton.hidden = NO;
+        if (isMarked) {
+            [addButton setEnabled:NO];
+            [addButton setBackgroundImage:[UIImage imageNamed:@"added.png"] forState:UIControlStateNormal];
+        }else
+        {
+            [addButton setEnabled:YES];
+            [addButton setBackgroundImage:[UIImage imageNamed:@"add_button.png"] forState:UIControlStateNormal];
+        }
     }else
     {
-        [addButton setEnabled:YES];
-        [addButton setBackgroundImage:[UIImage imageNamed:@"add_button.png"] forState:UIControlStateNormal];
+        addButton.hidden = YES;
     }
+    
 }
 
 //////////////////////////////////////////////////////////////
@@ -621,7 +627,7 @@
     CGPoint locationTouch = [_tapGesture locationInView:self];
     
     if (locationTouch.x < 102 && locationTouch.y < 136) {
-        [self.delegate viewBtnOfBookWasClicked:self];
+        [self downButtonClick];
     }
 }
 @end

@@ -72,5 +72,5 @@
 
 -(void)startUnZip;
 - (id)initWithFrame:(CGRect)frame picturePath:(NSString*)picturePath;
--(void)setButtonState:(BOOL)addButtonState;
+-(void)setButtonState:(BOOL)addButtonState isMarked:(BOOL)isMarked;
 @end

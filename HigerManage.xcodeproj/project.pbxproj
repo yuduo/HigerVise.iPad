@@ -240,6 +240,8 @@
 		CA80455017587C04000717A2 /* head_background.png in Resources */ = {isa = PBXBuildFile; fileRef = CA80454C17587C04000717A2 /* head_background.png */; };
 		CA80ABA7174F451C008AF512 /* cover_bg_ver.png in Resources */ = {isa = PBXBuildFile; fileRef = CA80ABA6174F451C008AF512 /* cover_bg_ver.png */; };
 		CA80D95D175D830200AD50B0 /* added.png in Resources */ = {isa = PBXBuildFile; fileRef = CA80D95C175D830200AD50B0 /* added.png */; };
+		CA80D962175DB13500AD50B0 /* ASIDownloadControl.m in Sources */ = {isa = PBXBuildFile; fileRef = CA80D961175DB13500AD50B0 /* ASIDownloadControl.m */; };
+		CA80D965175DB5B600AD50B0 /* UINavigationBar+Custom.m in Sources */ = {isa = PBXBuildFile; fileRef = CA80D964175DB5B600AD50B0 /* UINavigationBar+Custom.m */; };
 		CA80E68C174C8D0500C04C61 /* ReadAllBook.m in Sources */ = {isa = PBXBuildFile; fileRef = CA80E68B174C8D0500C04C61 /* ReadAllBook.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		CA816A82175300B400EAF019 /* shelf_one.png in Resources */ = {isa = PBXBuildFile; fileRef = CA816A80175300B300EAF019 /* shelf_one.png */; };
 		CA816A83175300B400EAF019 /* shelf_top.png in Resources */ = {isa = PBXBuildFile; fileRef = CA816A81175300B300EAF019 /* shelf_top.png */; };
@@ -793,6 +795,10 @@
 		CA80454C17587C04000717A2 /* head_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = head_background.png; path = manage/head_background.png; sourceTree = "<group>"; };
 		CA80ABA6174F451C008AF512 /* cover_bg_ver.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cover_bg_ver.png; path = manage/cover_bg_ver.png; sourceTree = "<group>"; };
 		CA80D95C175D830200AD50B0 /* added.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = added.png; path = manage/added.png; sourceTree = "<group>"; };
+		CA80D960175DB13400AD50B0 /* ASIDownloadControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ASIDownloadControl.h; path = Class/ASIDownloadControl.h; sourceTree = "<group>"; };
+		CA80D961175DB13500AD50B0 /* ASIDownloadControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ASIDownloadControl.m; path = Class/ASIDownloadControl.m; sourceTree = "<group>"; };
+		CA80D963175DB5B600AD50B0 /* UINavigationBar+Custom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UINavigationBar+Custom.h"; path = "Class/UINavigationBar+Custom.h"; sourceTree = "<group>"; };
+		CA80D964175DB5B600AD50B0 /* UINavigationBar+Custom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UINavigationBar+Custom.m"; path = "Class/UINavigationBar+Custom.m"; sourceTree = "<group>"; };
 		CA80E68A174C8D0500C04C61 /* ReadAllBook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ReadAllBook.h; path = Class/ReadAllBook.h; sourceTree = "<group>"; };
 		CA80E68B174C8D0500C04C61 /* ReadAllBook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ReadAllBook.m; path = Class/ReadAllBook.m; sourceTree = "<group>"; };
 		CA816A80175300B300EAF019 /* shelf_one.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = shelf_one.png; path = manage/shelf_one.png; sourceTree = "<group>"; };
@@ -1720,6 +1726,10 @@
 				CA8294001740D5E50097222A /* DownloadFileViewController.m */,
 				CA80E68A174C8D0500C04C61 /* ReadAllBook.h */,
 				CA80E68B174C8D0500C04C61 /* ReadAllBook.m */,
+				CA80D960175DB13400AD50B0 /* ASIDownloadControl.h */,
+				CA80D961175DB13500AD50B0 /* ASIDownloadControl.m */,
+				CA80D963175DB5B600AD50B0 /* UINavigationBar+Custom.h */,
+				CA80D964175DB5B600AD50B0 /* UINavigationBar+Custom.m */,
 			);
 			name = Class;
 			sourceTree = "<group>";
@@ -2590,6 +2600,8 @@
 				CA816A8D17532C0400EAF019 /* ResourceView.m in Sources */,
 				CA92C7A21756EB31001BAA91 /* FatNavigationController.m in Sources */,
 				CA92C7A51756EB63001BAA91 /* FatNavigationBar.m in Sources */,
+				CA80D962175DB13500AD50B0 /* ASIDownloadControl.m in Sources */,
+				CA80D965175DB5B600AD50B0 /* UINavigationBar+Custom.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

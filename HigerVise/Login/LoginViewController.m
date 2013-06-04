@@ -116,6 +116,7 @@
     txtUserPwd.hidden = NO;
     btnLogin.hidden = NO;
     imgLoginNothing.hidden = YES;
+    self.navigationController.navigationBarHidden = YES;
 }
 
 - (void)dealloc
